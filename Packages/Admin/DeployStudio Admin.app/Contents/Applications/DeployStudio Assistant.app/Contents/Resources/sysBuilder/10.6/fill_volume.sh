@@ -47,10 +47,6 @@ add_file_at_path "System Profiler.app" /Applications/Utilities
 add_file_at_path "Terminal.app" /Applications/Utilities
 
 ditto --rsrc "${SYSBUILDER_FOLDER}/common/Startup Disk.app" "${TMP_MOUNT_PATH}/Applications/Utilities/Startup Disk.app"
-if [ -z ${DISABLE_AD_VIEWER} ]
-then
-  ditto --rsrc "${SYSBUILDER_FOLDER}"/common/AdViewer.app "${TMP_MOUNT_PATH}"/Applications/AdViewer.app
-fi
 ditto --rsrc "${SYSBUILDER_FOLDER}"/common/DefaultDesktopViewer.app "${TMP_MOUNT_PATH}"/Applications/DefaultDesktopViewer.app
 
 LIB_MISC="ColorSync Perl"

@@ -70,10 +70,6 @@ then
   ditto --rsrc "/tmp/recovery_tools/Reset Password.app" "${TMP_MOUNT_PATH}/Applications/Utilities/Reset Password.app"
 fi
 
-if [ -z ${DISABLE_AD_VIEWER} ]
-then
-  ditto --rsrc "${SYSBUILDER_FOLDER}"/common/AdViewer.app "${TMP_MOUNT_PATH}"/Applications/AdViewer.app
-fi
 ditto --rsrc "${SYSBUILDER_FOLDER}"/common/DefaultDesktopViewer.app "${TMP_MOUNT_PATH}"/Applications/DefaultDesktopViewer.app
 
 LIB_MISC="ColorSync Perl"

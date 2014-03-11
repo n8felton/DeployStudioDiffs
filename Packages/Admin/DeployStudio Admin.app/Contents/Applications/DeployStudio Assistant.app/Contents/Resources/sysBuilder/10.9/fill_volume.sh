@@ -62,10 +62,6 @@ then
   ditto --rsrc "/tmp/recovery_tools/Reset Password.app" "${TMP_MOUNT_PATH}/Applications/Utilities/Reset Password.app"
 fi
 
-if [ -z ${DISABLE_AD_VIEWER} ]
-then
-  ditto --rsrc "${SYSBUILDER_FOLDER}"/common/AdViewer.app "${TMP_MOUNT_PATH}"/Applications/AdViewer.app
-fi
 ditto --rsrc "${SYSBUILDER_FOLDER}"/common/DefaultDesktopViewer.app "${TMP_MOUNT_PATH}"/Applications/DefaultDesktopViewer.app
 
 LIB_MISC="ColorSync Perl"
@@ -93,6 +89,9 @@ cd "${BASE_SYSTEM_ROOT_PATH}"/System/Library/Extensions
 GRAPHICS_EXT=`ls -d AMD* AppleIntel* ATI* GeForce* NVDA*`
 cd "${OLD_PATH}"
 add_files_at_path "${GRAPHICS_EXT}" /System/Library/Extensions
+
+SYS_LIB_EXT="IOStorageFamily"
+add_files_at_path "${SYS_LIB_EXT}" /System/Library/Extensions .kext
 
 if [ -n "${ENABLE_PYTHON}" ]
 then

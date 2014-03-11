@@ -9,7 +9,7 @@ VERSION=1.53
 ########################################################
 
 print_usage() {
-  echo "Usage: ${SCRIPT_NAME} -basesystem <source volume> -type local -volume <volume name> [-erasedisk][-loc <language>][-serverurl <server url>][-serverurl2 <server url 2>][-disableversionsmismatchalerts][-login <login>][-password <password>][-ardlogin <login>][-ardpassword <password>][-displaylogs][-timeout =<duration in seconds>][-displaysleep <duration in minutes>][-enableruby][-enablepython][-enablecustomtcpstacksettings][-disablewirelesssupport][-disableadviewer][-ntp <network time server>][-customtitle <Runtime mainwindow title>][-custombackground <Runtime custom background image path>]"
+  echo "Usage: ${SCRIPT_NAME} -basesystem <source volume> -type local -volume <volume name> [-erasedisk][-loc <language>][-serverurl <server url>][-serverurl2 <server url 2>][-disableversionsmismatchalerts][-login <login>][-password <password>][-ardlogin <login>][-ardpassword <password>][-displaylogs][-timeout =<duration in seconds>][-displaysleep <duration in minutes>][-enableruby][-enablepython][-enablecustomtcpstacksettings][-disablewirelesssupport][-ntp <network time server>][-customtitle <Runtime mainwindow title>][-custombackground <Runtime custom background image path>]"
   echo "       ${SCRIPT_NAME} -basesystem <source volume> -type netboot -id <ID> -name <name> -dest <destination> [-protocol NFS|HTTP][-loc <language>][-serverurl <server url>][-serverurl2 <server url 2>][-disableversionsmismatchalerts][-login <login>][-password <password>][-ardlogin <login>][-ardpassword <password>][-displaylogs][-timeout <duration in seconds>][-displaysleep <duration in minutes>][-enableruby][-enablepython][-enablecustomtcpstacksettings][-disablewirelesssupport][-ntp <network time server>][-customtitle <Runtime mainwindow title>][-custombackground <Runtime custom background image path>]"
 }
 
@@ -293,9 +293,6 @@ do
   elif [ "${P}" == "-disablewirelesssupport" ]
   then
     DISABLE_WIRELESS_SUPPORT=1
-  elif [ "${P}" == "-disableadviewer" ]
-  then
-    DISABLE_AD_VIEWER=1
   elif [ "${P}" == "-ntp" ]
   then
     SVAR=NTP_SERVER

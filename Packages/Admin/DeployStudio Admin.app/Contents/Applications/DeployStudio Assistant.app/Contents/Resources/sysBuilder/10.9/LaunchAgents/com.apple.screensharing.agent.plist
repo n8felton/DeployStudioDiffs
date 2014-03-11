@@ -16,7 +16,7 @@
 		<true/>
 	</dict>
 	<key>RunAtLoad</key>
-	<false/>
+	<true/>
 	<key>WatchPaths</key>
 	<array>
 		<string>/private/etc/com.apple.screensharing.agent.launchd</string>
@@ -32,11 +32,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>LimitLoadToSessionType</key>
-	<array>
-		<string>Aqua</string>
-		<string>LoginWindow</string>
-	</array>
 	<key>ThrottleInterval</key>
 	<integer>1</integer>
 </dict>
