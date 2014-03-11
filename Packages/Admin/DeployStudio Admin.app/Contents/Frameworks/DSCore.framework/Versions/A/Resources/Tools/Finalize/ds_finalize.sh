@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-/bin/echo "${SCRIPT_NAME} - v1.33 ("`date`")"
+/bin/echo "${SCRIPT_NAME} - v1.34 ("`date`")"
 
 custom_logger() {
   /bin/echo "${SCRIPT_NAME} - $1"
@@ -20,7 +20,7 @@ exec_if_exists() {
       custom_logger "script execution failed, system will automatically reboot."
       custom_logger "end"
       /sbin/reboot -q
-	  exit 1
+	  exit 0
     fi
   fi
 }
@@ -254,7 +254,7 @@ then
     custom_logger "failed to remove the /etc/deploystudio/ds_packages folder, system will automatically reboot."
     custom_logger "end"
     /sbin/reboot -q
-    exit 1
+    exit 0
   fi
 else
   # restore initial system configuration
