@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=8.52
+FILL_VOLUME_VERSION=8.53
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -30,14 +30,14 @@ add_files_at_path "${ROOT_BIN}" /bin
 
 USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp curl diff dirname dscl du egrep \
          erb expect false fgrep fs_usage grep gunzip gzip irb lsbom mkbom open printf rails rake rdoc ri rsync \
-         ruby say smbutil srm sw_vers syslog testrb xattr xattr-2.5 xattr-2.6 xattr-2.7 xxd bc \
+         say smbutil srm sw_vers syslog testrb xattr xattr-2.5 xattr-2.6 xattr-2.7 xxd bc \
          certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch python"
 add_files_at_path "${USR_BIN}" /usr/bin
 
 USR_SBIN="gssd iostat kadmin kadmin.local kdcsetup krbservicesetup ntpdate smbd spctl systemkeychain vsdbutil"
 add_files_at_path "${USR_SBIN}" /usr/sbin
 
-USR_LIB="pam python2.5 python2.6 python2.7 ruby zsh"
+USR_LIB="pam python2.5 python2.6 python2.7 zsh"
 add_files_at_path "${USR_LIB}" /usr/lib
 
 USR_SHARE="sandbox terminfo zoneinfo"
@@ -72,14 +72,11 @@ ditto --rsrc "${SYSBUILDER_FOLDER}"/common/DefaultDesktopViewer.app "${TMP_MOUNT
 LIB_MISC="ColorSync Perl"
 add_files_at_path "${LIB_MISC}" /Library
 
-add_file_at_path smb.bundle /Library/Filesystems/NetFSPlugins
-#add_file_at_path NyxAudioAnalysis.framework /Library/Frameworks
-
-SYS_LIB_MISC="DirectoryServices Displays Fonts KerberosPlugins OpenDirectory Perl Sandbox Sounds SystemProfiler Tcl"
+SYS_LIB_MISC="DirectoryServices Displays Filesystems Fonts KerberosPlugins OpenDirectory Perl Sandbox Sounds SystemProfiler Tcl"
 add_files_at_path "${SYS_LIB_MISC}" /System/Library
 
 # SYS_LIB_CORE="CoreTypes.bundle KernelEventAgent.bundle RemoteManagement SecurityAgentPlugins"
-SYS_LIB_CORE="CoreTypes.bundle PlatformSupport.plist RemoteManagement ZoomWindow.app boot.efi com.apple.recovery.boot"
+SYS_LIB_CORE="CoreTypes.bundle PlatformSupport.plist RemoteManagement ZoomWindow.app boot.efi"
 add_files_at_path "${SYS_LIB_CORE}" /System/Library/CoreServices
 
 if [ -e "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist ] 
@@ -87,7 +84,8 @@ then
   defaults write "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport \
     SupportedModelProperties \
     -array-add \
-    "iMac13,1" "iMac13,2" \
+    "iMac14,1" "iMac14,2" \
+    "iMac13,1" "iMac13,2" "iMac13,3" \
     "MacBookAir5,1" "MacBookAir5,2" \
     "MacBookAir6,1" "MacBookAir6,2" \
     "MacBookPro9,1" "MacBookPro9,2" \
@@ -106,8 +104,8 @@ GRAPHICS_EXT=`ls -d AMD* AppleIntel* ATI* GeForce* NVDA*`
 cd "${OLD_PATH}"
 add_files_at_path "${GRAPHICS_EXT}" /System/Library/Extensions
 
-SYS_LIB_EXT="IOPlatformPluginFamily IOStorageFamily IOSCSIArchitectureModelFamily VGA2PCI VGA2USBT \
-             IOHIDFamily IOHDIXController IOGraphicsFamily BJUSBLoad RemoteVirtualInterface"
+SYS_LIB_EXT="IOPlatformPluginFamily IOStorageFamily IOSCSIArchitectureModelFamily \
+             IOHIDFamily IOHDIXController IOGraphicsFamily BJUSBLoad"
 add_files_at_path "${SYS_LIB_EXT}" /System/Library/Extensions .kext
 
 if [ -n "${ENABLE_PYTHON}" ]
@@ -118,6 +116,10 @@ fi
 if [ -n "${ENABLE_RUBY}" ]
 then
   add_file_at_path Ruby /Library
+  add_file_at_path Ruby.framework /System/Library/Frameworks
+  add_file_at_path RubyCocoa.framework /System/Library/Frameworks
+  add_file_at_path ruby /usr/lib
+  add_file_at_path ruby /usr/bin
 fi
 
 # Temporary OpenGL fix
@@ -320,7 +322,6 @@ mdutil -i off "${TMP_MOUNT_PATH}"
 mdutil -E "${TMP_MOUNT_PATH}"
 defaults write "${TMP_MOUNT_PATH}"/.Spotlight-V100/_IndexPolicy Policy -int 3
 
-rm -f  "${TMP_MOUNT_PATH}"/usr/sbin/kextcache
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/Caches/*
 rm -r  "${TMP_MOUNT_PATH}"/System/Library/Extensions.mkext
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/SystemProfiler/SPManagedClientReporter.spreporter

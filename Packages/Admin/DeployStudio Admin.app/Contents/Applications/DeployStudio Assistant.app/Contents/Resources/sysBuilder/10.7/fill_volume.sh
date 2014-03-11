@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=7.52
+FILL_VOLUME_VERSION=7.53
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -28,7 +28,7 @@ rm /tmp/dss_bs.txt /tmp/dss_bs_sorted.txt /tmp/dss_bs.bom
 # done
 # ditto /var/db/smb.conf "${TMP_MOUNT_PATH}/var/db/smb.conf" 2>&1
 
-USR_LIB="pam python2.5 python2.6 python2.7 ruby zsh"
+USR_LIB="pam python2.5 python2.6 python2.7 zsh"
 add_files_at_path "${USR_LIB}" /usr/lib
 
 ROOT_BIN="csh ksh tcsh zsh"
@@ -36,11 +36,11 @@ add_files_at_path "${ROOT_BIN}" /bin
 
 USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp curl diff dirname dscl du egrep \
          erb expect false fgrep fs_usage grep gunzip gzip irb lsbom mkbom open printf rails rake rdoc ri rsync \
-         logger ruby say smbutil srm sw_vers syslog testrb xattr xattr-2.5 xattr-2.6 xattr-2.7 xxd bc \
+         logger say smbutil srm sw_vers syslog testrb xattr xattr-2.5 xattr-2.6 xattr-2.7 xxd bc \
 		 certtool kdestroy keytool kgetcred kill.d killall kinit klist kpasswd krb5-config kswitch python"
 add_files_at_path "${USR_BIN}" /usr/bin
 
-USR_SBIN="graphicssession gssd hwmond iostat ntpdate smbd spctl systemkeychain vsdbutil \
+USR_SBIN="graphicssession gssd iostat ntpdate smbd spctl systemkeychain vsdbutil \
           kadmin kadmin.local kdcsetup krbservicesetup systemkeychain"
 add_files_at_path "${USR_SBIN}" /usr/sbin
 
@@ -49,7 +49,7 @@ add_file_at_path RemoteManagement /System/Library/CoreServices/
 USR_SHARE="sandbox"
 add_files_at_path "${USR_SHARE}" /usr/share
 
-USR_LIBEXEC="AppSandbox launchdadd networkd networkd_privileged nlcd samba security-checksystem xpcd \
+USR_LIBEXEC="AppSandbox launchdadd nlcd samba security-checksystem \
              checkLocalKDC configureLocalKDC migrateLocalKDC smb-sync-preferences"
 add_files_at_path "${USR_LIBEXEC}" /usr/libexec
 
@@ -79,9 +79,7 @@ ditto --rsrc "${SYSBUILDER_FOLDER}"/common/DefaultDesktopViewer.app "${TMP_MOUNT
 LIB_MISC="ColorSync Perl"
 add_files_at_path "${LIB_MISC}" /Library
 
-add_file_at_path smb.bundle /Library/Filesystems/NetFSPlugins
-
-SYS_LIB_MISC="DirectoryServices Displays Fonts KerberosPlugins OpenDirectory Perl Sandbox Sounds SystemProfiler Tcl"
+SYS_LIB_MISC="DirectoryServices Displays Filesystems Fonts KerberosPlugins OpenDirectory Perl Sandbox Sounds SystemProfiler Tcl"
 add_files_at_path "${SYS_LIB_MISC}" /System/Library
 
 SYS_LIB_CORE="PlatformSupport.plist RemoteManagement ZoomWindow.app"
@@ -118,6 +116,10 @@ fi
 if [ -n "${ENABLE_RUBY}" ]
 then
   add_file_at_path Ruby /Library
+  add_file_at_path Ruby.framework /System/Library/Frameworks
+  add_file_at_path RubyCocoa.framework /System/Library/Frameworks
+  add_file_at_path ruby /usr/lib
+  add_file_at_path ruby /usr/bin
 fi
 
 # Display mirroring support
@@ -319,10 +321,10 @@ mdutil -i off "${TMP_MOUNT_PATH}"
 mdutil -E "${TMP_MOUNT_PATH}"
 defaults write "${TMP_MOUNT_PATH}"/.Spotlight-V100/_IndexPolicy Policy -int 3
 
-rm -f  "${TMP_MOUNT_PATH}"/usr/sbin/kextcache
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/Caches/com.apple.bootstamps
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/Caches/*
 rm -r  "${TMP_MOUNT_PATH}"/System/Library/Extensions.mkext
+rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.fontd.plist
 rm -r  "${TMP_MOUNT_PATH}"/usr/standalone/bootcaches.plist
 rm -f  "${TMP_MOUNT_PATH}"/var/db/BootCache*
 

@@ -92,7 +92,7 @@ do
     MISSING_COUNT=`expr ${MISSING_COUNT} + 1`
 	LIB_PATH=`echo "${LIB}" | sed s/".framework\/".*/\.framework/`
 	echo "Adding lib '${REF_VOLUME}${LIB_PATH}'"
-    rsync -a --delete "${REF_VOLUME}${LIB_PATH}" `dirname "${TARGET_VOLUME}${LIB_PATH}"`
+    rsync --archive --links --delete "${REF_VOLUME}${LIB_PATH}" `dirname "${TARGET_VOLUME}${LIB_PATH}"`
     #ditto --rsrc "${REF_VOLUME}${LIB_PATH}" "${TARGET_VOLUME}${LIB_PATH}"
 	if [ ${?} -eq 0 ]
 	then
@@ -113,7 +113,7 @@ do
       MISSING_COUNT=`expr ${MISSING_COUNT} + 1`
       LIB_PATH=`echo "${LIB}" | sed s/".framework\/".*/\.framework/`
       echo "Adding lib '${REF_VOLUME}${LIB_PATH}'"
-      rsync -a --delete "${REF_VOLUME}${LIB_PATH}" `dirname "${TARGET_VOLUME}${LIB_PATH}"`
+      rsync --archive --links --delete "${REF_VOLUME}${LIB_PATH}" `dirname "${TARGET_VOLUME}${LIB_PATH}"`
       #ditto --rsrc "${REF_VOLUME}${LIB_PATH}" "${TARGET_VOLUME}${LIB_PATH}"
       if [ ${?} -eq 0 ]
       then

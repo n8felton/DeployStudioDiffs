@@ -139,7 +139,8 @@ fi
 #
 if [ -e /Library/Preferences/com.apple.VNCSettings.txt ]
 then
-  launchctl load /System/Library/LaunchAgents/com.apple.applevncserver.plist
+  launchctl load /System/Library/LaunchAgents/com.apple.screensharing.MessagesAgent.plist
+  launchctl load /System/Library/LaunchAgents/com.apple.screensharing.agent.plist
 fi
 
 #

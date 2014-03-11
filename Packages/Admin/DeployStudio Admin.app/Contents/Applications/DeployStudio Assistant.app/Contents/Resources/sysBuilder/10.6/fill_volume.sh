@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=6.51
+FILL_VOLUME_VERSION=6.53
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -25,7 +25,7 @@ add_files_at_path "${USR_LIB}" /usr/lib
 ROOT_BIN="csh ksh tcsh zsh"
 add_files_at_path "${ROOT_BIN}" /bin
 
-USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chflags chgrp curl cut diff dirname dscl du egrep \
+USR_BIN="afconvert afinfo afplay auval auvaltool basename cd chflags chgrp curl cut diff dirname dscl du egrep \
          expect false fgrep fs_usage gunzip gzip less lsbom mkbom more nmblookup ntlm_auth open printf rsync say sort srm \
    		 smbcacls smbclient smbcontrol smbcquotas smbget smbpasswd smbspool smbstatus smbtree smbutil \
 	  	 tail tr uuidgen vi vim xxd bsdtar syslog bc python"
@@ -37,7 +37,7 @@ add_files_at_path "${USR_SBIN}" /usr/sbin
 USR_SHARE="sandbox terminfo zoneinfo"
 add_files_at_path "${USR_SHARE}" /usr/share
 
-USR_LIBEXEC="samba mtversionlog third_party_32b_kext_logger.rb"
+USR_LIBEXEC="samba"
 add_files_at_path "${USR_LIBEXEC}" /usr/libexec
 
 add_file_at_path "Disk Utility.app" /Applications/Utilities
@@ -56,15 +56,13 @@ ditto --rsrc "${SYSBUILDER_FOLDER}"/common/DefaultDesktopViewer.app "${TMP_MOUNT
 LIB_MISC="ColorSync Perl"
 add_files_at_path "${LIB_MISC}" /Library
 
-add_file_at_path NetFSPlugins /Library/Filesystems
-
 SYS_LIB="DirectoryServices Displays Filesystems KerberosPlugins LoginPlugins Perl Sandbox"
 add_files_at_path "${SYS_LIB}" /System/Library
 
 SYS_LIB_COMP="AudioCodecs CoreAudio"
 add_files_at_path "${SYS_LIB_COMP}" /System/Library/Components .component
 
-SYS_LIB_CORE="CoreTypes.bundle KernelEventAgent.bundle RemoteManagement SecurityAgentPlugins PlatformSupport.plist"
+SYS_LIB_CORE="CoreTypes.bundle KernelEventAgent.bundle RemoteManagement SecurityAgentPlugins"
 add_files_at_path "${SYS_LIB_CORE}" /System/Library/CoreServices
 
 add_file_at_path "TextInput.menu" "/System/Library/CoreServices/Menu Extras"
@@ -73,7 +71,7 @@ add_file_at_path Voices /System/Library/Speech
 add_file_at_path Sounds /System/Library
 
 SYS_LIB_EXT="AppleBMC AppleBluetoothMultitouch AppleHIDKeyboard AppleIntelCPUPowerManagementClient AppleMultitouchDriver AppleProfileFamily \
-		     AppleUSBEthernetHost AppleIntelHDGraphics AppleIntelHDGraphicsFB AppleIntelSNBGraphicsFB AppleIntelSNBVA \
+		     AppleUSBEthernetHost AppleIntelHDGraphics AppleIntelHDGraphicsFB AppleIntelSNBGraphicsFB \
              ATI4500Controller ATI4600Controller ATI5000Controller ATI6000Controller ATIRadeonX3000 BJUSBLoad IOPlatformPluginFamily \
 			 AppleBacklightExpert IO80211Family AppleHDA System PromiseSTEX \
              AppleThunderboltEDMService AppleThunderboltDPAdapters AppleThunderboltNHI AppleThunderboltPCIAdapters AppleThunderboltUTDM IOThunderboltFamily"
@@ -317,7 +315,6 @@ mdutil -i off "${TMP_MOUNT_PATH}"
 mdutil -E "${TMP_MOUNT_PATH}"
 defaults write "${TMP_MOUNT_PATH}"/.Spotlight-V100/_IndexPolicy Policy -int 3
 
-rm -f  "${TMP_MOUNT_PATH}"/usr/sbin/kextcache
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/Caches/com.apple.bootstamps
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/Caches/*
 rm -r  "${TMP_MOUNT_PATH}"/System/Library/Extensions.mkext

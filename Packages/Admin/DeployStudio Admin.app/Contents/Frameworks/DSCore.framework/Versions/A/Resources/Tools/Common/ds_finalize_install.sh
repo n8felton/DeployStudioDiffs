@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-echo "${SCRIPT_NAME} - v1.16 ("`date`")"
+echo "${SCRIPT_NAME} - v1.17 ("`date`")"
 
 if [ ${#} -ne 1 ]
 then
@@ -93,6 +93,13 @@ then
   mkdir -p "${VOLUME_PATH}"/etc/deploystudio/etc
   chmod 755 "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/etc
   chown root:wheel "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/etc
+
+  if [ -e /System/Library/CoreServices/DefaultDesktop.jpg ]
+  then
+    cp /System/Library/CoreServices/DefaultDesktop.jpg "${VOLUME_PATH}"/etc/deploystudio/etc/
+    chmod 644 "${VOLUME_PATH}"/etc/deploystudio/etc/DefaultDesktop.jpg
+    chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/etc/DefaultDesktop.jpg
+  fi
 fi
 
 if [ ${VOLUME_SYS} -gt 4 ]

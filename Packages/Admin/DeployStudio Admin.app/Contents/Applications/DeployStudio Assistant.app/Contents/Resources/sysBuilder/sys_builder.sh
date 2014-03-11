@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`basename "${0}"`
 SYSBUILDER_FOLDER=`dirname "${0}"`
-VERSION=1.52
+VERSION=1.53
 
 ########################################################
 # Functions
@@ -14,14 +14,14 @@ print_usage() {
 }
 
 add_file_at_path() {
-  rsync -a --delete "${BASE_SYSTEM_ROOT_PATH}${2}/${1}" "${TMP_MOUNT_PATH}${2}/" 2>&1
+  rsync --archive --links --delete "${BASE_SYSTEM_ROOT_PATH}${2}/${1}" "${TMP_MOUNT_PATH}${2}/" 2>&1
   #ditto --rsrc "${BASE_SYSTEM_ROOT_PATH}${2}/${1}" "${TMP_MOUNT_PATH}${2}/${1}" 2>&1
 }
 
 add_files_at_path() {
   for A_FILE in ${1}
   do
-    rsync -a --delete "${BASE_SYSTEM_ROOT_PATH}${2}/${A_FILE}${3}" "${TMP_MOUNT_PATH}${2}/" 2>&1
+    rsync --archive --links --delete "${BASE_SYSTEM_ROOT_PATH}${2}/${A_FILE}${3}" "${TMP_MOUNT_PATH}${2}/" 2>&1
     #ditto --rsrc "${BASE_SYSTEM_ROOT_PATH}${2}/${A_FILE}${3}" "${TMP_MOUNT_PATH}${2}/${A_FILE}${3}" 2>&1
   done
 }
@@ -131,19 +131,25 @@ update_language_preference() {
     else
       HOST_ID=${HOST_MACADDR}
     fi
-    LANGUAGE_CODE=`/usr/libexec/PlistBuddy -c "Print AppleLanguages:0" "${HOME}/Library/Preferences/ByHost/.GlobalPreferences.${HOST_ID}.plist"`
+    if [ -e "${HOME}/Library/Preferences/ByHost/.GlobalPreferences.${HOST_ID}.plist" ]
+    then
+      LANGUAGE_CODE=`/usr/libexec/PlistBuddy -c "Print AppleLanguages:0" "${HOME}/Library/Preferences/ByHost/.GlobalPreferences.${HOST_ID}.plist"`
+    else
+      LANGUAGE_CODE=
+    fi
     if [ -n "${LANGUAGE_CODE}" ]
     then
       GLOBAL_PREFERENCES_FILE="${HOME}/Library/Preferences/ByHost/.GlobalPreferences.${HOST_ID}.plist"
-    else
+    elif [ -e "${HOME}/Library/Preferences/.GlobalPreferences.plist" ]
+    then
       LANGUAGE_CODE=`/usr/libexec/PlistBuddy -c "Print AppleLanguages:0" "${HOME}/Library/Preferences/.GlobalPreferences.plist"`
-      if [ -n "${LANGUAGE_CODE}" ]
-      then
-        GLOBAL_PREFERENCES_FILE="${HOME}/Library/Preferences/.GlobalPreferences.plist"
-      else
-        LANGUAGE_CODE=`/usr/libexec/PlistBuddy -c "Print AppleLanguages:0" "/Library/Preferences/.GlobalPreferences.plist"`
-        GLOBAL_PREFERENCES_FILE="/Library/Preferences/.GlobalPreferences.plist"
-      fi
+    fi
+    if [ -n "${LANGUAGE_CODE}" ]
+    then
+      GLOBAL_PREFERENCES_FILE="${HOME}/Library/Preferences/.GlobalPreferences.plist"
+    else
+      LANGUAGE_CODE=`/usr/libexec/PlistBuddy -c "Print AppleLanguages:0" "/Library/Preferences/.GlobalPreferences.plist"`
+      GLOBAL_PREFERENCES_FILE="/Library/Preferences/.GlobalPreferences.plist"
     fi
     if [ -z "${LANGUAGE_CODE}" ]
     then
@@ -151,18 +157,24 @@ update_language_preference() {
       LANGUAGE_CODE="en_US"
     fi
 
-    HITOOLBOX_INPUT_SOURCE=`/usr/libexec/PlistBuddy -c "Print AppleSelectedInputSources" "${HOME}/Library/Preferences/ByHost/com.apple.HIToolbox.${HOST_ID}.plist"`
+    if [ -e "${HOME}/Library/Preferences/ByHost/com.apple.HIToolbox.${HOST_ID}.plist" ]
+    then
+      HITOOLBOX_INPUT_SOURCE=`/usr/libexec/PlistBuddy -c "Print AppleSelectedInputSources" "${HOME}/Library/Preferences/ByHost/com.apple.HIToolbox.${HOST_ID}.plist"`
+    else
+      HITOOLBOX_INPUT_SOURCE=
+    fi
     if [ -n "${HITOOLBOX_INPUT_SOURCE}" ]
     then
       HITOOLBOX_FILE="${HOME}/Library/Preferences/ByHost/com.apple.HIToolbox.${HOST_ID}.plist"
-    else
+    elif [ -e "${HOME}/Library/Preferences/com.apple.HIToolbox.plist" ]
+    then
       HITOOLBOX_INPUT_SOURCE=`/usr/libexec/PlistBuddy -c "Print AppleSelectedInputSources" "${HOME}/Library/Preferences/com.apple.HIToolbox.plist"`
-      if [ -n "${HITOOLBOX_INPUT_SOURCE}" ]
-      then
-        HITOOLBOX_FILE="${HOME}/Library/Preferences/com.apple.HIToolbox.plist"
-      else
-        HITOOLBOX_FILE="/Library/Preferences/com.apple.HIToolbox.plist"
-      fi
+    fi
+    if [ -n "${HITOOLBOX_INPUT_SOURCE}" ]
+    then
+      HITOOLBOX_FILE="${HOME}/Library/Preferences/com.apple.HIToolbox.plist"
+    else
+      HITOOLBOX_FILE="/Library/Preferences/com.apple.HIToolbox.plist"
     fi
     if [ ! -e "${HITOOLBOX_FILE}" ]
     then
@@ -599,7 +611,7 @@ else
   then
     KEXTCACHE_OPTIONS="-N -L -S"
   else
-    KEXTCACHE_OPTIONS="-N"
+    KEXTCACHE_OPTIONS="-N -L"
   fi
 
   if [ "${SYS_VERS}" == "10.8" ] || [ "${SYS_VERS}" == "10.9" ]

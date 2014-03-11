@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=9.52
+FILL_VOLUME_VERSION=9.53
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -29,14 +29,14 @@ add_files_at_path "${ROOT_BIN}" /bin
 
 USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp curl diff dirname dscl du egrep \
          erb expect false fgrep fs_usage grep gunzip gzip irb lsbom mkbom open printf rails rake rdoc ri rsync \
-         ruby say smbutil srm sw_vers syslog testrb xattr xattr-2.5 xattr-2.6 xattr-2.7 xxd bc \
+         say smbutil srm sw_vers syslog testrb xattr xattr-2.5 xattr-2.6 xattr-2.7 xxd bc \
          certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch perl5.16 python"
 add_files_at_path "${USR_BIN}" /usr/bin
 
 USR_SBIN="gssd iostat kadmin kadmin.local kdcsetup krbservicesetup ntpdate smbd spctl systemkeychain vsdbutil"
 add_files_at_path "${USR_SBIN}" /usr/sbin
 
-USR_LIB="pam python2.5 python2.6 python2.7 ruby zsh"
+USR_LIB="pam python2.5 python2.6 python2.7 zsh"
 add_files_at_path "${USR_LIB}" /usr/lib
 
 USR_SHARE="sandbox terminfo zoneinfo"
@@ -82,7 +82,7 @@ then
   defaults write "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport \
     SupportedModelProperties \
     -array-add \
-    "MacBookAir6,1" "MacBookAir6,2"
+    "iMac14,1" "iMac14,2"
   plutil -convert xml1 "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
   chmod 644 "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
   chown root:wheel "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
@@ -102,6 +102,10 @@ fi
 if [ -n "${ENABLE_RUBY}" ]
 then
   add_file_at_path Ruby /Library
+  add_file_at_path Ruby.framework /System/Library/Frameworks
+  add_file_at_path RubyCocoa.framework /System/Library/Frameworks
+  add_file_at_path ruby /usr/lib
+  add_file_at_path ruby /usr/bin
 fi
 
 # Temporary OpenGL fix
@@ -210,6 +214,7 @@ fi
 
 if [ -n "${ARD_PASSWORD}" ]
 then
+  ditto --rsrc "${SYSBUILDER_FOLDER}"/${SYS_VERS}/com.apple.RemoteDesktop.plist "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.RemoteDesktop.plist 2>&1
   ditto --rsrc "${SYSBUILDER_FOLDER}"/${SYS_VERS}/com.apple.RemoteManagement.plist "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.RemoteManagement.plist 2>&1
   echo "${ARD_PASSWORD}" | perl -wne 'BEGIN { @k = unpack "C*", pack "H*", "1734516E8BA8C5E2FF1C39567390ADCA"}; chomp; s/^(.{8}).*/$1/; @p = unpack "C*", $_; foreach (@k) { printf "%02X", $_ ^ (shift @p || 0) }; print "\n"' > "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.VNCSettings.txt
   chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.VNCSettings.txt 2>&1
@@ -292,7 +297,6 @@ mdutil -i off "${TMP_MOUNT_PATH}"
 mdutil -E "${TMP_MOUNT_PATH}"
 defaults write "${TMP_MOUNT_PATH}"/.Spotlight-V100/_IndexPolicy Policy -int 3
 
-rm -f  "${TMP_MOUNT_PATH}"/usr/sbin/kextcache
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/Caches/*
 rm -r  "${TMP_MOUNT_PATH}"/System/Library/Extensions.mkext
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/SystemProfiler/SPManagedClientReporter.spreporter
