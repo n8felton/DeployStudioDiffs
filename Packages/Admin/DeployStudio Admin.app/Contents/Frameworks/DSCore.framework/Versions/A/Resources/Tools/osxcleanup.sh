@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`basename "${0}"`
 TOOLS_FOLDER=`dirname "${0}"`
-VERSION=1.20
+VERSION=1.21
 
 if [ ${#} -lt 2 ]
 then
@@ -34,6 +34,8 @@ elif [ "${1}" == "-postrestoration" ]
 then
   rm -f  "${2}/Desktop DB" 2>&1
   rm -f  "${2}/Desktop DF" 2>&1
+  rm -f  "${2}"/Library/Preferences/SystemConfiguration/preferences.plist 2>&1
+  rm -f  "${2}"/Library/Preferences/SystemConfiguration/preferences.plist.old 2>&1
   rm -f  "${2}"/Library/Preferences/SystemConfiguration/NetworkInterfaces.plist 2>&1
   rm -f  "${2}"/Library/Preferences/SystemConfiguration/com.apple.NetworkInterfaces.plist 2>&1
   rm -f  "${2}"/Library/Preferences/com.apple.Bluetooth.plist 2>&1

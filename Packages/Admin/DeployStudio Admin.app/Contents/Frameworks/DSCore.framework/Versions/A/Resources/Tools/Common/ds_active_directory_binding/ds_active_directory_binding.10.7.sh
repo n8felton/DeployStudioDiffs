@@ -5,7 +5,7 @@ histchars=
 
 SCRIPT_NAME=`basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.23 ("`date`")"
+echo "${SCRIPT_NAME} - v1.24 ("`date`")"
 
 #
 # functions
@@ -215,8 +215,13 @@ then
     dsconfigad -ggid "${GGID_MAPPING}" 2>&1
   fi
 
-  echo "Enabling network users login..." 2>&1
-  dseditgroup -o edit -n /Local/Default -a netaccounts -t group com.apple.access_loginwindow 2>/dev/null
+  GROUP_MEMBERS=`dscl /Local/Default -read /Groups/com.apple.access_loginwindow GroupMembers`
+  NESTED_GROUPS=`dscl /Local/Default -read /Groups/com.apple.access_loginwindow NestedGroups`
+  if [ -z "${GROUP_MEMBERS}" ] && [ -z "${NESTED_GROUPS}" ]
+  then
+    echo "Enabling network users login..." 2>&1
+    dseditgroup -o edit -n /Local/Default -a netaccounts -t group com.apple.access_loginwindow 2>/dev/null
+  fi
 
   #
   # Self-removal 

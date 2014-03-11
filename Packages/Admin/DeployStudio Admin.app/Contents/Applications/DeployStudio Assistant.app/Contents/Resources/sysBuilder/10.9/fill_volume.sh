@@ -206,6 +206,11 @@ chmod 755 "${TMP_MOUNT_PATH}"/etc/rc.cdrom 2>&1
 
 rm -rf "${TMP_MOUNT_PATH}/var/log/"* 2>&1
 
+if [ -e "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration/NetworkInterfaces.plist" ]
+then
+  rm "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration/NetworkInterfaces.plist" 2>&1
+fi
+
 if [ -e "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration/preferences.plist" ]
 then
   rm "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration/preferences.plist" 2>&1
