@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=6.53
+FILL_VOLUME_VERSION=6.54
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -28,7 +28,7 @@ add_files_at_path "${ROOT_BIN}" /bin
 USR_BIN="afconvert afinfo afplay auval auvaltool basename cd chflags chgrp curl cut diff dirname dscl du egrep \
          expect false fgrep fs_usage gunzip gzip less lsbom mkbom more nmblookup ntlm_auth open printf rsync say sort srm \
    		 smbcacls smbclient smbcontrol smbcquotas smbget smbpasswd smbspool smbstatus smbtree smbutil \
-	  	 tail tr uuidgen vi vim xxd bsdtar syslog bc python"
+	  	 tail tr uuidgen vi vim xxd bsdtar syslog bc python top"
 add_files_at_path "${USR_BIN}" /usr/bin
 
 USR_SBIN="gssd installer iostat ipconfig nmbd ntpdate smbd systemsetup vsdbutil winbindd"
@@ -58,10 +58,21 @@ add_files_at_path "${SYS_LIB}" /System/Library
 SYS_LIB_COMP="AudioCodecs CoreAudio"
 add_files_at_path "${SYS_LIB_COMP}" /System/Library/Components .component
 
-SYS_LIB_CORE="CoreTypes.bundle KernelEventAgent.bundle RemoteManagement SecurityAgentPlugins"
+SYS_LIB_CORE="CoreTypes.bundle KernelEventAgent.bundle RemoteManagement SecurityAgentPlugins SystemUIServer.app"
 add_files_at_path "${SYS_LIB_CORE}" /System/Library/CoreServices
 
-add_file_at_path "TextInput.menu" "/System/Library/CoreServices/Menu Extras"
+if [ -e "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras" ]
+then
+  rm -rf "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras"/*
+else
+  mkdir -p "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras"
+fi
+MENU_EXTRAS="TextInput.menu Battery.menu Clock.menu"
+add_files_at_path "${MENU_EXTRAS}" "/System/Library/CoreServices/Menu Extras"
+cp "${SYSBUILDER_FOLDER}"/common/com.apple.systemuiserver.plist "${TMP_MOUNT_PATH}"/Library/Preferences/
+chmod 644        "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.systemuiserver.plist
+chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.systemuiserver.plist
+
 add_file_at_path "Setup Assistant.app" /System/Library/CoreServices
 add_file_at_path Voices /System/Library/Speech
 add_file_at_path Sounds /System/Library
@@ -90,7 +101,7 @@ add_files_at_path "${SYS_LIB_PREF_PANES}" /System/Library/PreferencePanes .prefP
 
 SYS_LIB_PRIV_FRK="AppleVA BezelServices CommerceKit CoreMedia CoreMediaIOServices DSObjCWrappers DisplayServices MonitorPanel HelpData \
                   MachineSettings MediaToolbox MobileDevice PlatformHardwareManagement ScreenSharing Shortcut VideoToolbox \
-                  AVFoundationCF AppleGVA CoreKE Install \
+                  ICANotifications iPod AVFoundationCF AppleGVA CoreKE Install \
                   ByteRangeLocking ClockMenuExtraPreferences CoreAUC CoreChineseEngine CorePDF DataDetectorsCore DeviceLink \
                   DotMacLegacy FWAVC GraphKit Heimdal International MDSChannel MPWXmlCore MeshKit PasswordServer \
                   PrintingPrivate ProxyHelper ServerFoundation ServerKit SetupAssistant SetupAssistantSupport \
@@ -266,9 +277,15 @@ fi
 
 if [ -n "${NTP_SERVER}" ]
 then
-  echo "${NTP_SERVER}" > "${TMP_MOUNT_PATH}"/Library/Preferences/ntpserver.txt
-  chmod 644 "${TMP_MOUNT_PATH}"/Library/Preferences/ntpserver.txt 2>&1
-  chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/ntpserver.txt 2>&1
+  echo "server ${NTP_SERVER}" > "${TMP_MOUNT_PATH}"/etc/ntp.conf
+  NTP_SERVER_IPS=`host "${NTP_SERVER}"`
+  if [ ${?} -eq 0 ]
+  then
+    NTP_SERVERS=`echo "${NTP_SERVER_IPS}" | awk '{ print "server "$NF }'`
+    echo "${NTP_SERVERS}" >> "${TMP_MOUNT_PATH}"/etc/ntp.conf
+  fi
+  chmod 644 "${TMP_MOUNT_PATH}"/etc/ntp.conf 2>&1
+  chown root:wheel "${TMP_MOUNT_PATH}"/etc/ntp.conf 2>&1
 fi
   
 mkdir "${TMP_MOUNT_PATH}"/Library/Caches 2>&1

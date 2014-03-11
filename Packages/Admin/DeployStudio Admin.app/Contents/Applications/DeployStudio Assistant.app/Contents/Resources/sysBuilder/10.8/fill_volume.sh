@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=8.53
+FILL_VOLUME_VERSION=8.54
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -31,7 +31,7 @@ add_files_at_path "${ROOT_BIN}" /bin
 USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp curl diff dirname dscl du egrep \
          erb expect false fgrep fs_usage grep gunzip gzip irb lsbom mkbom open printf rails rake rdoc ri rsync \
          say smbutil srm sw_vers syslog testrb xattr xattr-2.5 xattr-2.6 xattr-2.7 xxd bc \
-         certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch python"
+         certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch python top"
 add_files_at_path "${USR_BIN}" /usr/bin
 
 USR_SBIN="gssd iostat kadmin kadmin.local kdcsetup krbservicesetup ntpdate smbd spctl systemkeychain vsdbutil"
@@ -72,7 +72,7 @@ SYS_LIB_MISC="DirectoryServices Displays Filesystems Fonts KerberosPlugins OpenD
 add_files_at_path "${SYS_LIB_MISC}" /System/Library
 
 # SYS_LIB_CORE="CoreTypes.bundle KernelEventAgent.bundle RemoteManagement SecurityAgentPlugins"
-SYS_LIB_CORE="CoreTypes.bundle PlatformSupport.plist RemoteManagement ZoomWindow.app boot.efi"
+SYS_LIB_CORE="CoreTypes.bundle PlatformSupport.plist RemoteManagement SystemUIServer.app ZoomWindow.app boot.efi"
 add_files_at_path "${SYS_LIB_CORE}" /System/Library/CoreServices
 
 if [ -e "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist ] 
@@ -91,6 +91,18 @@ then
   chmod 644 "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
   chown root:wheel "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
 fi
+
+if [ -e "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras" ]
+then
+  rm -rf "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras"/*
+else
+  mkdir -p "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras"
+fi
+MENU_EXTRAS="TextInput.menu Battery.menu Clock.menu"
+add_files_at_path "${MENU_EXTRAS}" "/System/Library/CoreServices/Menu Extras"
+cp "${SYSBUILDER_FOLDER}"/common/com.apple.systemuiserver.plist "${TMP_MOUNT_PATH}"/Library/Preferences/
+chmod 644        "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.systemuiserver.plist
+chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.systemuiserver.plist
 
 #ditto --rsrc "${BASE_SYSTEM_ROOT_PATH}"/usr/standalone "${TMP_MOUNT_PATH}"/usr/standalone 2>&1
 
@@ -177,11 +189,11 @@ then
   mkdir "${TMP_MOUNT_PATH}/System/Installation" 2>&1
 fi
 
-if [ ! -e "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools" ]
+if [ -e "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools" ]
 then
-  mkdir "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools" 2>&1
-  chmod 1755 "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools"
+  rm -rf "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools" 2>&1
 fi
+ln -s /tmp "${TMP_MOUNT_PATH}"/Library/PrivilegedHelperTools 2>&1
 
 if [ -e "/Library/Application Support/DeployStudio" ]
 then
@@ -273,9 +285,15 @@ fi
 
 if [ -n "${NTP_SERVER}" ]
 then
-  echo "${NTP_SERVER}" > "${TMP_MOUNT_PATH}"/Library/Preferences/ntpserver.txt
-  chmod 644 "${TMP_MOUNT_PATH}"/Library/Preferences/ntpserver.txt 2>&1
-  chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/ntpserver.txt 2>&1
+  echo "server ${NTP_SERVER}" > "${TMP_MOUNT_PATH}"/etc/ntp.conf
+  NTP_SERVER_IPS=`host "${NTP_SERVER}"`
+  if [ ${?} -eq 0 ]
+  then
+    NTP_SERVERS=`echo "${NTP_SERVER_IPS}" | awk '{ print "server "$NF }'`
+    echo "${NTP_SERVERS}" >> "${TMP_MOUNT_PATH}"/etc/ntp.conf
+  fi
+  chmod 644 "${TMP_MOUNT_PATH}"/etc/ntp.conf 2>&1
+  chown root:wheel "${TMP_MOUNT_PATH}"/etc/ntp.conf 2>&1
 fi
 
 mkdir "${TMP_MOUNT_PATH}"/Library/Caches 2>&1

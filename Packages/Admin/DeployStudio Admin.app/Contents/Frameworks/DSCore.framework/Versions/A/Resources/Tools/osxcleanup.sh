@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`basename "${0}"`
 TOOLS_FOLDER=`dirname "${0}"`
-VERSION=1.21
+VERSION=1.22
 
 if [ ${#} -lt 2 ]
 then
@@ -21,6 +21,11 @@ rm -f  "${2}"/Library/LaunchDaemons/com.deploystudio.finalizeCleanup.plist 2>/de
 rm -f  "${2}"/Library/LaunchDaemons/com.deploystudio.finalizeScript.plist 2>/dev/null
 rm -rf "${2}"/etc/deploystudio 2>/dev/null
 
+rm -rf "${2}"/.DocumentRevisions-V100 2>&1
+rm -rf "${2}"/.MobileBackups 2>&1
+rm -rf "${2}"/.Spotlight-V100 2>&1
+rm -rf "${2}"/.Trashes 2>&1
+
 if [ "${1}" == "-preimaging" ]
 then
   rm -f  "${2}"/Library/LaunchDaemons/com.deploystudio.freezeHomedirs.plist 2>&1
@@ -34,7 +39,12 @@ elif [ "${1}" == "-postrestoration" ]
 then
   rm -f  "${2}/Desktop DB" 2>&1
   rm -f  "${2}/Desktop DF" 2>&1
-  rm -f  "${2}"/Library/Preferences/SystemConfiguration/preferences.plist 2>&1
+  /usr/libexec/PlistBuddy -c "Delete Sets" "${2}"/Library/Preferences/SystemConfiguration/preferences.plist 2>/dev/null
+  /usr/libexec/PlistBuddy -c "Delete NetworkServices" "${2}"/Library/Preferences/SystemConfiguration/preferences.plist 2>/dev/null
+  /usr/libexec/PlistBuddy -c "Delete VirtualNetworkInterfaces" "${2}"/Library/Preferences/SystemConfiguration/preferences.plist 2>/dev/null
+  /usr/libexec/PlistBuddy -c "Delete CurrentSet" "${2}"/Library/Preferences/SystemConfiguration/preferences.plist 2>/dev/null
+  /usr/libexec/PlistBuddy -c "Delete System:Network:BackToMyMac" "${2}"/Library/Preferences/SystemConfiguration/preferences.plist 2>/dev/null
+  /usr/libexec/PlistBuddy -c "Delete System:Network:BackToMyMacDSIDs" "${2}"/Library/Preferences/SystemConfiguration/preferences.plist 2>/dev/null
   rm -f  "${2}"/Library/Preferences/SystemConfiguration/preferences.plist.old 2>&1
   rm -f  "${2}"/Library/Preferences/SystemConfiguration/NetworkInterfaces.plist 2>&1
   rm -f  "${2}"/Library/Preferences/SystemConfiguration/com.apple.NetworkInterfaces.plist 2>&1

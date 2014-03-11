@@ -191,15 +191,19 @@ update_language_preference() {
 
   ditto "${GLOBAL_PREFERENCES_FILE}" "${TMP_MOUNT_PATH}/Library/Preferences/.GlobalPreferences.plist" 2>&1
   chmod 644 "${TMP_MOUNT_PATH}"/Library/Preferences/.GlobalPreferences.plist 2>&1
+  chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/.GlobalPreferences.plist 2>&1
 
   ditto "${HITOOLBOX_FILE}" "${TMP_MOUNT_PATH}/Library/Preferences/com.apple.HIToolbox.plist" 2>&1
   chmod 644 "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.HIToolbox.plist 2>&1
+  chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.HIToolbox.plist 2>&1
 
   ditto "${GLOBAL_PREFERENCES_FILE}" "${TMP_MOUNT_PATH}/var/root/Library/Preferences/.GlobalPreferences.plist" 2>&1
   chmod 644 "${TMP_MOUNT_PATH}"/var/root/Library/Preferences/.GlobalPreferences.plist 2>&1
+  chown root:wheel "${TMP_MOUNT_PATH}"/var/root/Library/Preferences/.GlobalPreferences.plist 2>&1
 
   ditto "${HITOOLBOX_FILE}" "${TMP_MOUNT_PATH}/var/root/Library/Preferences/com.apple.HIToolbox.plist" 2>&1
   chmod 644 "${TMP_MOUNT_PATH}"/var/root/Library/Preferences/com.apple.HIToolbox.plist 2>&1
+  chown root:wheel "${TMP_MOUNT_PATH}"/var/root/Library/Preferences/com.apple.HIToolbox.plist 2>&1
 }
 
 ########################################################

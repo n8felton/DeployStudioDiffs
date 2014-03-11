@@ -123,15 +123,22 @@ fi
 #
 # Fix system date
 #
-if [ -e /Library/Preferences/ntpserver.txt ]
+if [ -e /etc/ntp.conf ]
 then
-  NTP_SERVER=`cat /Library/Preferences/ntpserver.txt`
+  NTP_SERVERS=`cat /etc/ntp.conf | awk '{ print $NF }'`
 
-  ping -c 1 -n -t 10 "${NTP_SERVER}"
-  if [ ${?} -eq 0 ]
-  then
-    ntpdate "${NTP_SERVER}" 2>/dev/null
-  fi
+  for NTP_SERVER in ${NTP_SERVERS}
+  do
+    ping -c 1 -n -t 10 "${NTP_SERVER}" >/dev/null
+    if [ ${?} -eq 0 ]
+    then
+      ntpdate -u "${NTP_SERVER}"
+      if [ ${?} -eq 0 ]
+      then
+        break
+      fi
+    fi
+  done
 fi
 
 #
@@ -162,6 +169,9 @@ DS_APP="/Applications/Utilities/DeployStudio Admin.app/Contents/Applications/Dep
 DS_PARAMS=--netboot
 if [ -x "$DS_APP" ]
 then
+  # Disable App Nap just in case...
+  defaults write com.deploystudio.admin   NSAppSleepDisabled -bool YES
+  defaults write com.deploystudio.runtime NSAppSleepDisabled -bool YES
   #/usr/bin/say "Welcome to DeployStudio..."
   if [ -e /Applications/AdViewer.app/Contents/MacOS/AdViewer ]
   then
@@ -170,7 +180,7 @@ then
   "$DS_APP" $DS_PARAMS
   if [ $? != 0 ]
   then
-    "$DS_APP" $DS_PARAMS
+    /Applications/Utilities/Terminal.app/Contents/MacOS/Terminal
   fi
 fi
 kill `ps -axww | awk '/AdViewer/ {print $1}'` 2>/dev/null
@@ -182,7 +192,7 @@ kill `ps -axww | awk '/enableDisplayMirroring/ {print $1}'` 2>/dev/null
 #
 if [ -e /tmp/dss-shutdown ]
 then
-  /sbin/shutdown -h now
+  /sbin/halt -q
 else
-  /sbin/reboot
+  /sbin/reboot -q
 fi

@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=9.53
+FILL_VOLUME_VERSION=9.54
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -30,10 +30,10 @@ add_files_at_path "${ROOT_BIN}" /bin
 USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp curl diff dirname dscl du egrep \
          erb expect false fgrep fs_usage grep gunzip gzip irb lsbom mkbom open printf rails rake rdoc ri rsync \
          say smbutil srm sw_vers syslog testrb xattr xattr-2.5 xattr-2.6 xattr-2.7 xxd bc \
-         certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch perl5.16 python"
+         certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch perl5.16 python top"
 add_files_at_path "${USR_BIN}" /usr/bin
 
-USR_SBIN="gssd iostat kadmin kadmin.local kdcsetup krbservicesetup ntpdate smbd spctl systemkeychain vsdbutil"
+USR_SBIN="cfprefsd distnoted gssd iostat kadmin kadmin.local kdcsetup krbservicesetup ntpdate smbd spctl systemkeychain vsdbutil"
 add_files_at_path "${USR_SBIN}" /usr/sbin
 
 USR_LIB="pam python2.5 python2.6 python2.7 zsh"
@@ -42,7 +42,7 @@ add_files_at_path "${USR_LIB}" /usr/lib
 USR_SHARE="sandbox terminfo zoneinfo"
 add_files_at_path "${USR_SHARE}" /usr/share
 
-USR_LIBEXEC="checkLocalKDC configureLocalKDC launchdadd migrateLocalKDC security-checksystem smb-sync-preferences"
+USR_LIBEXEC="checkLocalKDC configureLocalKDC dirhelper launchdadd migrateLocalKDC security-checksystem smb-sync-preferences xpcd"
 add_files_at_path "${USR_LIBEXEC}" /usr/libexec
 
 if [ -e "/tmp/recovery_tools/Startup Disk.app" ]
@@ -70,19 +70,34 @@ add_files_at_path "${LIB_MISC}" /Library
 SYS_LIB_MISC="DirectoryServices Displays Fonts KerberosPlugins OpenDirectory Perl Sandbox Sounds SystemProfiler Tcl"
 add_files_at_path "${SYS_LIB_MISC}" /System/Library
 
-SYS_LIB_CORE="CoreTypes.bundle ManagedClient.app PlatformSupport.plist RemoteManagement ZoomWindow.app  boot.efi"
+SYS_LIB_CORE="CoreTypes.bundle ManagedClient.app PlatformSupport.plist RemoteManagement SecurityAgentPlugins \
+              SystemUIServer.app ZoomWindow.app boot.efi"
 add_files_at_path "${SYS_LIB_CORE}" /System/Library/CoreServices
+
+cp "${BASE_SYSTEM_ROOT_PATH}"/var/db/auth.db* "${TMP_MOUNT_PATH}"/var/db/
 
 if [ -e "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist ] 
 then
   defaults write "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport \
     SupportedModelProperties \
     -array-add \
-    "iMac14,1" "iMac14,2"
+    "iMac14,1" "iMac14,2" "MacBookPro11,1" "MacBookPro11,2" "MacBookPro11,3"
   plutil -convert xml1 "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
   chmod 644 "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
   chown root:wheel "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
 fi
+
+if [ -e "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras" ]
+then
+  rm -rf "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras"/*
+else
+  mkdir -p "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras"
+fi
+MENU_EXTRAS="TextInput.menu Battery.menu Clock.menu"
+add_files_at_path "${MENU_EXTRAS}" "/System/Library/CoreServices/Menu Extras"
+cp "${SYSBUILDER_FOLDER}"/common/com.apple.systemuiserver.plist "${TMP_MOUNT_PATH}"/Library/Preferences/
+chmod 644        "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.systemuiserver.plist
+chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.systemuiserver.plist
 
 OLD_PATH=`pwd`
 cd "${BASE_SYSTEM_ROOT_PATH}"/System/Library/Extensions
@@ -166,11 +181,11 @@ then
   mkdir "${TMP_MOUNT_PATH}/System/Installation" 2>&1
 fi
 
-if [ ! -e "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools" ]
+if [ -e "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools" ]
 then
-  mkdir "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools" 2>&1
-  chmod 1755 "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools"
+  rm -rf "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools" 2>&1
 fi
+ln -s /tmp "${TMP_MOUNT_PATH}"/Library/PrivilegedHelperTools 2>&1
 
 if [ -e "/Library/Application Support/DeployStudio" ]
 then
@@ -203,6 +218,7 @@ chmod 555 "${TMP_MOUNT_PATH}"/etc/rc.install 2>&1
 chmod 644 "${TMP_MOUNT_PATH}"/etc/hostconfig 2>&1
 chmod 644 "${TMP_MOUNT_PATH}"/etc/rc.common 2>&1
 chmod 755 "${TMP_MOUNT_PATH}"/etc/rc.cdrom 2>&1
+chmod 644 "${TMP_MOUNT_PATH}"/etc/nsmb.conf 2>&1
 
 rm -rf "${TMP_MOUNT_PATH}/var/log/"* 2>&1
 
@@ -251,9 +267,15 @@ fi
 
 if [ -n "${NTP_SERVER}" ]
 then
-  echo "${NTP_SERVER}" > "${TMP_MOUNT_PATH}"/Library/Preferences/ntpserver.txt
-  chmod 644 "${TMP_MOUNT_PATH}"/Library/Preferences/ntpserver.txt 2>&1
-  chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/ntpserver.txt 2>&1
+  echo "server ${NTP_SERVER}" > "${TMP_MOUNT_PATH}"/etc/ntp.conf
+  NTP_SERVER_IPS=`host "${NTP_SERVER}"`
+  if [ ${?} -eq 0 ]
+  then
+    NTP_SERVERS=`echo "${NTP_SERVER_IPS}" | awk '{ print "server "$NF }'`
+    echo "${NTP_SERVERS}" >> "${TMP_MOUNT_PATH}"/etc/ntp.conf
+  fi
+  chmod 644 "${TMP_MOUNT_PATH}"/etc/ntp.conf 2>&1
+  chown root:wheel "${TMP_MOUNT_PATH}"/etc/ntp.conf 2>&1
 fi
 
 mkdir "${TMP_MOUNT_PATH}"/Library/Caches 2>&1
@@ -305,6 +327,7 @@ rm -rf "${TMP_MOUNT_PATH}"/System/Library/Caches/*
 rm -r  "${TMP_MOUNT_PATH}"/System/Library/Extensions.mkext
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/SystemProfiler/SPManagedClientReporter.spreporter
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/SystemProfiler/SPConfigurationProfileReporter.spreporter
+rm -f  "${TMP_MOUNT_PATH}"/var/db/dslocal/nodes/Default/computers/localhost.plist
 rm -f  "${TMP_MOUNT_PATH}"/var/db/BootCache*
 
 # # Temporary OpenGL fix

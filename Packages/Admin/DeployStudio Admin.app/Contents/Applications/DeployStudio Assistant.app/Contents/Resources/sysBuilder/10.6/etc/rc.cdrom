@@ -60,6 +60,8 @@ RAMDisk /Library/Caches 65536
 RAMDisk	/Library/Preferences 4096
 RAMDisk	/Library/Preferences/SystemConfiguration 4096
 RAMDisk /Library/ColorSync/Profiles/Displays 4096
+RAMDisk /Library/Logs 4096
+RAMDisk /Library/Logs/DiagnosticReports 4096
 RAMDisk /System/Library/Caches 32768
 
 # use or create the boot cache playlist, and allow B&I to force 32-bit playlist generation

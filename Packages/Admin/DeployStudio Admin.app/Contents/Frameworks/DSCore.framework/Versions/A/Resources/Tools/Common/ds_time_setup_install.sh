@@ -3,12 +3,12 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-echo "${SCRIPT_NAME} - v1.6 ("`date`")"
+echo "${SCRIPT_NAME} - v1.7 ("`date`")"
 
 if [ ${#} -lt 2 ]
 then
   echo "Command: ${SCRIPT_NAME} ${*}"
-  echo "Usage: ${SCRIPT_NAME} <volume name> <timezone> [<network time server>]"
+  echo "Usage: ${SCRIPT_NAME} <volume name> <timezone> [<network time server 1> <network time server 2> ...]"
   echo "RuntimeAbortWorkflow: missing arguments!"
   exit 1
 fi
@@ -23,7 +23,7 @@ fi
 if [ ! -e "${VOLUME_PATH}" ]
 then
   echo "Command: ${SCRIPT_NAME} ${*}"
-  echo "Usage: ${SCRIPT_NAME} <volume name> <timezone> [<network time server>]"
+  echo "Usage: ${SCRIPT_NAME} <volume name> <timezone> [<network time server 1> <network time server 2> ...]"
   echo "RuntimeAbortWorkflow: \"${VOLUME_PATH}\" volume not found!"
   exit 1
 fi

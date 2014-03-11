@@ -79,9 +79,9 @@ mkdir -m 1777 /var/db/mds
 RAMDisk /Library/Caches 65536
 RAMDisk	/Library/Preferences 4096
 RAMDisk	/Library/Preferences/SystemConfiguration 4096
-RAMDisk	/Library/PrivilegedHelperTools 4096
 RAMDisk /Library/Keychains 2048
 RAMDisk /Library/Logs 4096
+RAMDisk /Library/Logs/DiagnosticReports 4096
 
 # use or create the boot cache playlist, and allow B&I to force 32-bit playlist generation
 FORCETHIRTYTWO="false"

@@ -58,9 +58,7 @@ RAMDisk /Volumes 2048
 RAMDisk /var/tmp 32768
 RAMDisk /var/run 4096
 
-RAMDisk /System/Installation 1024
 RAMDisk /System/Library/Caches 32768
-RAMDisk /System/Library/Caches/com.apple.kext.caches/Startup 32768
 
 RAMDisk /var/db 4096
 RAMDisk /var/db/launchd.db 2048
@@ -72,6 +70,7 @@ RAMDisk /var/root 32768
 RAMDisk /var/root/Library 32768
 RAMDisk /Library/ColorSync/Profiles/Displays 4096
 RAMDisk /Library/Logs 16384
+RAMDisk /Library/Logs/DiagnosticReports 4096
 
 mkdir /var/root/Library/Keychains
 mkdir -m 1777 /var/db/mds
@@ -79,7 +78,6 @@ mkdir -m 1777 /var/db/mds
 RAMDisk /Library/Caches 65536
 RAMDisk	/Library/Preferences 4096
 RAMDisk	/Library/Preferences/SystemConfiguration 4096
-RAMDisk	/Library/PrivilegedHelperTools 4096
 RAMDisk /Library/Keychains 2048
 
 # use or create the boot cache playlist, and allow B&I to force 32-bit playlist generation

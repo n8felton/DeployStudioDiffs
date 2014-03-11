@@ -1,12 +1,12 @@
 #!/bin/sh
 
 SCRIPT_NAME=`basename "${0}"`
-VERSION=1.1
+VERSION=1.2
 
 if [ ${#} -lt 1 ]
 then
-  echo "Usage: ${SCRIPT_NAME} <disk image path> [--filechecksum] [--reconvertbeforescanning]"
-  echo "Example: ${SCRIPT_NAME} /tmp/diskimage.dmg --filechecksum"
+  echo "Usage: ${SCRIPT_NAME} <disk image path> [--reconvertbeforescanning]"
+  echo "Example: ${SCRIPT_NAME} /tmp/diskimage.dmg --reconvertbeforescanning"
   exit 1
 fi
 
@@ -17,20 +17,7 @@ ASR_VERS=`/usr/sbin/asr -v 2>&1 | awk '{ print $3 }'`
 RECONVERT_BEFORE_SCANNING="NO"
 if [ ${#} -gt 1 ]
 then
-  if [ "${2}" = "--filechecksum" ]
-  then
-    SCAN_OPTIONS="--filechecksum"
-  elif [ "${2}" = "--reconvertbeforescanning" ]
-  then
-    RECONVERT_BEFORE_SCANNING="YES"
-  fi
-fi
-if [ ${#} -gt 2 ]
-then
-  if [ "${3}" = "--filechecksum" ]
-  then
-    SCAN_OPTIONS="--filechecksum"
-  elif [ "${3}" = "--reconvertbeforescanning" ]
+  if [ "${2}" = "--reconvertbeforescanning" ]
   then
     RECONVERT_BEFORE_SCANNING="YES"
   fi
@@ -53,7 +40,7 @@ fi
 
 if [ -n "${ASR_VERS}" ] && [ ${ASR_VERS} -ge 142 ]
 then
-  SCAN_OPTIONS="${SCAN_OPTIONS} --allowfragmentedcatalog"
+  SCAN_OPTIONS="--allowfragmentedcatalog"
 fi
 
 echo "Image scan..."

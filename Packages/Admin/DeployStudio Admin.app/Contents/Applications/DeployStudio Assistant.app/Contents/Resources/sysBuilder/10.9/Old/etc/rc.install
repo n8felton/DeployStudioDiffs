@@ -89,15 +89,22 @@ fi
 #
 # Fix system date
 #
-if [ -e /Library/Preferences/ntpserver.txt ]
+if [ -e /etc/ntp.conf ]
 then
-  NTP_SERVER=`cat /Library/Preferences/ntpserver.txt`
+  NTP_SERVERS=`cat /etc/ntp.conf | awk '{ print $NF }'`
 
-  ping -c 1 -n -t 10 "${NTP_SERVER}"
-  if [ ${?} -eq 0 ]
-  then
-    ntpdate "${NTP_SERVER}" 2>/dev/null
-  fi
+  for NTP_SERVER in ${NTP_SERVERS}
+  do
+    ping -c 1 -n -t 10 "${NTP_SERVER}"
+    if [ ${?} -eq 0 ]
+    then
+      ntpdate "${NTP_SERVER}" 2>/dev/null
+      if [ ${?} -eq 0 ]
+      then
+        break
+      fi
+    fi
+  done
 fi
 
 #
