@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-/bin/echo "${SCRIPT_NAME} - v1.32 ("`date`")"
+/bin/echo "${SCRIPT_NAME} - v1.33 ("`date`")"
 
 custom_logger() {
   /bin/echo "${SCRIPT_NAME} - $1"
@@ -133,6 +133,11 @@ then
   custom_logger "rebuilding xpchelper cache..."
   /usr/libexec/xpchelper --rebuild-cache
 fi
+
+#
+# Detect unregistered network services
+#
+/usr/sbin/networksetup -detectnewhardware
 
 #
 # Blocks until all network services have completed configuring, or have timed out.
