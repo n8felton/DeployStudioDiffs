@@ -5,7 +5,7 @@ histchars=
 
 SCRIPT_NAME=`basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.24 ("`date`")"
+echo "${SCRIPT_NAME} - v1.25 ("`date`")"
 
 #
 # functions
@@ -184,20 +184,44 @@ then
     sleep 1
     dsconfigad -groups "${ADMIN_GROUPS}" 2>&1
   fi
+  sleep 1
+
+  AD_DOMAIN_NODE=`dscl localhost -list "/Active Directory" | head -n 1`
   if [ -n "${AUTH_DOMAIN}" ] && [ "${AUTH_DOMAIN}" != 'All Domains' ]
   then
-    sleep 1
     dsconfigad -alldomains disable 2>&1
-    AD_DOMAIN_NODE=`dscl /Search -read / CSPSearchPath | grep "Active Directory" | sed -e s/".*\/Active Directory\/"// -e s/"\/All .*"//`
-    if [ -n "${AD_DOMAIN_NODE}" ]
+    AD_SEARCH_PATH=`dscl /Search -read / CSPSearchPath | grep "Active Directory"`
+    if [ -n "${AD_SEARCH_PATH}" ]
     then
-      echo "Updating authentication search path..." 2>&1
-      dscl localhost -delete /Search CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/All Domains" 2>/dev/null
-      dscl localhost -append /Search CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/${AUTH_DOMAIN}"
-      echo "Updating contacts search path..." 2>&1
-      dscl localhost -delete /Contact CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/All Domains" 2>/dev/null
-      dscl localhost -append /Contact CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/${AUTH_DOMAIN}"
+      echo "Deleting current AD authentication search path..." 2>&1
+      dscl localhost -delete /Search CSPSearchPath "${AD_SEARCH_PATH}" 2>/dev/null
+      echo "Deleting current AD contacts search path..." 2>&1
+      dscl localhost -delete /Contact CSPSearchPath "${AD_SEARCH_PATH}" 2>/dev/null
+    else
+      dscl localhost -create /Search SearchPolicy CSPSearchPath 2>&1
+      dscl localhost -create /Contact SearchPolicy CSPSearchPath 2>&1
     fi
+    echo "Updating authentication search path..." 2>&1
+    dscl localhost -append /Search CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/${AUTH_DOMAIN}"
+    echo "Updating contacts search path..." 2>&1
+    dscl localhost -append /Contact CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/${AUTH_DOMAIN}"
+  else
+    dsconfigad -alldomains enable 2>&1
+    AD_SEARCH_PATH=`dscl /Search -read / CSPSearchPath | grep "Active Directory"`
+    if [ -n "${AD_SEARCH_PATH}" ]
+    then
+      echo "Deleting current AD authentication search path..." 2>&1
+      dscl localhost -delete /Search CSPSearchPath "${AD_SEARCH_PATH}" 2>/dev/null
+      echo "Deleting current AD contacts search path..." 2>&1
+      dscl localhost -delete /Contact CSPSearchPath "${AD_SEARCH_PATH}" 2>/dev/null
+    else
+      dscl localhost -create /Search SearchPolicy CSPSearchPath 2>&1
+      dscl localhost -create /Contact SearchPolicy CSPSearchPath 2>&1
+    fi
+    echo "Updating authentication search path..." 2>&1
+    dscl localhost -append /Search CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/All Domains"
+    echo "Updating contacts search path..." 2>&1
+    dscl localhost -append /Contact CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/All Domains"
   fi
   if [ -n "${UID_MAPPING}" ]
   then

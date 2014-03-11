@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-echo "${SCRIPT_NAME} - v1.7 ("`date`")"
+echo "${SCRIPT_NAME} - v1.8 ("`date`")"
 
 if [ ${#} -lt 2 ]
 then
@@ -37,13 +37,9 @@ sed -e s:__TIMEZONE__:${2}:g \
 chmod 700 "${VOLUME_PATH}"/etc/deploystudio/bin/ds_time_setup.sh
 chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/bin/ds_time_setup.sh
 
-if [ -n "${3}" ]
+if [ -n "${3}" ] && [ -e "${VOLUME_PATH}"/etc/ntp.conf ]
 then
-  if [ -e "${VOLUME_PATH}"/etc/ntp.conf ]
-  then
-    rm "${VOLUME_PATH}"/etc/ntp.conf
-  fi
-  ntpdate "${3}"
+  rm "${VOLUME_PATH}"/etc/ntp.conf
 fi
 
 echo "${SCRIPT_NAME} - end"

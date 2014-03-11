@@ -80,14 +80,10 @@ then
 
   for NTP_SERVER in ${NTP_SERVERS}
   do
-    ping -c 1 -n -t 10 "${NTP_SERVER}" >/dev/null
+    ntpdate -u "${NTP_SERVER}"
     if [ ${?} -eq 0 ]
     then
-      ntpdate -u "${NTP_SERVER}"
-      if [ ${?} -eq 0 ]
-      then
-        break
-      fi
+      break
     fi
   done
 fi
