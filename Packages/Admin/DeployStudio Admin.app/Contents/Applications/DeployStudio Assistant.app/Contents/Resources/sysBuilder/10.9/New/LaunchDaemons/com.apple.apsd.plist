@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>RunAtLoad</key>
+	<true/>
+        <key>POSIXSpawnType</key>
+        <string>Interactive</string>
+	<key>KeepAlive</key>
+	<dict>
+		<key>PathState</key>
+		<dict>
+			<key>/Library/Preferences/com.apple.apsd.launchd</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>Label</key>
+	<string>com.apple.apsd</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/System/Library/PrivateFrameworks/ApplePushService.framework/apsd</string>
+	</array>
+	<key>MachServices</key>
+	<dict>
+		<key>com.apple.apsd</key>
+		<true/>
+	</dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>REACH_DARK_WAKE_NOTIFY</key>
+		<string>TRUE</string>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.apple.speech.speechsynthesisd</string>
+	<key>Program</key>
+	<string>/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/SpeechSynthesis.framework/Versions/A/XPCServices/com.apple.speech.speechsynthesisd.xpc/Contents/MacOS/com.apple.speech.speechsynthesisd</string>
+	<key>MachServices</key>
+	<dict>
+		<key>com.apple.speech.speechsynthesisd</key>
+		<true/>
+	</dict>
+	<key>OnDemand</key>
+	<true/>
+	<key>POSIXSpawnType</key>
+	<string>Interactive</string>
+	<key>EnableTransactions</key>
+	<true/>
+</dict>
+</plist>

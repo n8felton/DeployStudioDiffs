@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>KeepAlive</key>
+	<dict>
+		<key>PathState</key>
+		<dict>
+			<key>/dev/tty.serial</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>Label</key>
+	<string>com.apple.xserve.serial-ports</string>
+	<key>Program</key>
+	<string>/usr/libexec/getty</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>getty</string>
+		<string>serial.57600</string>
+		<string>tty.serial</string>
+	</array>
+	<key>SessionCreate</key>
+	<true/>
+</dict>
+</plist>

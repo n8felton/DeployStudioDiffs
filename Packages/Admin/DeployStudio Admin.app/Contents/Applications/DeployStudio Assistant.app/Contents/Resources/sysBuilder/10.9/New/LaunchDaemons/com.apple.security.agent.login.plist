@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UserName</key>
+	<string>_securityagent</string>
+	<key>POSIXSpawnType</key>
+	<string>Interactive</string>
+	<key>Label</key>
+	<string>com.apple.security.agent.login</string>
+	<key>MachServices</key>
+	<dict>
+		<key>com.apple.security.agent.login</key>
+		<true/>
+	</dict>
+	<key>OnDemand</key>
+	<true/>
+	<key>Program</key>
+	<string>/System/Library/Frameworks/Security.framework/Versions/A/XPCServices/SecurityAgent.xpc/Contents/MacOS/SecurityAgent</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/System/Library/Frameworks/Security.framework/Versions/A/XPCServices/SecurityAgent.xpc/Contents/MacOS/SecurityAgent</string>
+		<string>-fromlaunchd</string>
+	</array>
+	<key>EnableTransactions</key>
+	<true/>
+	<key>ThrottleInterval</key>
+	<string>0</string>
+	<key>MultipleInstances</key>
+	<true/>
+</dict>
+</plist>

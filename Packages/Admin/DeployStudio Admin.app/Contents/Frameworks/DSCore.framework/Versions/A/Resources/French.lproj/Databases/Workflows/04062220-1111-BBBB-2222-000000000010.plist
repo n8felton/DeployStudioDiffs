@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ID</key>
+	<string>04062220-1111-BBBB-2222-000000000010</string>
+	<key>steps</key>
+	<dict>
+		<key>1</key>
+		<dict>
+			<key>automate</key>
+			<string>NO</string>
+			<key>bootable</key>
+			<string>YES</string>
+			<key>configurewithhostsdb</key>
+			<string>YES</string>
+			<key>firstdrive</key>
+			<string>NO</string>
+			<key>image</key>
+			<string></string>
+			<key>nocheck</key>
+			<string>YES</string>
+			<key>renamebyhostprefs</key>
+			<string>YES</string>
+			<key>startupdisk</key>
+			<string>YES</string>
+			<key>target</key>
+			<string></string>
+			<key>task</key>
+			<string>restore</string>
+			<key>title</key>
+			<string>Restore task</string>
+		</dict>
+	</dict>
+	<key>title</key>
+	<string>Restaurer un master sur un volume</string>
+	<key>description</key>
+	<string>Ce workflow vous permet de restaurer une image disque (format HFS, NFTS ou EXT) présente dans le dossier partagé de DeployStudio sur un volume ou un disque local.</string>
+</dict>
+</plist>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ID</key>
+	<string>04062220-1111-BBBB-2222-000000000030</string>
+	<key>steps</key>
+	<dict>
+		<key>1</key>
+		<dict>
+			<key>automate</key>
+			<string>NO</string>
+			<key>firstdisk</key>
+			<string>YES</string>
+			<key>partitions</key>
+			<array>
+				<dict>
+					<key>format</key>
+					<string>MS-DOS FAT32</string>
+					<key>name</key>
+					<string>LINUX</string>
+					<key>size</key>
+					<real>10</real>
+					<key>sizeunit</key>
+					<string>GB</string>
+				</dict>
+				<dict>
+					<key>format</key>
+					<string>Journaled HFS+</string>
+					<key>name</key>
+					<string>MacOSX</string>
+					<key>size</key>
+					<integer>80</integer>
+					<key>sizeunit</key>
+					<string>%</string>
+				</dict>
+				<dict>
+					<key>format</key>
+					<string>MS-DOS FAT32</string>
+					<key>name</key>
+					<string>WINDOWS</string>
+					<key>size</key>
+					<integer>20</integer>
+					<key>sizeunit</key>
+					<string>%</string>
+				</dict>
+			</array>
+			<key>secureerase</key>
+			<string>NO</string>
+			<key>secureeraselevel</key>
+			<integer>0</integer>
+			<key>target</key>
+			<string></string>
+			<key>task</key>
+			<string>partition</string>
+			<key>title</key>
+			<string>Partition task</string>
+		</dict>
+		<key>2</key>
+		<dict>
+			<key>automate</key>
+			<string>NO</string>
+			<key>firstdisk</key>
+			<string>NO</string>
+			<key>image</key>
+			<string>macosx.hfs.dmg</string>
+			<key>multicast</key>
+			<string>NO</string>
+			<key>multicastdatarate</key>
+			<integer>8000000</integer>
+			<key>nocheck</key>
+			<string>YES</string>
+			<key>rename</key>
+			<string></string>
+			<key>renamebyhostprefs</key>
+			<string>YES</string>
+			<key>startupdisk</key>
+			<string>YES</string>
+			<key>target</key>
+			<string>MacOSX</string>
+			<key>task</key>
+			<string>restore</string>
+			<key>title</key>
+			<string>Restore task</string>
+		</dict>
+		<key>3</key>
+		<dict>
+			<key>automate</key>
+			<string>NO</string>
+			<key>firstdisk</key>
+			<string>NO</string>
+			<key>image</key>
+			<string>windows.ntfs.gz</string>
+			<key>multicast</key>
+			<string>NO</string>
+			<key>multicastdatarate</key>
+			<integer>8000000</integer>
+			<key>nocheck</key>
+			<string>YES</string>
+			<key>rename</key>
+			<string></string>
+			<key>renamebyhostprefs</key>
+			<string>YES</string>
+			<key>startupdisk</key>
+			<string>YES</string>
+			<key>target</key>
+			<string>WINDOWS</string>
+			<key>task</key>
+			<string>restore</string>
+			<key>title</key>
+			<string>Restore task</string>
+		</dict>
+		<key>4</key>
+		<dict>
+			<key>automate</key>
+			<string>NO</string>
+			<key>firstdisk</key>
+			<string>NO</string>
+			<key>image</key>
+			<string>linux.dd.gz</string>
+			<key>multicast</key>
+			<string>NO</string>
+			<key>multicastdatarate</key>
+			<integer>8000000</integer>
+			<key>nocheck</key>
+			<string>YES</string>
+			<key>rename</key>
+			<string></string>
+			<key>renamebyhostprefs</key>
+			<string>YES</string>
+			<key>startupdisk</key>
+			<string>YES</string>
+			<key>target</key>
+			<string>LINUX</string>
+			<key>task</key>
+			<string>restore</string>
+			<key>title</key>
+			<string>Restore task</string>
+		</dict>
+	</dict>
+	<key>title</key>
+	<string>Triple-OS restoration</string>
+	<key>description</key>
+	<string>This workflow shows the 4 tasks required to restore a triple-boot machine.</string>
+</dict>
+</plist>

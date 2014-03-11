@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>GroupName</key>
+	<string>_locationd</string>
+	<key>KeepAlive</key>
+	<dict>
+		<key>SuccessfulExit</key>
+		<false/>
+	</dict>
+	<key>Label</key>
+	<string>com.apple.locationd</string>
+	<key>MachServices</key>
+	<dict>
+		<key>com.apple.locationd.registration</key>
+		<true/>
+		<key>com.apple.locationd.spi</key>
+		<true/>
+		<key>com.apple.locationd.synchronous</key>
+		<true/>
+		<key>com.apple.locationd.agent</key>
+		<true/>
+	</dict>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/libexec/locationd</string>
+	</array>
+	<key>RunAtLoad</key>
+	<false/>
+	<key>StartInterval</key>
+	<integer>86400</integer>
+	<key>ThrottleInterval</key>
+	<integer>3</integer>
+	<key>UserName</key>
+	<string>_locationd</string>
+</dict>
+</plist>

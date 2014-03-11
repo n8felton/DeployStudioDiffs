@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ID</key>
+	<string>04062220-1111-BBBB-2222-000000000020</string>
+	<key>steps</key>
+	<dict>
+		<key>1</key>
+		<dict>
+			<key>automate</key>
+			<string>NO</string>
+			<key>destination</key>
+			<string></string>
+			<key>package</key>
+			<string></string>
+			<key>target</key>
+			<string></string>
+			<key>task</key>
+			<string>install</string>
+			<key>title</key>
+			<string>Install task</string>
+		</dict>
+	</dict>
+	<key>title</key>
+	<string>Install a package (pkg)</string>
+	<key>description</key>
+	<string>This simple workflow enables you to install a package located on the DeployStudio repository to a local volume.</string>
+</dict>
+</plist>

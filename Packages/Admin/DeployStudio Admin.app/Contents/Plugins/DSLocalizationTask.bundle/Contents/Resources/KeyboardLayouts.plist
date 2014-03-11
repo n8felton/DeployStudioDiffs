@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Swiss German</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>19</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Swiss German</string>
+	</dict>
+	<key>Afghan Dari</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-2902</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Afghan Dari</string>
+	</dict>
+	<key>Afghan Pashto</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-2904</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Afghan Pashto</string>
+	</dict>
+	<key>Afghan Uzbek</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-2903</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Afghan Uzbek</string>
+	</dict>
+	<key>Arabic</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-17920</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Arabic</string>
+	</dict>
+	<key>Arabic PC</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-17921</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Arabic PC</string>
+	</dict>
+	<key>Arabic-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-18000</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Arabic-QWERTY</string>
+	</dict>
+	<key>Armenian-HM QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-28161</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Armenian-HM QWERTY</string>
+	</dict>
+	<key>Armenian-Western QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-28164</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Armenian-Western QWERTY</string>
+	</dict>
+	<key>Australian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>15</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Australian</string>
+	</dict>
+	<key>Austrian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>92</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Austrian</string>
+	</dict>
+	<key>Azeri</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-49</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Azeri</string>
+	</dict>
+	<key>Belgian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>6</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Belgian</string>
+	</dict>
+	<key>Brazilian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>71</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Brazilian</string>
+	</dict>
+	<key>British</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>2</integer>
+		<key>KeyboardLayout Name</key>
+		<string>British</string>
+	</dict>
+	<key>Bulgarian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>19528</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Bulgarian</string>
+	</dict>
+	<key>Bulgarian - Phonetic</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>19529</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Bulgarian - Phonetic</string>
+	</dict>
+	<key>Byelorussian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>19517</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Byelorussian</string>
+	</dict>
+	<key>Canadian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>29</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Canadian</string>
+	</dict>
+	<key>Canadian - CSA</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>80</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Canadian - CSA</string>
+	</dict>
+	<key>Cherokee-Nation</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-26112</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Cherokee-Nation</string>
+	</dict>
+	<key>Cherokee-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-26113</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Cherokee-QWERTY</string>
+	</dict>
+	<key>Croatian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-68</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Croatian</string>
+	</dict>
+	<key>Croatian-PC</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-69</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Croatian-PC</string>
+	</dict>
+	<key>Czech</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>30776</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Czech</string>
+	</dict>
+	<key>Czech-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>30778</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Czech-QWERTY</string>
+	</dict>
+	<key>Danish</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>9</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Danish</string>
+	</dict>
+	<key>Devanagari</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-20480</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Devanagari</string>
+	</dict>
+	<key>Devanagari-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-20481</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Devanagari-QWERTY</string>
+	</dict>
+	<key>Dutch</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>26</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Dutch</string>
+	</dict>
+	<key>Dvorak</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>16300</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Dvorak</string>
+	</dict>
+	<key>Dvorak - Left</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>16302</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Dvorak - Left</string>
+	</dict>
+	<key>DVORAK - QWERTY CMD</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>16301</integer>
+		<key>KeyboardLayout Name</key>
+		<string>DVORAK - QWERTY CMD</string>
+	</dict>
+	<key>Dvorak - Right</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>16303</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Dvorak - Right</string>
+	</dict>
+	<key>Estonian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>30764</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Estonian</string>
+	</dict>
+	<key>Faroese</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-47</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Faroese</string>
+	</dict>
+	<key>Finnish</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>17</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Finnish</string>
+	</dict>
+	<key>Finnish Extended</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-17</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Finnish Extended</string>
+	</dict>
+	<key>FinnishSami-PC</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-18</integer>
+		<key>KeyboardLayout Name</key>
+		<string>FinnishSami-PC</string>
+	</dict>
+	<key>French</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>1</integer>
+		<key>KeyboardLayout Name</key>
+		<string>French</string>
+	</dict>
+	<key>French - numerical</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>1111</integer>
+		<key>KeyboardLayout Name</key>
+		<string>French - numerical</string>
+	</dict>
+	<key>German</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>3</integer>
+		<key>KeyboardLayout Name</key>
+		<string>German</string>
+	</dict>
+	<key>Greek</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-18944</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Greek</string>
+	</dict>
+	<key>Greek Polytonic</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-18945</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Greek Polytonic</string>
+	</dict>
+	<key>Gujarati</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-21504</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Gujarati</string>
+	</dict>
+	<key>Gujarati-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-21505</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Gujarati-QWERTY</string>
+	</dict>
+	<key>Gurmukhi</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-20992</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Gurmukhi</string>
+	</dict>
+	<key>Gurmukhi-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-20993</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Gurmukhi-QWERTY</string>
+	</dict>
+	<key>Hawaiian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-50</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Hawaiian</string>
+	</dict>
+	<key>Hebrew</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-18432</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Hebrew</string>
+	</dict>
+	<key>Hebrew-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-18500</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Hebrew-QWERTY</string>
+	</dict>
+	<key>Hungarian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>30763</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Hungarian</string>
+	</dict>
+	<key>Icelandic</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-21</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Icelandic</string>
+	</dict>
+	<key>Inuktitut-Nunavut</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-30604</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Inuktitut-Nunavut</string>
+	</dict>
+	<key>Inuktitut-Nutaaq</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-30602</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Inuktitut-Nutaaq</string>
+	</dict>
+	<key>Inuktitut-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-30600</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Inuktitut-QWERTY</string>
+	</dict>
+	<key>Inuttitut Nunavik</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-30603</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Inuttitut Nunavik</string>
+	</dict>
+	<key>Irish</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>50</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Irish</string>
+	</dict>
+	<key>Irish Extended</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-500</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Irish Extended</string>
+	</dict>
+	<key>Italian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>4</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Italian</string>
+	</dict>
+	<key>Italian - Pro</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>223</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Italian - Pro</string>
+	</dict>
+	<key>Jawi-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-19000</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Jawi-QWERTY</string>
+	</dict>
+	<key>Kazakh</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-19501</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Kazakh</string>
+	</dict>
+	<key>Latvian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>30765</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Latvian</string>
+	</dict>
+	<key>Lithuanian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>30761</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Lithuanian</string>
+	</dict>
+	<key>Macedonian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>19523</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Macedonian</string>
+	</dict>
+	<key>Maltese</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-501</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Maltese</string>
+	</dict>
+	<key>Maori</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-51</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Maori</string>
+	</dict>
+	<key>Nepali</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-20484</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Nepali</string>
+	</dict>
+	<key>Northern Sami</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-1200</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Northern Sami</string>
+	</dict>
+	<key>Norwegian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>12</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Norwegian</string>
+	</dict>
+	<key>Norwegian Extended</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-12</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Norwegian Extended</string>
+	</dict>
+	<key>NorwegianSami-PC</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-13</integer>
+		<key>KeyboardLayout Name</key>
+		<string>NorwegianSami-PC</string>
+	</dict>
+	<key>Persian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-17960</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Persian</string>
+	</dict>
+	<key>Persian-ISIRI 2901</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-2901</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Persian-ISIRI 2901</string>
+	</dict>
+	<key>Persian-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-1959</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Persian-QWERTY</string>
+	</dict>
+	<key>Polish</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>30762</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Polish</string>
+	</dict>
+	<key>Polish Pro</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>30788</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Polish Pro</string>
+	</dict>
+	<key>Portuguese</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>10</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Portuguese</string>
+	</dict>
+	<key>Romanian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-39</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Romanian</string>
+	</dict>
+	<key>Romanian-Standard</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-38</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Romanian-Standard</string>
+	</dict>
+	<key>Russian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>19456</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Russian</string>
+	</dict>
+	<key>Russian - Phonetic</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>19457</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Russian - Phonetic</string>
+	</dict>
+	<key>RussianWin</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>19458</integer>
+		<key>KeyboardLayout Name</key>
+		<string>RussianWin</string>
+	</dict>
+	<key>Sami-PC</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-1201</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Sami-PC</string>
+	</dict>
+	<key>Serbian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>19521</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Serbian</string>
+	</dict>
+	<key>Serbian-Latin</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-19521</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Serbian-Latin</string>
+	</dict>
+	<key>Slovak</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>30777</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Slovak</string>
+	</dict>
+	<key>Slovak-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>30779</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Slovak-QWERTY</string>
+	</dict>
+	<key>Slovenian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-66</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Slovenian</string>
+	</dict>
+	<key>Spanish</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>8</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Spanish</string>
+	</dict>
+	<key>Spanish - ISO</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>87</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Spanish - ISO</string>
+	</dict>
+	<key>Swedish</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>224</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Swedish</string>
+	</dict>
+	<key>Swedish - Pro</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>7</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Swedish - Pro</string>
+	</dict>
+	<key>SwedishSami-PC</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-15</integer>
+		<key>KeyboardLayout Name</key>
+		<string>SwedishSami-PC</string>
+	</dict>
+	<key>Swiss French</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>18</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Swiss French</string>
+	</dict>
+	<key>Thai</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-26624</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Thai</string>
+	</dict>
+	<key>Thai-PattaChote</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-26626</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Thai-PattaChote</string>
+	</dict>
+	<key>Tibetan-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-26625</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Tibetan-QWERTY</string>
+	</dict>
+	<key>Tibetan-Wylie</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-2398</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Tibetan-Wylie</string>
+	</dict>
+	<key>TibetanOtaniUS</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-26628</integer>
+		<key>KeyboardLayout Name</key>
+		<string>TibetanOtaniUS</string>
+	</dict>
+	<key>Turkish</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-24</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Turkish</string>
+	</dict>
+	<key>Turkish-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-35</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Turkish-QWERTY</string>
+	</dict>
+	<key>Turkish-QWERTY-PC</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-36</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Turkish-QWERTY-PC</string>
+	</dict>
+	<key>U.S.</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>0</integer>
+		<key>KeyboardLayout Name</key>
+		<string>U.S.</string>
+	</dict>
+	<key>Ukrainian</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>19518</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Ukrainian</string>
+	</dict>
+	<key>Unicode Hex Input</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-1</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Unicode Hex Input</string>
+	</dict>
+	<key>US Extended</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-2</integer>
+		<key>KeyboardLayout Name</key>
+		<string>US Extended</string>
+	</dict>
+	<key>USInternational-PC</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>15000</integer>
+		<key>KeyboardLayout Name</key>
+		<string>USInternational-PC</string>
+	</dict>
+	<key>Uyghur-QWERTY</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-27000</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Uyghur-QWERTY</string>
+	</dict>
+	<key>Vietnamese</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-31232</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Vietnamese</string>
+	</dict>
+	<key>Welsh</key>
+	<dict>
+		<key>KeyboardLayout ID</key>
+		<integer>-790</integer>
+		<key>KeyboardLayout Name</key>
+		<string>Welsh</string>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>POSIXSpawnType</key>
+	<string>Interactive</string>
+	<key>Label</key>
+	<string>com.apple.cvmsCompAgentLegacy_i386</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/Legacy/CVMCompiler</string>
+	</array>
+	<key>MachServices</key>
+	<dict>
+		<key>com.apple.cvmsCompAgentLegacy_i386</key>
+		<true/>
+	</dict>
+	<key>EnableTransactions</key>
+	<true/>
+	<key>BinaryOrderPreference</key>
+	<array>
+		<integer>7</integer>
+	</array>
+	<key>LimitLoadToSessionType</key>
+	<string>Background</string>
+</dict>
+</plist>

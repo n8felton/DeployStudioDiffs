@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.apple.installer.instlogd</string>
+	<key>OnDemand</key>
+	<false/>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/System/Installation/CDIS/instlogd</string>
+	</array>
+        <key>MachServices</key>
+        <dict>
+                <key>com.apple.installer.instlogd</key>
+                <true/>
+        </dict>
+</dict>
+</plist>

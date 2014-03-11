@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ID</key>
+	<string>04062220-1111-BBBB-2222-000000000000</string>
+	<key>steps</key>
+	<dict>
+		<key>1</key>
+		<dict>
+			<key>automate</key>
+			<string>NO</string>
+			<key>compress</key>
+			<string>YES</string>
+			<key>destination</key>
+			<string></string>
+			<key>imageformat</key>
+			<string>0</string>
+			<key>imagetorepository</key>
+			<string>YES</string>
+			<key>imagetype</key>
+			<string>0</string>
+			<key>repairpermissions</key>
+			<string>NO</string>
+			<key>source</key>
+			<string></string>
+			<key>task</key>
+			<string>image</string>
+			<key>title</key>
+			<string>Image task</string>
+		</dict>
+	</dict>
+	<key>title</key>
+	<string>Create a master from a volume</string>
+	<key>description</key>
+	<string>This simple workflow enables you to select a volume (HFS, NFTS or EXT format) in order to create a disk image. The disk image will be stored automatically on the DeployStudio repository. </string>
+</dict>
+</plist>

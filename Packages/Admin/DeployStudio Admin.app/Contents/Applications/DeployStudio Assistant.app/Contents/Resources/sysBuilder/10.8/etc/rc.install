@@ -1,0 +1,158 @@
+#!/bin/sh
+
+#
+# Disable prebinding-on-the-fly while we're read-only booted
+#
+export DYLD_NO_FIX_PREBINDING=1
+
+#
+# Set sysctl for FDE
+#
+/usr/sbin/graphicssession
+
+#
+# Show default desktop background image
+#
+/Applications/DefaultDesktopViewer.app/Contents/MacOS/DefaultDesktopViewer &
+
+#
+# log our boot time for performance stats
+#
+sysctl kern.boottime | head -1 | /usr/bin/logger -t "" -p install.debug
+
+# 8620488
+defaults write /Library/Preferences/.GlobalPreferences NSSavePanelUseFinderKit NO
+
+#
+# Add and unlock a keychain for root.
+#
+/usr/bin/security create-keychain -p "" /var/root/Library/Keychains/login.keychain
+/usr/bin/security unlock-keychain -p "" /var/root/Library/Keychains/login.keychain
+
+##
+## DEPLOYSTUDIO startup
+##
+
+#
+# Set default power management policy
+#
+(sleep 30; /usr/bin/pmset force -a sleep 0 displaysleep __DISPLAY_SLEEP__ lessbright 0 powerbutton 0 disksleep 0 ) &
+
+#
+# Load custom environment variables
+#
+if [ -e /etc/deploystudio-env.conf ]
+then
+  . /etc/deploystudio-env.conf
+fi
+
+#
+# Wait for network services to be available
+#
+echo "Checking default route..."
+ATTEMPTS=0
+MAX_ATTEMPTS=12
+while ! (netstat -rn -f inet | grep -q default)
+do
+  if [ ${ATTEMPTS} -le ${MAX_ATTEMPTS} ]
+  then
+    echo "Waiting for the default route to be active..."
+    sleep 5
+	ATTEMPTS=`expr ${ATTEMPTS} + 1`
+  else
+    echo "Network not configured, skipping test..." 2>&1
+	break
+  fi
+done
+
+#
+# Set temporary hostname
+#
+TMP_COMPUTERNAME=Mac-`ioreg -rd1 -c IOPlatformExpertDevice | awk -F= '/(IOPlatformSerialNumber)/ { gsub("[ \"]", ""); print $2 }'`
+if [ -n "${TMP_COMPUTERNAME}" ]
+then
+  TMP_HOSTNAME=`echo "${TMP_COMPUTERNAME}" | tr '[A-Z]' '[a-z]'`
+  scutil --set ComputerName  "${TMP_COMPUTERNAME}"
+  scutil --set LocalHostName "${TMP_HOSTNAME}"
+fi
+
+#
+# Configure local KDC
+#
+/usr/libexec/configureLocalKDC
+
+#
+# Disable assessments checks
+#
+/usr/sbin/spctl --master-disable
+
+#
+# Enable display mirroring
+#
+/usr/bin/enableDisplayMirroring &
+
+#
+# Fix system date
+#
+if [ -e /Library/Preferences/ntpserver.txt ]
+then
+  NTP_SERVER=`cat /Library/Preferences/ntpserver.txt`
+
+  ping -c 1 -n -t 10 "${NTP_SERVER}"
+  if [ ${?} -eq 0 ]
+  then
+    ntpdate "${NTP_SERVER}" 2>/dev/null
+  fi
+fi
+
+#
+# Launch a VNC server
+#
+if [ -e /Library/Preferences/com.apple.VNCSettings.txt ]
+then
+  launchctl load /System/Library/LaunchAgents/com.apple.applevncserver.plist
+fi
+
+#
+# Update Disk Utility preferences to display every partition (EFI, recovery, ...)
+#
+defaults write com.apple.DiskUtility DUShowEveryPartition -bool YES
+
+#
+# Set Fred as default speech voice
+#
+defaults write com.apple.speech.voice.prefs SelectedVoiceCreator -int 1836346163
+defaults write com.apple.speech.voice.prefs SelectedVoiceID      -int 1
+defaults write com.apple.speech.voice.prefs SelectedVoiceName         Fred
+
+#
+# Launch DeployStudio Runtime
+#
+DS_APP="/Applications/Utilities/DeployStudio Admin.app/Contents/Applications/DeployStudio Runtime.app/Contents/MacOS/DeployStudio Runtime"
+DS_PARAMS=--netboot
+if [ -x "$DS_APP" ]
+then
+  #/usr/bin/say "Welcome to DeployStudio..."
+  if [ -e /Applications/AdViewer.app/Contents/MacOS/AdViewer ]
+  then
+    /Applications/AdViewer.app/Contents/MacOS/AdViewer &
+  fi
+  "$DS_APP" $DS_PARAMS
+  if [ $? != 0 ]
+  then
+    "$DS_APP" $DS_PARAMS
+  fi
+fi
+kill `ps -axww | awk '/AdViewer/ {print $1}'` 2>/dev/null
+kill `ps -axww | awk '/DefaultDesktopViewer/ {print $1}'` 2>/dev/null
+kill `ps -axww | awk '/enableDisplayMirroring/ {print $1}'` 2>/dev/null
+
+#
+# Shutdown instead of rebooting if the flag is set
+#
+if [ -e /tmp/dss-shutdown ]
+then
+  /sbin/shutdown -h now
+else
+  /sbin/reboot
+fi

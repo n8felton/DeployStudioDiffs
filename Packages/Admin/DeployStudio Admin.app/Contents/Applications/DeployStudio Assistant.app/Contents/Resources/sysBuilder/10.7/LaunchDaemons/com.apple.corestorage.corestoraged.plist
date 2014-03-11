@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.apple.corestorage.corestoraged</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/libexec/corestoraged</string>
+    </array>
+    <key>LaunchEvents</key>
+    <dict>
+        <key>com.apple.iokit.matching</key>
+		<dict>
+		    <key>CoreStorage-Published</key>
+		    <dict>
+			    <key>IOProviderClass</key>
+				<string>CoreStorageGroup</string>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>

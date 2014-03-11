@@ -1,0 +1,18 @@
+#!/usr/bin/expect
+
+set timeout 5
+
+spawn {*}$argv
+
+expect {
+  "password" { 
+    exit 2
+  }
+  timeout { 
+    exit 2
+  }
+}
+
+catch wait result
+
+exit [lindex $result 3]

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnableTransactions</key>
+	<true/>
+	<key>Label</key>
+	<string>com.apple.airportd</string>
+	<key>Program</key>
+	<string>/usr/libexec/airportd</string>
+	<key>MachServices</key>
+	<dict>
+		<key>com.apple.wifi.anqp</key>
+		<true/>
+		<key>com.apple.airportd</key>
+		<true/>
+	</dict>
+	<key>KeepAlive</key>
+	<true/>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>REACH_DARK_WAKE_CONTROL</key>
+		<string>TRUE</string>
+		<key>REACH_DARK_WAKE_NOTIFY</key>
+		<string>TRUE</string>
+	</dict>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>POSIXSpawnType</key>
+	<string>Adaptive</string>
+</dict>
+</plist>

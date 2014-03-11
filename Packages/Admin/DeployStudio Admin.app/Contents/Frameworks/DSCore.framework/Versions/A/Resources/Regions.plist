@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>af_ZA</key>
+	<string>South Africa (Afrikaans)</string>
+	<key>am_ET</key>
+	<string>Ethiopia (Amharic)</string>
+	<key>be_BY</key>
+	<string>Belarus (Belarusian)</string>
+	<key>bg_BG</key>
+	<string>Bulgaria (Bulgarian)</string>
+	<key>ca_ES</key>
+	<string>Spain (Catalan)</string>
+	<key>cs_CZ</key>
+	<string>Czech Republic (Czech)</string>
+	<key>da_DK</key>
+	<string>Denmark (Danish)</string>
+	<key>de_AT</key>
+	<string>Austria (German)</string>
+	<key>de_CH</key>
+	<string>Switzerland (German)</string>
+	<key>de_DE</key>
+	<string>Germany</string>
+	<key>el_GR</key>
+	<string>Greece</string>
+	<key>en_AU</key>
+	<string>Australia (English)</string>
+	<key>en_CA</key>
+	<string>Canada (English)</string>
+	<key>en_GB</key>
+	<string>United Kingdom</string>
+	<key>en_IE</key>
+	<string>Ireland</string>
+	<key>en_NZ</key>
+	<string>New Zealand</string>
+	<key>en_US</key>
+	<string>United States</string>
+	<key>es_ES</key>
+	<string>Spain</string>
+	<key>et_EE</key>
+	<string>Estonia</string>
+	<key>eu_ES</key>
+	<string>Spain (Basque)</string>
+	<key>fi_FI</key>
+	<string>Finland</string>
+	<key>fr_BE</key>
+	<string>Belgium (French)</string>
+	<key>fr_CA</key>
+	<string>Canada (French)</string>
+	<key>fr_CH</key>
+	<string>Switzerland (French)</string>
+	<key>fr_FR</key>
+	<string>France</string>
+	<key>he_IL</key>
+	<string>Israel</string>
+	<key>hr_HR</key>
+	<string>Croatia</string>
+	<key>hu_HU</key>
+	<string>Hungary</string>
+	<key>hy_AM</key>
+	<string>Armenia</string>
+	<key>is_IS</key>
+	<string>Iceland</string>
+	<key>it_CH</key>
+	<string>Switzerland (Italian)</string>
+	<key>it_IT</key>
+	<string>Italy</string>
+	<key>ja_JP</key>
+	<string>Japan</string>
+	<key>kk_KZ</key>
+	<string>Kazakhstan</string>
+	<key>ko_KR</key>
+	<string>South Korea</string>
+	<key>lt_LT</key>
+	<string>Lithuania</string>
+	<key>nl_BE</key>
+	<string>Belgium (Dutch)</string>
+	<key>nl_NL</key>
+	<string>Netherlands</string>
+	<key>no_NO</key>
+	<string>Norway</string>
+	<key>pl_PL</key>
+	<string>Poland</string>
+	<key>pt_BR</key>
+	<string>Brazil (Portuguese)</string>
+	<key>pt_PT</key>
+	<string>Portugal</string>
+	<key>ro_RO</key>
+	<string>Romania</string>
+	<key>ru_RU</key>
+	<string>Russia</string>
+	<key>sk_SK</key>
+	<string>Slovakia</string>
+	<key>sl_SI</key>
+	<string>Slovenia</string>
+	<key>sr_YU</key>
+	<string>Bosnia and Herzegovina</string>
+	<key>sv_SE</key>
+	<string>Sweden</string>
+	<key>tr_TR</key>
+	<string>Turkey</string>
+	<key>uk_UA</key>
+	<string>Ukraine</string>
+	<key>zh_CN</key>
+	<string>China</string>
+	<key>zh_HK</key>
+	<string>Hong Kong SAR China</string>
+	<key>zh_TW</key>
+	<string>Taiwan</string>
+</dict>
+</plist>

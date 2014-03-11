@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>AppleTalk</key>
+    <dict>
+        <key>ConfigMethod</key>
+        <string>Node</string>
+        <key>__INACTIVE__</key>
+        <integer>1</integer>
+    </dict>
+    <key>DNS</key>
+    <dict/>
+    <key>Ethernet</key>
+    <dict>
+        <key>MACAddress</key>
+        <string>00:00:00:00:00:00</string>
+    </dict>
+    <key>IPv4</key>
+    <dict>
+        <key>ConfigMethod</key>
+        <string>DHCP</string>
+    </dict>
+    <key>IPv6</key>
+    <dict>
+        <key>ConfigMethod</key>
+        <string>Automatic</string>
+    </dict>
+    <key>Interface</key>
+    <dict>
+        <key>DeviceName</key>
+        <string>en1</string>
+        <key>Hardware</key>
+        <string>Ethernet</string>
+        <key>Type</key>
+        <string>Ethernet</string>
+        <key>UserDefinedName</key>
+        <string>Built-in Ethernet 1</string>
+    </dict>
+    <key>PPP</key>
+    <dict>
+        <key>__INACTIVE__</key>
+        <integer>1</integer>
+    </dict>
+    <key>Proxies</key>
+    <dict>
+        <key>FTPPassive</key>
+        <integer>1</integer>
+        <key>FTPEnable</key>
+        <integer>0</integer>
+		<key>FTPProxy</key>
+        <string></string>
+		<key>FTPPort</key>
+        <integer>0</integer>
+        <key>HTTPEnable</key>
+        <integer>0</integer>
+		<key>HTTPProxy</key>
+        <string></string>
+		<key>HTTPPort</key>
+        <integer>0</integer>
+        <key>HTTPSEnable</key>
+        <integer>0</integer>
+		<key>HTTPSProxy</key>
+        <string></string>
+		<key>HTTPSPort</key>
+        <integer>0</integer>
+    </dict>
+    <key>UserDefinedName</key>
+    <string>Built-in Ethernet 1</string>
+    <key>__INACTIVE__</key>
+    <integer>1</integer>
+</dict>
+</plist>

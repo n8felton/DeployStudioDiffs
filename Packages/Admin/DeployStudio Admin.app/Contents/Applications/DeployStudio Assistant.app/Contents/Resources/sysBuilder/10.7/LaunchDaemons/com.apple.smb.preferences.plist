@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.apple.smb.preferences</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/libexec/samba/smb-sync-preferences</string>
+	</array>
+	<key>EnableTransactions</key>
+	<true/>
+	<key>WatchPaths</key>
+	<array>
+		<string>/Library/Preferences/SystemConfiguration/com.apple.smb.server.plist</string>
+	</array>
+	<key>LaunchEvents</key>
+	<dict>
+		<key>com.apple.smb.preferences</key>
+		<dict>
+			<key>dummy</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>TimeOut</key>
+	<integer>1</integer>
+</dict>
+</plist>

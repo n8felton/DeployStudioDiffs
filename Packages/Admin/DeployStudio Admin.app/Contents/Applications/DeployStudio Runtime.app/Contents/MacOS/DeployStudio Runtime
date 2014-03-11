@@ -1,0 +1,15 @@
+#!/bin/sh
+
+ROOT_FOLDER=`dirname "${0}"`
+
+if [ "${ROOT_FOLDER}" == "." ]
+then
+  ROOT_FOLDER=`pwd`
+fi
+
+if [ ${UID} -ne 0 ]
+then
+  sudo "${ROOT_FOLDER}/DeployStudio Runtime.bin" "${1}" "${2}" "${3}" "${4}" "${5}" "${6}" "${7}" "${8}"
+else
+  "${ROOT_FOLDER}/DeployStudio Runtime.bin" "${1}" "${2}" "${3}" "${4}" "${5}" "${6}" "${7}" "${8}"
+fi

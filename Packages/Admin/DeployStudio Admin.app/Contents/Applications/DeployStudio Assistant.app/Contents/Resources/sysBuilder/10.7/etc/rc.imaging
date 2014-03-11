@@ -1,0 +1,21 @@
+#!/bin/sh
+# Copyright 2011, Apple Inc.
+
+#
+# If partition data exists run the Partitioning application, optionally with automation information
+#
+if [ -f /System/Installation/Packages/Extras/PartitionInfo.plist ]; then
+	AUTOPARTITION="/System/Installation/Packages/Extras/AutoPartition.app/Contents/MacOS/AutoPartition"
+	MINSTALL_CONF=/System/Installation/Packages/Extras/minstallconfig.xml 
+	
+	if [ -e ${MINSTALL_CONF} ]; then
+		MINSTALL_LANG=`perl -e '$d .= $_ while(<>); $d =~ m|<key>[Ll]anguage</key>\W+<string>(\w+)</string>|m; print $1;' < ${MINSTALL_CONF}`
+		MINSTALL_LANG=${MINSTALL_LANG:-English}
+		MINSTALL_TYPE=`perl -e '$d .= $_ while(<>); $d =~ m|<key>InstallType</key>\W+<string>(\w+)</string>|m; print $1;' < ${MINSTALL_CONF}`
+		MINSTALL_TYPE=${MINSTALL_TYPE:-unknown}
+
+		"${AUTOPARTITION}" -AppleLanguages "(${MINSTALL_LANG})" "${MINSTALL_TYPE}"
+	else
+		"${AUTOPARTITION}"
+	fi
+fi

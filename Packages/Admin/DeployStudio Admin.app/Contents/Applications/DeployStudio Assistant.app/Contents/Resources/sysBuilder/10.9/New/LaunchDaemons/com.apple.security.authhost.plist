@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ThrottleInterval</key>
+	<integer>0</integer>
+	<key>UserName</key>
+	<string>root</string>
+	<key>Label</key>
+	<string>com.apple.security.authhost</string>
+	<key>MachServices</key>
+	<dict>
+		<key>com.apple.security.authhost</key>
+		<true/>
+	</dict>
+	<key>OnDemand</key>
+	<true/>
+	<key>Program</key>
+	<string>/System/Library/Frameworks/Security.framework/Versions/A/XPCServices/authorizationhost.xpc/Contents/MacOS/authorizationhost</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/System/Library/Frameworks/Security.framework/Versions/A/XPCServices/authorizationhost.xpc/Contents/MacOS/authorizationhost</string>
+		<string>-fromlaunchd</string>
+	</array>
+	<key>EnableTransactions</key>
+	<true/>
+	<key>MultipleInstances</key>
+	<true/>
+	<key>POSIXSpawnType</key>
+	<string>Interactive</string>
+</dict>
+</plist>
