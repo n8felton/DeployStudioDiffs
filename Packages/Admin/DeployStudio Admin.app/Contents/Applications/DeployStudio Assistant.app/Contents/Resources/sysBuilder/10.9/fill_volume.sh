@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=9.54
+FILL_VOLUME_VERSION=9.55
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -42,7 +42,7 @@ add_files_at_path "${USR_LIB}" /usr/lib
 USR_SHARE="sandbox terminfo zoneinfo"
 add_files_at_path "${USR_SHARE}" /usr/share
 
-USR_LIBEXEC="checkLocalKDC configureLocalKDC dirhelper launchdadd migrateLocalKDC security-checksystem smb-sync-preferences xpcd"
+USR_LIBEXEC="checkLocalKDC configureLocalKDC dirhelper launchdadd migrateLocalKDC security-checksystem smb-sync-preferences xpcd displaypolicyd"
 add_files_at_path "${USR_LIBEXEC}" /usr/libexec
 
 if [ -e "/tmp/recovery_tools/Startup Disk.app" ]
@@ -73,6 +73,13 @@ add_files_at_path "${SYS_LIB_MISC}" /System/Library
 SYS_LIB_CORE="CoreTypes.bundle ManagedClient.app PlatformSupport.plist RemoteManagement SecurityAgentPlugins \
               SystemUIServer.app ZoomWindow.app boot.efi"
 add_files_at_path "${SYS_LIB_CORE}" /System/Library/CoreServices
+
+# 10.9.2 fixes
+add_file_at_path AppleGraphicsDevicePolicy.kext /System/Library/Extensions/AppleGraphicsControl.kext/Contents/PlugIns/
+add_file_at_path AppleMGPUPowerControl.kext /System/Library/Extensions/AppleGraphicsControl.kext/Contents/PlugIns/
+add_file_at_path Resources /System/Library/Extensions/IOPlatformPluginFamily.kext/Contents/PlugIns/X86PlatformPlugin.kext/Contents/
+add_file_at_path PlugIns /System/Library/Frameworks/Security.framework/Versions/A/
+#
 
 cp "${BASE_SYSTEM_ROOT_PATH}"/var/db/auth.db* "${TMP_MOUNT_PATH}"/var/db/
 
