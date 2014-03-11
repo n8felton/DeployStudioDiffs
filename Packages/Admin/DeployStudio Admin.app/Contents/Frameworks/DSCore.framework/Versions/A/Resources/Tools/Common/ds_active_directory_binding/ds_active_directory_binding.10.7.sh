@@ -5,7 +5,7 @@ histchars=
 
 SCRIPT_NAME=`basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.25 ("`date`")"
+echo "${SCRIPT_NAME} - v1.26 ("`date`")"
 
 #
 # functions
@@ -186,43 +186,37 @@ then
   fi
   sleep 1
 
-  AD_DOMAIN_NODE=`dscl localhost -list "/Active Directory" | head -n 1`
   if [ -n "${AUTH_DOMAIN}" ] && [ "${AUTH_DOMAIN}" != 'All Domains' ]
   then
     dsconfigad -alldomains disable 2>&1
-    AD_SEARCH_PATH=`dscl /Search -read / CSPSearchPath | grep "Active Directory"`
-    if [ -n "${AD_SEARCH_PATH}" ]
-    then
-      echo "Deleting current AD authentication search path..." 2>&1
-      dscl localhost -delete /Search CSPSearchPath "${AD_SEARCH_PATH}" 2>/dev/null
-      echo "Deleting current AD contacts search path..." 2>&1
-      dscl localhost -delete /Contact CSPSearchPath "${AD_SEARCH_PATH}" 2>/dev/null
-    else
-      dscl localhost -create /Search SearchPolicy CSPSearchPath 2>&1
-      dscl localhost -create /Contact SearchPolicy CSPSearchPath 2>&1
-    fi
-    echo "Updating authentication search path..." 2>&1
-    dscl localhost -append /Search CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/${AUTH_DOMAIN}"
-    echo "Updating contacts search path..." 2>&1
-    dscl localhost -append /Contact CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/${AUTH_DOMAIN}"
   else
     dsconfigad -alldomains enable 2>&1
-    AD_SEARCH_PATH=`dscl /Search -read / CSPSearchPath | grep "Active Directory"`
-    if [ -n "${AD_SEARCH_PATH}" ]
-    then
-      echo "Deleting current AD authentication search path..." 2>&1
-      dscl localhost -delete /Search CSPSearchPath "${AD_SEARCH_PATH}" 2>/dev/null
-      echo "Deleting current AD contacts search path..." 2>&1
-      dscl localhost -delete /Contact CSPSearchPath "${AD_SEARCH_PATH}" 2>/dev/null
-    else
-      dscl localhost -create /Search SearchPolicy CSPSearchPath 2>&1
-      dscl localhost -create /Contact SearchPolicy CSPSearchPath 2>&1
-    fi
-    echo "Updating authentication search path..." 2>&1
-    dscl localhost -append /Search CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/All Domains"
-    echo "Updating contacts search path..." 2>&1
-    dscl localhost -append /Contact CSPSearchPath "/Active Directory/${AD_DOMAIN_NODE}/All Domains"
   fi
+  AD_SEARCH_PATH=`dscl /Search -read / CSPSearchPath | grep "Active Directory" | sed 's/^ *//' | sed 's/ *$//'`
+  if [ -n "${AD_SEARCH_PATH}" ]
+  then
+    echo "Deleting '${AD_SEARCH_PATH}' from authentication search path..." 2>&1
+    dscl localhost -delete /Search CSPSearchPath "${AD_SEARCH_PATH}" 2>/dev/null
+    echo "Deleting '${AD_SEARCH_PATH}' from contacts search path..." 2>&1
+    dscl localhost -delete /Contact CSPSearchPath "${AD_SEARCH_PATH}" 2>/dev/null
+  fi
+  dscl localhost -create /Search SearchPolicy CSPSearchPath 2>&1
+  dscl localhost -create /Contact SearchPolicy CSPSearchPath 2>&1
+  AD_DOMAIN_NODE=`dscl localhost -list "/Active Directory" | head -n 1`
+  if [ "${AD_DOMAIN_NODE}" = "All Domains" ]
+  then
+    AD_SEARCH_PATH="/Active Directory/All Domains"
+  elif [ -n "${AUTH_DOMAIN}" ] && [ "${AUTH_DOMAIN}" != 'All Domains' ]
+  then
+    AD_SEARCH_PATH="/Active Directory/${AD_DOMAIN_NODE}/${AUTH_DOMAIN}"
+  else
+    AD_SEARCH_PATH="/Active Directory/${AD_DOMAIN_NODE}/All Domains"
+  fi
+  echo "Adding '${AD_SEARCH_PATH}' to authentication search path..." 2>&1
+  dscl localhost -append /Search CSPSearchPath "${AD_SEARCH_PATH}"
+  echo "Adding '${AD_SEARCH_PATH}' to contacts search path..." 2>&1
+  dscl localhost -append /Contact CSPSearchPath "${AD_SEARCH_PATH}"
+
   if [ -n "${UID_MAPPING}" ]
   then
     sleep 1
@@ -239,8 +233,8 @@ then
     dsconfigad -ggid "${GGID_MAPPING}" 2>&1
   fi
 
-  GROUP_MEMBERS=`dscl /Local/Default -read /Groups/com.apple.access_loginwindow GroupMembers`
-  NESTED_GROUPS=`dscl /Local/Default -read /Groups/com.apple.access_loginwindow NestedGroups`
+  GROUP_MEMBERS=`dscl /Local/Default -read /Groups/com.apple.access_loginwindow GroupMembers 2>/dev/null`
+  NESTED_GROUPS=`dscl /Local/Default -read /Groups/com.apple.access_loginwindow NestedGroups 2>/dev/null`
   if [ -z "${GROUP_MEMBERS}" ] && [ -z "${NESTED_GROUPS}" ]
   then
     echo "Enabling network users login..." 2>&1
