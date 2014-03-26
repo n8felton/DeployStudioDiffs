@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-echo "${SCRIPT_NAME} - v1.17 ("`date`")"
+echo "${SCRIPT_NAME} - v1.18 ("`date`")"
 
 if [ ${#} -ne 1 ]
 then
@@ -16,6 +16,9 @@ fi
 if [ "${1}" = "/" ]
 then
   VOLUME_PATH=/
+elif [ ${1:0:9} = "/Volumes/" ]
+then
+  VOLUME_PATH=${1}
 else
   VOLUME_PATH=/Volumes/${1}
 fi
