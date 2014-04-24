@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`basename "${0}"`
 TOOLS_FOLDER=`dirname "${0}"`
-VERSION=1.24
+VERSION=1.25
 
 if [ ${#} -lt 2 ]
 then
@@ -12,6 +12,13 @@ then
 fi
 
 echo "Running ${SCRIPT_NAME} v${VERSION}"
+
+if [ ! -e "${2}" ]
+then
+  echo "Unknown target volume ${2}, script aborted."
+  echo "RuntimeAbortScript"
+  exit 1
+fi
 
 rm -f  "${2}"/Library/LaunchAgents/com.deploystudio.FinalizeApp.plist 2>/dev/null
 rm -f  "${2}"/Library/LaunchAgents/com.deploystudio.finalizeCleanup.plist 2>/dev/null

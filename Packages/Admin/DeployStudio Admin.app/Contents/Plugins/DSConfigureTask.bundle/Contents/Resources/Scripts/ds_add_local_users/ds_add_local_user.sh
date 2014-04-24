@@ -5,7 +5,7 @@ histchars=
 
 SCRIPT_NAME=`basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.17 ("`date`")"
+echo "${SCRIPT_NAME} - v1.18 ("`date`")"
 
 # Usage: ${SCRIPT_NAME} $1 $2 $3 [$4 $5 $6 $7]
 # $1 -> realname
@@ -59,7 +59,7 @@ then
 
   echo "  Creating user '${USER_SHORTNAME}' with uid=${USER_UID} !" 2>&1
 
-  dscl /Local/Default -delete users/${USER_SHORTNAME} 2>/dev/null
+  dscl /Local/Default -delete users/${USER_SHORTNAME} >/dev/null 2>&1
   dscl /Local/Default -create users/${USER_SHORTNAME}
 
   dscl /Local/Default -create users/${USER_SHORTNAME} uid           "${USER_UID}"

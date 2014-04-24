@@ -5,7 +5,7 @@ histchars=
 
 SCRIPT_NAME=`basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.30 ("`date`")"
+echo "${SCRIPT_NAME} - v1.32 ("`date`")"
 
 #
 # functions
@@ -132,13 +132,13 @@ chmod 600 /Library/Preferences/DirectoryService/DirectoryService.plist 2>&1
 echo "Unbinding computer..." 2>&1
 if [ -n "${COMPUTER_ID}" ] && [ -n "${ADMIN_LOGIN}" ] && [ -n "${ADMIN_PWD}" ]
 then
-  dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" -c "${COMPUTER_ID}" -u "${ADMIN_LOGIN}" -p "${ADMIN_PWD}" 2>&1
+  dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" -c "${COMPUTER_ID}" -u "${ADMIN_LOGIN}" -p "${ADMIN_PWD}" >/dev/null 2>&1
   if [ ${?} -ne 0 ]
   then
-    dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" 2>&1
+    dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" >/dev/null  2>&1
   fi
 else
-  dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" 2>&1
+  dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" >/dev/null 2>&1
 fi
 
 #
@@ -352,11 +352,13 @@ then
     COMPUTER_GUID=`dscl /LDAPv3/${ODM_SERVER} -read /Computers/${COMPUTER_ID} | grep GeneratedUID | awk '{ print $2 }'`
 
     # Loop through computer groups array
+    PRIMARY_GROUP_ID=1025
+    IFS=","
     for COMPUTER_GROUP in ${CM_COMPUTER_GROUPS}
     do
       # Check if the group exists and try to create it if it doesn't
       INVALID_GROUP=
-      dscl /LDAPv3/${ODM_SERVER} -read /ComputerGroups/${COMPUTER_GROUP} RecordName >/dev/null 2>&1
+      dscl /LDAPv3/${ODM_SERVER} -read /ComputerGroups/"${COMPUTER_GROUP}" RecordName >/dev/null 2>&1
       if [ ${?} -ne 0 ]
       then
         RECORD_NAME=`dscl /LDAPv3/${ODM_SERVER} -search /ComputerGroups RealName "${COMPUTER_GROUP}" | head -n 1 | awk '{ print $1 }'`
@@ -366,24 +368,29 @@ then
         else
           if [ -n "${CREATE_COMPUTER_GROUPS}" ] && [ "${CREATE_COMPUTER_GROUPS}" = 'YES' ]
           then
-            echo "Creating computer group ${COMPUTER_GROUP}..."
+            RECORD_NAME=`echo "${COMPUTER_GROUP}" | tr '[:upper:]' '[:lower:]' | tr -s ' ' '_'`
+
+            DUPLICATE_ID=`dscl /LDAPv3/${ODM_SERVER} -search / PrimaryGroupID ${PRIMARY_GROUP_ID}`
+            while [ -n "${DUPLICATE_ID}" ]
+            do
+              PRIMARY_GROUP_ID=`expr ${PRIMARY_GROUP_ID} + 1`
+              DUPLICATE_ID=`dscl /LDAPv3/${ODM_SERVER} -search / PrimaryGroupID ${PRIMARY_GROUP_ID}`
+            done
+
+            echo "Creating computer group '${COMPUTER_GROUP}'/'${RECORD_NAME}'..."
             if [ `sw_vers -productVersion | awk -F. '{ print $2 }'` -gt 5 ]
             then
-              dseditgroup -o create -n /LDAPv3/${ODM_SERVER} -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" -r "${COMPUTER_GROUP}" -L -T computergroup -q "${COMPUTER_GROUP}"
+              dseditgroup -o create -n /LDAPv3/${ODM_SERVER} -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" -r "${COMPUTER_GROUP}" -i ${PRIMARY_GROUP_ID} -L -T computergroup -q "${RECORD_NAME}"
             else
-              PRIMARY_GROUP_ID=`dscl /Local/Default -list /ComputerGroups PrimaryGroupID | awk '{ print $2 }' | sort -n | tail -n 1`
-              PRIMARY_GROUP_ID=`expr ${PRIMARY_GROUP_ID} + 1`
-              if [ ${PRIMARY_GROUP_ID} -lt 1025 ]
-              then
-                PRIMARY_GROUP_ID=1025
-              fi
-              dscl -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" /LDAPv3/${ODM_SERVER} -create /ComputerGroups/${COMPUTER_GROUP} GeneratedUID `uuidgen`
-              dscl -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" /LDAPv3/${ODM_SERVER} -merge /ComputerGroups/${COMPUTER_GROUP} PrimaryGroupID "${PRIMARY_GROUP_ID}"
-              dscl -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" /LDAPv3/${ODM_SERVER} -merge /ComputerGroups/${COMPUTER_GROUP} RealName "${COMPUTER_GROUP}"
+              dscl -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" /LDAPv3/${ODM_SERVER} -create /ComputerGroups/"${RECORD_NAME}" GeneratedUID   `uuidgen`
+              dscl -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" /LDAPv3/${ODM_SERVER} -merge  /ComputerGroups/"${RECORD_NAME}" PrimaryGroupID "${PRIMARY_GROUP_ID}"
+              dscl -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" /LDAPv3/${ODM_SERVER} -merge  /ComputerGroups/"${RECORD_NAME}" RealName       "${COMPUTER_GROUP}"
             fi
-            if [ ${?} -ne 0 ]
+            if [ ${?} -eq 0 ]
             then
-              echo "Failed to create '${COMPUTER_GROUP}' computer group!"
+              COMPUTER_GROUP=${RECORD_NAME}
+            else
+              echo "Failed to create '${COMPUTER_GROUP}'/'${RECORD_NAME}' computer group!"
               INVALID_GROUP="YES"
             fi
           else
@@ -394,13 +401,13 @@ then
       fi
       if [ -z "${INVALID_GROUP}" ]
       then
-        echo "Adding ${COMPUTER_ID} to computer group ${COMPUTER_GROUP}..."
+        echo "Adding ${COMPUTER_ID} to computer group '${COMPUTER_GROUP}'..."
         if [ `sw_vers -productVersion | awk -F. '{ print $2 }'` -gt 5 ]
         then
           dseditgroup -o edit -n /LDAPv3/${ODM_SERVER} -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" -a "${COMPUTER_ID}" -L -t computer -T computergroup -q "${COMPUTER_GROUP}"
         else
-          dscl -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" /LDAPv3/${ODM_SERVER} -merge /ComputerGroups/${COMPUTER_GROUP} apple-group-memberguid "${COMPUTER_GUID}"
-          dscl -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" /LDAPv3/${ODM_SERVER} -merge /ComputerGroups/${COMPUTER_GROUP} memberUid "${COMPUTER_ID}"
+          dscl -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" /LDAPv3/${ODM_SERVER} -merge /ComputerGroups/"${COMPUTER_GROUP}" apple-group-memberguid "${COMPUTER_GUID}"
+          dscl -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" /LDAPv3/${ODM_SERVER} -merge /ComputerGroups/"${COMPUTER_GROUP}" memberUid "${COMPUTER_ID}"
         fi
         if [ ${?} -ne 0 ]
         then

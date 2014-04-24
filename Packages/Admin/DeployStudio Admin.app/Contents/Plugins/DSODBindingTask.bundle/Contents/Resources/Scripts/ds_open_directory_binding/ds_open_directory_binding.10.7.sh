@@ -5,7 +5,9 @@ histchars=
 
 SCRIPT_NAME=`basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.33 ("`date`")"
+SYS_VERS=`sw_vers -productVersion | awk -F. '{ print $2 }'`
+
+echo "${SCRIPT_NAME} - v1.35 ("`date`")"
 
 #
 # functions
@@ -125,13 +127,13 @@ fi
 echo "Unbinding computer..." 2>&1
 if [ -n "${COMPUTER_ID}" ] && [ -n "${ADMIN_LOGIN}" ] && [ -n "${ADMIN_PWD}" ]
 then
-  dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" -c "${COMPUTER_ID}" -u "${ADMIN_LOGIN}" -p "${ADMIN_PWD}" 2>&1
+  dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" -c "${COMPUTER_ID}" -u "${ADMIN_LOGIN}" -p "${ADMIN_PWD}" >/dev/null 2>&1
   if [ ${?} -ne 0 ]
   then
-    dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" 2>&1
+    dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" >/dev/null 2>&1
   fi
 else
-  dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" 2>&1
+  dsconfigldap ${DSCONFIG_OPTIONS} -f -r "${ODM_SERVER}" >/dev/null 2>&1
 fi
 
 #
@@ -149,10 +151,14 @@ do
     if [ -n "${ENABLE_TRUSTED_BINDING}" ] && [ "${ENABLE_TRUSTED_BINDING}" = "YES" ] && [ -n "${COMPUTER_ID}" ] && [ -n "${ADMIN_LOGIN}" ] && [ -n "${ADMIN_PWD}" ]
     then
       TRUST_INFORMATION="Authenticated"
-      dsconfigldap ${DSCONFIG_OPTIONS} -f -a "${ODM_SERVER}" -c "${COMPUTER_ID}" -u "${ADMIN_LOGIN}" -p "${ADMIN_PWD}" 2>&1 <<EOF
+      if [ ${SYS_VERS} -lt 9 ]
+      then
+        dsconfigldap ${DSCONFIG_OPTIONS} -f -a "${ODM_SERVER}" -c "${COMPUTER_ID}" -u "${ADMIN_LOGIN}" -p "${ADMIN_PWD}" 2>&1 <<EOF
 y
 EOF
-
+      else
+        dsconfigldap ${DSCONFIG_OPTIONS} -f -a "${ODM_SERVER}" -c "${COMPUTER_ID}" -u "${ADMIN_LOGIN}" -p "${ADMIN_PWD}" -N 2>&1
+      fi
       if [ ${?} -eq 0 ]
       then
         SUCCESS="YES"
@@ -163,9 +169,14 @@ EOF
       fi
     else
       TRUST_INFORMATION="Anonymous"
-      dsconfigldap ${DSCONFIG_OPTIONS} -a "${ODM_SERVER}" 2>&1 <<EOF
+      if [ ${SYS_VERS} -lt 9 ]
+      then
+        dsconfigldap ${DSCONFIG_OPTIONS} -a "${ODM_SERVER}" 2>&1 <<EOF
 y
 EOF
+      else
+        dsconfigldap ${DSCONFIG_OPTIONS} -a "${ODM_SERVER}" -N 2>&1
+      fi
 
       if [ ${?} -eq 0 ]
       then
@@ -233,11 +244,13 @@ then
     if [ -n "${COMPUTER_GUID}" ]
     then
       # Loop through computer groups array
+      PRIMARY_GROUP_ID=1025
+      IFS=","
       for COMPUTER_GROUP in ${CM_COMPUTER_GROUPS}
       do
         # Check if the group exists and try to create it if it doesn't
         INVALID_GROUP=
-        dscl /LDAPv3/${ODM_SERVER} -read /ComputerGroups/${COMPUTER_GROUP} RecordName >/dev/null 2>&1
+        dscl /LDAPv3/${ODM_SERVER} -read /ComputerGroups/"${COMPUTER_GROUP}" RecordName >/dev/null 2>&1
         if [ ${?} -ne 0 ]
         then
           RECORD_NAME=`dscl /LDAPv3/${ODM_SERVER} -search /ComputerGroups RealName "${COMPUTER_GROUP}" | head -n 1 | awk '{ print $1 }'`
@@ -247,11 +260,22 @@ then
           else
             if [ -n "${CREATE_COMPUTER_GROUPS}" ] && [ "${CREATE_COMPUTER_GROUPS}" = 'YES' ]
             then
-              echo "Creating computer group ${COMPUTER_GROUP}..."
-              dseditgroup -o create -n /LDAPv3/${ODM_SERVER} -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" -r "${COMPUTER_GROUP}" -L -T computergroup -q "${COMPUTER_GROUP}"
-              if [ ${?} -ne 0 ]
+              RECORD_NAME=`echo "${COMPUTER_GROUP}" | tr '[:upper:]' '[:lower:]' | tr -s ' ' '_'`
+
+              DUPLICATE_ID=`dscl /LDAPv3/${ODM_SERVER} -search / PrimaryGroupID ${PRIMARY_GROUP_ID}`
+              while [ -n "${DUPLICATE_ID}" ]
+              do
+                PRIMARY_GROUP_ID=`expr ${PRIMARY_GROUP_ID} + 1`
+                DUPLICATE_ID=`dscl /LDAPv3/${ODM_SERVER} -search / PrimaryGroupID ${PRIMARY_GROUP_ID}`
+              done
+
+              echo "Creating computer group '${COMPUTER_GROUP}'/'${RECORD_NAME}'..."
+              dseditgroup -o create -n /LDAPv3/${ODM_SERVER} -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" -r "${COMPUTER_GROUP}" -i ${PRIMARY_GROUP_ID} -L -T computergroup -q "${RECORD_NAME}"
+              if [ ${?} -eq 0 ]
               then
-                echo "Failed to create '${COMPUTER_GROUP}' computer group!"
+                COMPUTER_GROUP=${RECORD_NAME}
+              else
+                echo "Failed to create '${COMPUTER_GROUP}'/'${RECORD_NAME}' computer group!"
                 INVALID_GROUP="YES"
               fi
             else
@@ -262,7 +286,7 @@ then
         fi
         if [ -z "${INVALID_GROUP}" ]
         then
-          echo "Adding ${COMPUTER_ID} to computer group ${COMPUTER_GROUP}..."
+          echo "Adding ${COMPUTER_ID} to computer group '${COMPUTER_GROUP}'..."
           dseditgroup -o edit -n /LDAPv3/${ODM_SERVER} -u "${ADMIN_LOGIN}" -P "${ADMIN_PWD}" -a "${COMPUTER_ID}" -L -t computer -T computergroup -q "${COMPUTER_GROUP}"
           if [ ${?} -ne 0 ]
           then
@@ -273,8 +297,8 @@ then
     fi
   fi
 
-  GROUP_MEMBERS=`dscl /Local/Default -read /Groups/com.apple.access_loginwindow GroupMembers`
-  NESTED_GROUPS=`dscl /Local/Default -read /Groups/com.apple.access_loginwindow NestedGroups`
+  GROUP_MEMBERS=`dscl /Local/Default -read /Groups/com.apple.access_loginwindow GroupMembers 2>/dev/null`
+  NESTED_GROUPS=`dscl /Local/Default -read /Groups/com.apple.access_loginwindow NestedGroups 2>/dev/null`
   if [ -z "${GROUP_MEMBERS}" ] && [ -z "${NESTED_GROUPS}" ]
   then
     echo "Enabling network users login..." 2>&1
