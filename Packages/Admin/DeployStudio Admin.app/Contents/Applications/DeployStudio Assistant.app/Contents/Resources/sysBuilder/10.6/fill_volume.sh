@@ -266,10 +266,15 @@ then
   chmod 755 "${TMP_MOUNT_PATH}"/usr/bin/OSXvnc-server 2>&1
   chown root:wheel "${TMP_MOUNT_PATH}"/usr/bin/OSXvnc-server 2>&1
 
+  ditto --rsrc "${SYSBUILDER_FOLDER}/common/com.vineserver.osxvnc.plist" "${TMP_MOUNT_PATH}/System/Library/LaunchAgents/com.vineserver.osxvnc.plist" 2>&1
+  chmod 644 "${TMP_MOUNT_PATH}"/System/Library/LaunchAgents/com.vineserver.osxvnc.plist 2>&1
+  chown root:wheel "${TMP_MOUNT_PATH}"/System/Library/LaunchAgents/com.vineserver.osxvnc.plist 2>&1
+
   echo enabled > "${TMP_MOUNT_PATH}"/etc/ScreenSharing.launchd
   "${SYSBUILDER_FOLDER}"/common/storepasswd "${ARD_PASSWORD}" "${TMP_MOUNT_PATH}/Library/Preferences/com.osxvnc.txt" 2>&1
   chmod 644 "${TMP_MOUNT_PATH}"/Library/Preferences/com.osxvnc.txt 2>&1
   chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/com.osxvnc.txt 2>&1
+
   echo "${ARD_PASSWORD}" | perl -wne 'BEGIN { @k = unpack "C*", pack "H*", "1734516E8BA8C5E2FF1C39567390ADCA"}; chomp; s/^(.{8}).*/$1/; @p = unpack "C*", $_; foreach (@k) { printf "%02X", $_ ^ (shift @p || 0) }; print "\n"' > "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.VNCSettings.txt
   chmod 400 "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.VNCSettings.txt 2>&1
   chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.VNCSettings.txt 2>&1

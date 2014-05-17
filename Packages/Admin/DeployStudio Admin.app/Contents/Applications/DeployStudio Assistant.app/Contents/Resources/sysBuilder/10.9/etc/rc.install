@@ -143,7 +143,6 @@ fi
 if [ -e /Library/Preferences/com.apple.VNCSettings.txt ]
 then
   launchctl load /System/Library/LaunchAgents/com.apple.screensharing.MessagesAgent.plist
-  launchctl load /System/Library/LaunchAgents/com.apple.screensharing.agent.plist
 fi
 
 #
@@ -169,10 +168,6 @@ then
   defaults write com.deploystudio.admin   NSAppSleepDisabled -bool YES
   defaults write com.deploystudio.runtime NSAppSleepDisabled -bool YES
   #/usr/bin/say "Welcome to DeployStudio..."
-  if [ -e /Applications/AdViewer.app/Contents/MacOS/AdViewer ]
-  then
-    /Applications/AdViewer.app/Contents/MacOS/AdViewer &
-  fi
   "$DS_APP" $DS_PARAMS
   if [ $? != 0 ]
   then

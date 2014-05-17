@@ -113,7 +113,7 @@ fi
 #
 if [ -e /Library/Preferences/com.apple.VNCSettings.txt ]
 then
-  launchctl load /System/Library/LaunchAgents/com.apple.applevncserver.plist
+  launchctl load /System/Library/LaunchAgents/com.apple.screensharing.MessagesAgent.plist
 fi
 
 #
@@ -136,10 +136,6 @@ DS_PARAMS=--netboot
 if [ -x "$DS_APP" ]
 then
   #/usr/bin/say "Welcome to DeployStudio..."
-  if [ -e /Applications/AdViewer.app/Contents/MacOS/AdViewer ]
-  then
-    /Applications/AdViewer.app/Contents/MacOS/AdViewer &
-  fi
   "$DS_APP" $DS_PARAMS
   if [ $? != 0 ]
   then
