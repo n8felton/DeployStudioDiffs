@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "fixByHostPrefs.sh - v1.13 ("`date`")"
+echo "fixByHostPrefs.sh - v1.14 ("`date`")"
 
 _MACADDR=`/sbin/ifconfig en0 | grep -w ether | awk '{ gsub(":", ""); print $2 }'`
 _HOSTUUID=`ioreg -rd1 -c IOPlatformExpertDevice | awk -F= '/(UUID)/ { gsub("[ \"]", ""); print $2 }'`
@@ -111,7 +111,7 @@ then
   find "/Volumes/${1}/System/Library/User Template" -name "Preferences" -type d | while read PREFS_FOLDER; do fix_preferences_folder "${PREFS_FOLDER}"; done
 fi
 
-# Check other user home directories. 
+# Check other user home directories
 _DS_USERS_PATH="/Volumes/${1}/var/db/dslocal/nodes/Default/users"
 if [ -d "${_DS_USERS_PATH}" ]
 then
@@ -129,6 +129,12 @@ then
       fi
     fi
   done
+fi
+
+# Check locationd prefs
+if [ -d "/Volumes/${1}/private/var/db/locationd" ]
+then
+  find "/Volumes/${1}/private/var/db/locationd" -name "Preferences" -type d | while read PREFS_FOLDER; do fix_preferences_folder "${PREFS_FOLDER}"; done
 fi
 
 _COUNTER=`cat "${_COUNTER_FILE}"`
