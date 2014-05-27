@@ -59,6 +59,7 @@ RAMDisk /var/tmp 32768
 RAMDisk /var/run 4096
 
 RAMDisk /System/Library/Caches 32768
+RAMDisk /System/Library/Caches/com.apple.CVMS 32768
 
 RAMDisk /var/db 4096
 RAMDisk /var/db/launchd.db 2048

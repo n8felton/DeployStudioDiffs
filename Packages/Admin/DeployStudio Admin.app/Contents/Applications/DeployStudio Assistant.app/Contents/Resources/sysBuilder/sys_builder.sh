@@ -538,6 +538,9 @@ then
   ditto "${BASE_SYSTEM_ROOT_PATH}"/System/Library/CoreServices/PlatformSupport.plist "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
 fi
 
+# remove extra languages resources
+find "${TMP_MOUNT_PATH}" ! -name "Base.lproj" ! -name "English.lproj" ! -name "en.lproj" -name "*.lproj" -exec rm -r -- {} \; -prune
+
 # closing media
 if [ "${SYS_BUILDER_TYPE}" == "local" ]
 then

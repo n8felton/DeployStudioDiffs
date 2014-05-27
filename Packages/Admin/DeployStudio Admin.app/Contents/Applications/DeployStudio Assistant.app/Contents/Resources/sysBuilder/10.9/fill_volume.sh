@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=9.57
+FILL_VOLUME_VERSION=9.59
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -115,6 +115,9 @@ add_files_at_path "${GRAPHICS_EXT}" /System/Library/Extensions
 SYS_LIB_EXT="IOStorageFamily"
 add_files_at_path "${SYS_LIB_EXT}" /System/Library/Extensions .kext
 
+SYS_LIB_FRK="ApplicationServices vecLib"
+add_files_at_path "${SYS_LIB_FRK}" /System/Library/Frameworks .framework
+
 if [ -n "${ENABLE_PYTHON}" ]
 then
   add_file_at_path Python /Library
@@ -134,6 +137,8 @@ if [ -e "/tmp/recovery_tools/OpenCL.framework" ]
 then
   ditto --rsrc "/tmp/recovery_tools/OpenCL.framework" "${TMP_MOUNT_PATH}"/System/Library/Frameworks/OpenCL.framework
 fi
+add_file_at_path libCLVMIGILPlugin.dylib /System/Library/Frameworks/OpenCL.framework/Libraries
+add_file_at_path IGIL.dylib /System/Library/Frameworks/OpenCL.framework/Libraries
 if [ -e "/tmp/recovery_tools/OpenGL.framework" ]
 then
   ditto --rsrc "/tmp/recovery_tools/OpenGL.framework" "${TMP_MOUNT_PATH}"/System/Library/Frameworks/OpenGL.framework
