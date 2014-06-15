@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>DeployStudio Runtime</string>
 	<key>CFBundleIconFile</key>
-	<string>Runtime</string>
+	<string>Runtime.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.deploystudio.runtime</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>140528</string>
+	<string>140613</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
@@ -39,17 +39,8 @@
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>NSMainNibFile</key>
-	<string>RuntimeMain</string>
+	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>XPCService</key>
-	<dict>
-		<key>JoinExistingSession</key>
-		<true/>
-		<key>RunloopType</key>
-		<string>NSRunloop</string>
-		<key>ServiceType</key>
-		<string>Application</string>
-	</dict>
 </dict>
 </plist>

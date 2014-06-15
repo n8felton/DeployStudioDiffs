@@ -1,7 +1,7 @@
 #!/bin/sh
 
 SCRIPT_NAME=`basename "${0}"`
-VERSION=1.0
+VERSION=1.1
 SYS_VERS=`sw_vers -productVersion | awk -F. '{ print $2 }'`
 
 if [ ${SYS_VERS} -lt 7 ]
@@ -18,6 +18,12 @@ then
 fi
 
 TARGET_DEVICE=`basename "${1}"`
+
+LV_NAME=`diskutil cs list | grep "Volume Name:" | sed -e s/"Volume Name:"// -e s/"^ *"//`
+if [ -n "${LV_NAME}" ]
+then
+  diskutil umount force "${LV_NAME}"
+fi
 
 PV_UUIDS=`diskutil cs list | grep "Physical Volume" | sed -e "s/^.* //"`
 for PV_UUID in ${PV_UUIDS}

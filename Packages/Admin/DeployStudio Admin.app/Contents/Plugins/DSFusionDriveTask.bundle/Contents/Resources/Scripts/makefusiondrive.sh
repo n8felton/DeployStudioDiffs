@@ -20,6 +20,12 @@ fi
 TARGET_DEVICE0=`basename "${1}"`
 TARGET_DEVICE1=`basename "${2}"`
 
+LV_NAME=`diskutil cs list | grep "Volume Name:" | sed -e s/"Volume Name:"// -e s/"^ *"//`
+if [ -n "${LV_NAME}" ]
+then
+  diskutil umount force "${LV_NAME}"
+fi
+
 PV_UUIDS=`diskutil cs list | grep "Physical Volume" | sed -e "s/^.* //"`
 for PV_UUID in ${PV_UUIDS}
 do

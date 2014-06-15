@@ -391,7 +391,9 @@ fi
 
 HOST_UUID=`ioreg -rd1 -c IOPlatformExpertDevice | awk -F= '/(UUID)/ { gsub("[ \"]", ""); print $2 }'`
 HOST_MACADDR=`/sbin/ifconfig en0 | grep -w ether | awk '{ gsub(":", ""); print $2 }'`
-SYS_VERS=10.`defaults read "${BASE_SYSTEM_ROOT_PATH}"/System/Library/CoreServices/SystemVersion ProductVersion | awk -F. '{ print $2 }'`
+SYS_MIN_VERS=`defaults read "${BASE_SYSTEM_ROOT_PATH}"/System/Library/CoreServices/SystemVersion ProductVersion | awk -F. '{ print $2 }'`
+SYS_VERS=10.${SYS_MIN_VERS}
+
 if [ -e "${SYSBUILDER_FOLDER}/${SYS_VERS}" ]
 then
   ARCH=i386
@@ -511,7 +513,7 @@ mdutil -E "${TMP_MOUNT_PATH}"
 defaults write "${TMP_MOUNT_PATH}"/.Spotlight-V100/_IndexPolicy Policy -int 3
 
 # filling media
-if [ "${SYS_VERS}" == "10.7" ] || [ "${SYS_VERS}" == "10.8" ] || [ "${SYS_VERS}" == "10.9" ]
+if [ ${SYS_MIN_VERS} -ge 7 ]
 then
     get_recovery_utilities
 fi
@@ -552,7 +554,12 @@ then
   chown root:admin "${TMP_MOUNT_PATH}/etc/DeployStudioAssistantInfo.plist" 2>&1
 
   # add kernel and kext cache
-  ditto --norsrc "${BASE_SYSTEM_ROOT_PATH}"/mach_kernel "${TMP_MOUNT_PATH}"/mach_kernel 2>&1
+  if [ "${SYS_VERS}" == "10.10" ]
+  then
+    ditto --norsrc "${BASE_SYSTEM_ROOT_PATH}"/System/Library/Kernels/kernel "${TMP_MOUNT_PATH}"/System/Library/Kernels/kernel 2>&1
+  else
+    ditto --norsrc "${BASE_SYSTEM_ROOT_PATH}"/mach_kernel "${TMP_MOUNT_PATH}"/mach_kernel 2>&1
+  fi
   if [ -e "${TMP_MOUNT_PATH}"/Volumes ]
   then
     rm -rf "${TMP_MOUNT_PATH}"/Volumes/* 2>&1
@@ -607,7 +614,7 @@ else
     cp /tmp/mach.macosx.x86_64 "${NBI_FOLDER}/i386/x86_64/mach.macosx"
     chmod 664 "${NBI_FOLDER}"/i386/mach.macosx "${NBI_FOLDER}"/i386/x86_64/mach.macosx 2>&1
     rm /tmp/mach.macosx.* 2>&1
-  elif [ "${SYS_VERS}" == "10.8" ] || [ "${SYS_VERS}" == "10.9" ]
+  elif [ ${SYS_MIN_VERS} -ge 8 ]
   then
     mkdir -p "${NBI_FOLDER}/i386/x86_64" 2>&1
     chmod -R 777 "${NBI_FOLDER}/i386" 2>&1
@@ -627,15 +634,24 @@ else
     KEXTCACHE_OPTIONS="-N -L"
   fi
 
-  if [ "${SYS_VERS}" == "10.8" ] || [ "${SYS_VERS}" == "10.9" ]
+  if [ "${SYS_VERS}" == "10.10" ]
   then
     kextcache -update-volume "${TMP_MOUNT_PATH}"
-	kextcache -a x86_64 \
-		      ${KEXTCACHE_OPTIONS} -z \
-	          -K "${TMP_MOUNT_PATH}/mach_kernel" \
-	          -c "${NBI_FOLDER}/i386/x86_64/kernelcache" \
-	          "${TMP_MOUNT_PATH}/System/Library/Extensions"
-	update_dyld_shared_cache -root "${TMP_MOUNT_PATH}" -arch x86_64 -force
+    kextcache -a x86_64 \
+	      ${KEXTCACHE_OPTIONS} -z \
+              -K "${TMP_MOUNT_PATH}/System/Library/Kernels/kernel" \
+	      -c "${NBI_FOLDER}/i386/x86_64/kernelcache" \
+	      "${TMP_MOUNT_PATH}/System/Library/Extensions"
+    update_dyld_shared_cache -root "${TMP_MOUNT_PATH}" -arch x86_64 -force
+  elif [ "${SYS_VERS}" == "10.8" ] || [ "${SYS_VERS}" == "10.9" ]
+  then
+    kextcache -update-volume "${TMP_MOUNT_PATH}"
+    kextcache -a x86_64 \
+	      ${KEXTCACHE_OPTIONS} -z \
+              -K "${TMP_MOUNT_PATH}/mach_kernel" \
+	      -c "${NBI_FOLDER}/i386/x86_64/kernelcache" \
+	      "${TMP_MOUNT_PATH}/System/Library/Extensions"
+    update_dyld_shared_cache -root "${TMP_MOUNT_PATH}" -arch x86_64 -force
   elif [ "${SYS_VERS}" == "10.7" ]
   then
     kextcache -a i386 \

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+        <!-- Run smb-sync-preferences when the SMB server preferences are modified.  -->
+        <key>Label</key>
+        <string>com.apple.smb.preferences</string>
+        <key>ProgramArguments</key>
+        <array>
+                <string>/usr/libexec/smb-sync-preferences</string>
+        </array>
+        <key>EnableTransactions</key>
+        <true/>
+        <key>RunAtLoad</key>
+        <true/>
+	<key>LaunchEvents</key>
+	<dict>
+		<!-- UserEventAgent : /System/Library/UserEventPlugins/com.apple.systemconfiguration.plugin -->
+		<key>com.apple.systemconfiguration</key>
+		<dict>
+			<key>SMB Server Preferences</key>
+			<dict>
+				<key>Identifier</key>
+				<string>com.apple.smb.server.plist</string>
+			</dict>
+		</dict>
+	</dict>
+        <key>TimeOut</key>
+        <integer>1</integer>
+</dict>
+</plist>

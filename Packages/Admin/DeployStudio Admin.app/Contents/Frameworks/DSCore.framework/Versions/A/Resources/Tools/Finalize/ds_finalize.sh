@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-/bin/echo "${SCRIPT_NAME} - v1.34 ("`date`")"
+/bin/echo "${SCRIPT_NAME} - v1.35 ("`date`")"
 
 custom_logger() {
   /bin/echo "${SCRIPT_NAME} - $1"
@@ -19,8 +19,8 @@ exec_if_exists() {
       /bin/echo `/bin/date` >> "/etc/deploystudio/bin/.ds_finalize.calls"
       custom_logger "script execution failed, system will automatically reboot."
       custom_logger "end"
-      /sbin/reboot -q
-	  exit 0
+      /sbin/reboot -l
+      exit 0
     fi
   fi
 }
@@ -105,7 +105,7 @@ then
 
   # reboot
   custom_logger "end"
-  /sbin/reboot -q
+  /sbin/reboot -l
   exit 0
 fi
 
@@ -186,7 +186,7 @@ then
           fi
           custom_logger "reboot required after running Apple software update packages installation, system will automatically reboot."
           custom_logger "end"
-          /sbin/reboot -q
+          /sbin/reboot -l
           exit 0
         fi
       fi
@@ -247,13 +247,13 @@ then
     # restore initial system configuration
     restore_initial_config
     final_cleanup "reboot required by packages installation, system will automatically reboot in ${REBOOT_DELAY}s."
-    /sbin/reboot -q
+    /sbin/reboot -l
     exit 0
   else
     /bin/echo `/bin/date` >> "/etc/deploystudio/bin/.ds_finalize.calls"
     custom_logger "failed to remove the /etc/deploystudio/ds_packages folder, system will automatically reboot."
     custom_logger "end"
-    /sbin/reboot -q
+    /sbin/reboot -l
     exit 0
   fi
 else
@@ -262,7 +262,7 @@ else
 
   # cleanup
   final_cleanup "Finalize script completed, system will automatically reboot."
-  /sbin/reboot -q
+  /sbin/reboot -l
 fi
 
 exit 0
