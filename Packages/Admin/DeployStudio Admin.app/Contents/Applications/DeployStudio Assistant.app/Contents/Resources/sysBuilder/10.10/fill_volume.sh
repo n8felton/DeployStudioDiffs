@@ -42,7 +42,8 @@ add_files_at_path "${USR_LIB}" /usr/lib
 USR_SHARE="sandbox terminfo zoneinfo"
 add_files_at_path "${USR_SHARE}" /usr/share
 
-USR_LIBEXEC="checkLocalKDC configureLocalKDC dirhelper launchdadd migrateLocalKDC security-checksystem smb-sync-preferences xpcd displaypolicyd"
+USR_LIBEXEC="checkLocalKDC configureLocalKDC dirhelper launchdadd migrateLocalKDC security-checksystem smb-sync-preferences xpcd \
+             displaypolicyd nsurlsessiond nsurlstoraged"
 add_files_at_path "${USR_LIBEXEC}" /usr/libexec
 
 if [ -e "/tmp/recovery_tools/Startup Disk.app" ]
