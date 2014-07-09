@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-echo "${SCRIPT_NAME} - v1.2 ("`date`")"
+echo "${SCRIPT_NAME} - v1.3 ("`date`")"
 
 if [ ${#} -ne 1 ]
 then
@@ -37,6 +37,9 @@ cp "${SCRIPT_PATH}"/ds_auto_enroll/ds_auto_enroll.sh "${VOLUME_PATH}"/etc/deploy
 	
 chmod 700 "${VOLUME_PATH}"/etc/deploystudio/bin/ds_auto_enroll.sh
 chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/bin/ds_auto_enroll.sh
+
+chmod 644 "${VOLUME_PATH}"/etc/deploystudio/bin/*.mobileconfig
+chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/bin/*.mobileconfig
 
 echo "${SCRIPT_NAME} - end"
 

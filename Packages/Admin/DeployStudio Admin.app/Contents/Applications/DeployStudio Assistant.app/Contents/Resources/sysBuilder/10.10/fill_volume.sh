@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=10.59
+FILL_VOLUME_VERSION=10.60
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -74,6 +74,10 @@ add_files_at_path "${SYS_LIB_MISC}" /System/Library
 SYS_LIB_CORE="CoreTypes.bundle ManagedClient.app PlatformSupport.plist RemoteManagement SecurityAgentPlugins \
               SystemUIServer.app ZoomWindow.app boot.efi"
 add_files_at_path "${SYS_LIB_CORE}" /System/Library/CoreServices
+
+# 10.10 DP3 fix
+cp -f "${BASE_SYSTEM_ROOT_PATH}"/Library/Fonts/AppleSDGothicNeo* "${TMP_MOUNT_PATH}"/System/Library/Fonts/
+#
 
 # 10.9.2 fixes
 add_file_at_path AppleGraphicsDevicePolicy.kext /System/Library/Extensions/AppleGraphicsControl.kext/Contents/PlugIns/
