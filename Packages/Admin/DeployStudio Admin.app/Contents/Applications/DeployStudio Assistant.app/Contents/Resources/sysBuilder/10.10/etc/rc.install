@@ -106,11 +106,6 @@ then
 fi
 
 #
-# Configure local KDC
-#
-/usr/libexec/configureLocalKDC
-
-#
 # Disable assessments checks
 #
 /usr/sbin/spctl --master-disable

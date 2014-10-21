@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=7.54
+FILL_VOLUME_VERSION=7.55
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -80,6 +80,9 @@ add_files_at_path "${SYS_LIB_MISC}" /System/Library
 
 SYS_LIB_CORE="PlatformSupport.plist RemoteManagement SystemUIServer.app ZoomWindow.app"
 add_files_at_path "${SYS_LIB_CORE}" /System/Library/CoreServices
+
+SYS_LIB_FRK="ApplicationServices"
+add_files_at_path "${SYS_LIB_FRK}" /System/Library/Frameworks .framework
 
 if [ -e "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist ]
 then
@@ -338,7 +341,7 @@ defaults write "${TMP_MOUNT_PATH}"/.Spotlight-V100/_IndexPolicy Policy -int 3
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/Caches/com.apple.bootstamps
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/Caches/*
 rm -r  "${TMP_MOUNT_PATH}"/System/Library/Extensions.mkext
-rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.fontd.plist
+rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.SystemUIServer.plist
 rm -r  "${TMP_MOUNT_PATH}"/usr/standalone/bootcaches.plist
 rm -f  "${TMP_MOUNT_PATH}"/var/db/BootCache*
 

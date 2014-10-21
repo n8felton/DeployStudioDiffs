@@ -1,474 +1,516 @@
 {
 	"DPRackMac1,1" = {
-		icon = "Xserve";
+		icon = Xserve;
 		name = "Xserve G4/1.0";
 	};
 	"iMac10,1" = {
-		icon = "iMacUnibody";
+		icon = iMacUnibody;
 		name = "iMac Core 2 Duo 3.06 21.5-Inch (Late 2009), iMac Core 2 Duo 3.06 27-Inch (Late 2009)";
 	};
 	iMac11 = {
-		icon = "iMacUnibody";
+		icon = iMacUnibody;
 		"iMac11,1" = {
-			icon = "iMacUnibody";
+			icon = iMacUnibody;
 			name = "iMac Core i5 2.66 27-Inch (Late 2009)";
 		};
 		"iMac11,2" = {
-			icon = "iMacUnibody";
+			icon = iMacUnibody;
 			name = "iMac Core i3 3.06 21.5-Inch (Mid-2010), iMac Core i3 3.2 21.5-Inch (Mid-2010)";
 		};
 		"iMac11,3" = {
-			icon = "iMacUnibody";
+			icon = iMacUnibody;
 			name = "iMac Core i3 3.2 27-Inch (Mid-2010), iMac Core i5 2.8 27-Inch (Mid-2010)";
 		};
 	};
 	iMac12 = {
-		icon = "iMacUnibody";
+		icon = iMacUnibody;
 		"iMac12,1" = {
-			icon = "iMacUnibody";
+			icon = iMacUnibody;
 			name = "iMac Core i5 2.5 21.5-Inch (Mid-2011), iMac Core i5 2.7 21.5-Inch (Mid-2011), iMac Core i7 2.8 21.5-Inch (Mid-2011)";
 		};
 		"iMac12,2" = {
-			icon = "iMacUnibody";
+			icon = iMacUnibody;
 			name = "iMac Core i5 2.7 27-Inch (Mid-2011), iMac Core i5 3.1 27-Inch (Mid-2011), iMac Core i7 3.4 27-Inch (Mid-2011)";
 		};
 	};
+	"iMac13,1" = {
+		icon = iMacUnibody;
+		name = "iMac \"Core i3\" 3.3 21.5-Inch (Early 2013)";
+	};
+	iMac14 = {
+		icon = iMacUnibody;
+		"iMac14,1" = {
+			icon = iMacUnibody;
+			name = "iMac \"Core i5\" 2.7 21.5-Inch (Late 2013)";
+		};
+		"iMac14,2" = {
+			icon = iMacUnibody;
+			name = "iMac \"Core i5\" 3.2 27-Inch (Late 2013), iMac \"Core i5\" 3.4 27-Inch (Late 2013), iMac \"Core i7\" 3.5 27-Inch (Late 2013)";
+		};
+		"iMac14,3" = {
+			icon = iMacUnibody;
+			name = "iMac \"Core i5\" 2.9 21.5-Inch (Late 2013), iMac \"Core i7\" 3.1 21.5-Inch (Late 2013)";
+		};
+		"iMac14,4" = {
+			icon = iMacUnibody;
+			name = "iMac \"Core i5\" 1.4 21.5-Inch (Mid-2014)";
+		};
+	};
 	iMac4 = {
-		icon = "iMacIsight";
+		icon = iMacIsight;
 		"iMac4,1" = {
-			icon = "iMacIsight";
+			icon = iMacIsight;
 			name = "iMac Core Duo 1.83 17-Inch, iMac Core Duo 2.0 20-Inch";
 		};
 		"iMac4,2" = {
-			icon = "iMacIsight";
+			icon = iMacIsight;
 			name = "iMac Core Duo 1.83 17-Inch (IG)";
 		};
 	};
 	iMac5 = {
-		icon = "iMacIsight";
+		icon = iMacIsight;
 		"iMac5,1" = {
-			icon = "iMacIsight";
+			icon = iMacIsight;
 			name = "iMac Core 2 Duo 2.0 17-Inch, iMac Core 2 Duo 2.16 20-Inch";
 		};
 		"iMac5,2" = {
-			icon = "iMacIsight";
+			icon = iMacIsight;
 			name = "iMac Core 2 Duo 1.83 17-Inch (IG)";
 		};
 	};
 	"iMac6,1" = {
-		icon = "iMacIsight";
+		icon = iMacIsight;
 		name = "iMac Core 2 Duo 2.16 24-Inch";
 	};
 	"iMac7,1" = {
-		icon = "iMacAlu";
+		icon = iMacAlu;
 		name = "iMac Core 2 Duo 2.0 20-Inch (Al), iMac Core 2 Duo 2.4 20-Inch (Al), iMac Core 2 Duo 2.4 24-Inch (Al), iMac Core 2 Extreme 2.8 24-Inch (Al)";
 	};
 	"iMac8,1" = {
-		icon = "iMacAlu";
+		icon = iMacAlu;
 		name = "iMac Core 2 Duo 2.4 20-Inch (Early 2008), iMac Core 2 Duo 2.66 20-Inch (Early 2008), iMac Core 2 Duo 2.8 24-Inch (Early 2008), iMac Core 2 Duo 3.06 24-Inch (Early 2008)";
 	};
 	"iMac9,1" = {
-		icon = "iMacAlu";
+		icon = iMacAlu;
 		name = "iMac Core 2 Duo 2.66 20-Inch (Early 2009), iMac Core 2 Duo 2.66 24-Inch (Early 2009), iMac Core 2 Duo 2.93 24-Inch (Early 2009), iMac Core 2 Duo 3.06 24-Inch (Early 2009), iMac Core 2 Duo 2.0 20-Inch (Early 2009)";
 	};
 	"MacBook1,1" = {
-		icon = "MacBook";
+		icon = MacBook;
 		name = "MacBook Core Duo 1.83 13-Inch, MacBook Core Duo 2.0 13-Inch (White), MacBook Core Duo 2.0 13-Inch (Black)";
 	};
 	"MacBook2,1" = {
-		icon = "MacBook";
+		icon = MacBook;
 		name = "MacBook Core 2 Duo 1.83 13-Inch, MacBook Core 2 Duo 2.0 13-Inch (White/06), MacBook Core 2 Duo 2.0 13-Inch (Black), MacBook Core 2 Duo 2.0 13-Inch (White/07), MacBook Core 2 Duo 2.16 13-Inch (White), MacBook Core 2 Duo 2.16 13-Inch (Black)";
 	};
 	"MacBook3,1" = {
-		icon = "MacBook";
+		icon = MacBook;
 		name = "MacBook Core 2 Duo 2.0 13-Inch (White-SR), MacBook Core 2 Duo 2.2 13-Inch (White-SR), MacBook Core 2 Duo 2.2 13-Inch (Black-SR)";
 	};
 	"MacBook4,1" = {
-		icon = "MacBook";
+		icon = MacBook;
 		name = "MacBook Core 2 Duo 2.1 13-Inch (White-08), MacBook Core 2 Duo 2.4 13-Inch (White-08), MacBook Core 2 Duo 2.4 13-Inch (Black-08)";
 	};
 	MacBook5 = {
-		icon = "MacBook";
+		icon = MacBook;
 		"MacBook5,1" = {
-			icon = "MacBookPro";
+			icon = MacBookPro;
 			name = "MacBook Core 2 Duo 2.0 13-Inch (Unibody), MacBook Core 2 Duo 2.4 13-Inch (Unibody)";
 		};
 		"MacBook5,2" = {
-			icon = "MacBook";
+			icon = MacBook;
 			name = "MacBook Core 2 Duo 2.0 13-Inch (White-09), MacBook Core 2 Duo 2.13 13-Inch (White-09)";
 		};
 	};
 	"MacBook6,1" = {
-		icon = "MacBook";
+		icon = MacBook;
 		name = "MacBook Core 2 Duo 2.26 13-Inch (Uni/Late 09)";
 	};
 	"MacBook7,1" = {
-		icon = "MacBook";
+		icon = MacBook;
 		name = "MacBook Core 2 Duo 2.4 13-Inch (Mid-2010)";
 	};
 	"MacBookAir1,1" = {
-		icon = "MacBookAir";
+		icon = MacBookAir;
 		name = "MacBook Air Core 2 Duo 1.6 13-Inch (Original)";
 	};
 	"MacBookAir2,1" = {
-		icon = "MacBookAir";
+		icon = MacBookAir;
 		name = "MacBook Air Core 2 Duo 1.6 13-Inch (NVIDIA), MacBook Air Core 2 Duo 1.86 13-Inch (NVIDIA), MacBook Air Core 2 Duo 1.86 13-Inch (Mid-09), MacBook Air Core 2 Duo 2.13 13-Inch (Mid-09)";
 	};
 	MacBookAir3 = {
-		icon = "MacBookAirUnibody";
+		icon = MacBookAirUnibody;
 		"MacBookAir3,1" = {
-			icon = "MacBookAirUnibody";
+			icon = MacBookAirUnibody;
 			name = "MacBook Air Core 2 Duo 1.4 11-Inch (Late '10)";
 		};
 		"MacBookAir3,2" = {
-			icon = "MacBookAirUnibody";
+			icon = MacBookAirUnibody;
 			name = "MacBook Air Core 2 Duo 1.86 13-Inch (Late '10)";
 		};
 	};
 	MacBookAir4 = {
-		icon = "MacBookAirUnibody";
+		icon = MacBookAirUnibody;
 		"MacBookAir4,1" = {
-			icon = "MacBookAirUnibody";
+			icon = MacBookAirUnibody;
 			name = "MacBook Air Core i5 1.6 11-Inch (Mid-2011), MacBook Air Core i7 1.8 11-Inch (Mid-2011)";
 		};
 		"MacBookAir4,2" = {
-			icon = "MacBookAirUnibody";
+			icon = MacBookAirUnibody;
 			name = "MacBook Air Core i5 1.7 13-Inch (Mid-2011), MacBook Air Core i7 1.8 13-Inch (Mid-2011)";
 		};
 	};
 	MacBookAir5 = {
-		icon = "MacBookAirUnibody";
+		icon = MacBookAirUnibody;
 		name = "MacBook Air Mid 2012";
 	};
+	MacBookAir6 = {
+		icon = MacBookAirUnibody;
+		"MacBookAir6,1" = {
+			icon = MacBookAirUnibody;
+			name = "MacBook Air \"Core i5\" 1.3 11\" (Mid-2013), MacBook Air \"Core i7\" 1.7 11\" (Mid-2013)";
+		};
+		"MacBookAir6,2" = {
+			icon = MacBookAirUnibody;
+			name = "MacBook Air \"Core i5\" 1.3 13\" (Mid-2013), MacBook Air \"Core i7\" 1.7 13\" (Mid-2013)";
+		};
+	};
 	MacBookPro1 = {
-		icon = "MacBookPro";
+		icon = MacBookPro;
 		"MacBookPro1,1" = {
-			icon = "MacBookPro";
+			icon = MacBookPro;
 			name = "MacBook Pro Core Duo 1.67 15-Inch, MacBook Pro Core Duo 1.83 15-Inch, MacBook Pro Core Duo 2.0 15-Inch, MacBook Pro Core Duo 2.16 15-Inch";
 		};
 		"MacBookPro1,2" = {
-			icon = "MacBookPro";
+			icon = MacBookPro;
 			name = "MacBook Pro Core Duo 2.16 17-Inch";
 		};
 	};
 	MacBookPro2 = {
-		icon = "MacBookPro";
+		icon = MacBookPro;
 		"MacBookPro2,1" = {
-			icon = "MacBookPro";
+			icon = MacBookPro;
 			name = "MacBook Pro Core 2 Duo 2.33 17-Inch";
 		};
 		"MacBookPro2,2" = {
-			icon = "MacBookPro";
+			icon = MacBookPro;
 			name = "MacBook Pro Core 2 Duo 2.16 15-Inch, MacBook Pro Core 2 Duo 2.33 15-Inch";
 		};
 	};
 	"MacBookPro3,1" = {
-		icon = "MacBookPro";
+		icon = MacBookPro;
 		name = "MacBook Pro Core 2 Duo 2.2 15-Inch (SR), MacBook Pro Core 2 Duo 2.4 15-Inch (SR), MacBook Pro Core 2 Duo 2.4 17-Inch (SR)";
 	};
 	"MacBookPro4,1" = {
-		icon = "MacBookPro";
+		icon = MacBookPro;
 		name = "MacBook Pro Core 2 Duo 2.4 15-Inch (08), MacBook Pro Core 2 Duo 2.5 15-Inch (08), MacBook Pro Core 2 Duo 2.5 17-Inch (08)";
 	};
 	MacBookPro5 = {
-		icon = "MacBookProUnibody";
+		icon = MacBookProUnibody;
 		"MacBookPro5,1" = {
-			icon = "MacBookProUnibody";
+			icon = MacBookProUnibody;
 			name = "MacBook Pro Core 2 Duo 2.4 15-Inch (Unibody), MacBook Pro Core 2 Duo 2.53 15-Inch (Unibody), MacBook Pro Core 2 Duo 2.66 15-Inch (Unibody)";
 		};
 		"MacBookPro5,2" = {
-			icon = "MacBookProUnibody";
+			icon = MacBookProUnibody;
 			name = "MacBook Pro Core 2 Duo 2.8 17-Inch (Mid-2009), MacBook Pro Core 2 Duo 2.66 17-Inch (Unibody)";
 		};
 		"MacBookPro5,3" = {
-			icon = "MacBookProUnibody";
+			icon = MacBookProUnibody;
 			name = "MacBook Pro Core 2 Duo 2.66 15-Inch (SD), MacBook Pro Core 2 Duo 2.8 15-Inch (SD)";
 		};
 		"MacBookPro5,4" = {
-			icon = "MacBookProUnibody";
+			icon = MacBookProUnibody;
 			name = "MacBook Pro Core 2 Duo 2.53 15-Inch (SD)";
 		};
 		"MacBookPro5,5" = {
-			icon = "MacBookProUnibody";
+			icon = MacBookProUnibody;
 			name = "MacBook Pro Core 2 Duo 2.26 13-Inch (SD/FW), MacBook Pro Core 2 Duo 2.53 13-Inch (SD/FW)";
 		};
 	};
 	MacBookPro6 = {
-		icon = "MacBookProUnibody";
+		icon = MacBookProUnibody;
 		"MacBookPro6,1" = {
-			icon = "MacBookProUnibody";
+			icon = MacBookProUnibody;
 			name = "MacBook Pro Core i5 2.53 17-Inch Mid-2010";
 		};
 		"MacBookPro6,2" = {
-			icon = "MacBookProUnibody";
+			icon = MacBookProUnibody;
 			name = "MacBook Pro Core i5 2.4 15-Inch Mid-2010, MacBook Pro Core i5 2.53 15-Inch Mid-2010, MacBook Pro Core i7 2.66 15-Inch Mid-2010";
 		};
 	};
 	"MacBookPro7,1" = {
-		icon = "MacBookProUnibody";
+		icon = MacBookProUnibody;
 		name = "MacBook Pro Core 2 Duo 2.4 13-Inch Mid-2010, MacBook Pro Core 2 Duo 2.66 13-Inch Mid-2010";
 	};
 	MacBookPro8 = {
-		icon = "MacBookProUnibody";
+		icon = MacBookProUnibody;
 		"MacBookPro8,1" = {
-			icon = "MacBookProUnibody";
+			icon = MacBookProUnibody;
 			name = "MacBook Pro Core i5 2.3 13-Inch Early 2011, MacBook Pro Core i7 2.7 13-Inch Early 2011";
 		};
 		"MacBookPro8,2" = {
-			icon = "MacBookProUnibody";
+			icon = MacBookProUnibody;
 			name = "MacBook Pro Core i7 2.0 15-Inch Early 2011, MacBook Pro Core i7 2.2 15-Inch Early 2011";
 		};
 		"MacBookPro8,3" = {
-			icon = "MacBookProUnibody";
+			icon = MacBookProUnibody;
 			name = "MacBook Pro Core i7 2.2 17-Inch Early 2011";
 		};
 	};
 	MacBookPro9 = {
-		icon = "MacBookProUnibody";
+		icon = MacBookProUnibody;
 		name = "MacBook Pro Mid 2012";
 	};
 	MacBookPro10 = {
-		icon = "MacBookProRetina";
+		icon = MacBookProRetina;
 		name = "MacBook Pro Retina Mid 2012";
 	};
+	MacBookPro11 = {
+		icon = MacBookProRetina;
+		name = "MacBook Pro Retina Late 2013, MacBook Pro Retina Mid 2014";
+	};
 	"Macmini1,1" = {
-		icon = "MacMini";
+		icon = MacMini;
 		name = "Mac mini Core Solo 1.5, Mac mini Core Duo 1.66, Mac mini Core Duo 1.83";
 	};
 	"Macmini2,1" = {
-		icon = "MacMini";
+		icon = MacMini;
 		name = "Mac mini Core 2 Duo 1.83, Mac mini Core 2 Duo 2.0";
 	};
 	"Macmini3,1" = {
-		icon = "MacMini";
+		icon = MacMini;
 		name = "Mac mini Core 2 Duo 2.0 (Early 2009), Mac mini Core 2 Duo 2.26 (Late 2009), Mac mini Core 2 Duo 2.53 (Late 2009), Mac mini Core 2 Duo 2.53 (Server)";
 	};
 	"Macmini4,1" = {
-		icon = "MacMiniUnibody";
+		icon = MacMiniUnibody;
 		name = "Mac mini Core 2 Duo 2.4 (Mid-2010), Mac mini Core 2 Duo 2.66 (Server)";
 	};
 	Macmini5 = {
-		icon = "MacMiniServerUnibody";
+		icon = MacMiniServerUnibody;
 		"Macmini5,1" = {
-			icon = "MacMiniServerUnibody";
+			icon = MacMiniServerUnibody;
 			name = "Mac mini Core i5 2.3 (Mid-2011)";
 		};
 		"Macmini5,2" = {
-			icon = "MacMiniServerUnibody";
+			icon = MacMiniServerUnibody;
 			name = "Mac mini Core i5 2.5 (Mid-2011), Mac mini Core i7 2.7 (Mid-2011)";
 		};
 		"Macmini5,3" = {
-			icon = "MacMiniServerUnibody";
+			icon = MacMiniServerUnibody;
 			name = "Mac mini Core i7 2.0 (Mid-2011/Server)";
 		};
 	};
 	"MacPro1,1" = {
-		icon = "MacPro";
+		icon = MacPro;
 		name = "Mac Pro Quad Core 2.66 (Original)";
 	};
 	"MacPro2,1" = {
-		icon = "MacPro";
+		icon = MacPro;
 		name = "Mac Pro Eight Core 3.0 (2,1)";
 	};
 	"MacPro3,1" = {
-		icon = "MacPro";
+		icon = MacPro;
 		name = "Mac Pro Eight Core 2.8 (2008)";
 	};
 	"MacPro4,1" = {
-		icon = "MacPro";
+		icon = MacPro;
 		name = "Mac Pro Quad Core 2.66 (2009/Nehalem), Mac Pro Eight Core 2.26 (2009/Nehalem)";
 	};
 	"MacPro5,1" = {
-		icon = "MacPro";
+		icon = MacPro;
 		name = "Mac Pro Quad Core 2.8 (2010/Nehalem), Mac Pro Six Core 3.33 (2010/Westmere), Mac Pro Eight Core 2.4 (2010/Westmere), Mac Pro Twelve Core 2.66 (2010/Westmere), Mac Pro Quad Core 2.8 (Server), Mac Pro Six Core 3.33 (Server)";
 	};
+	"MacPro6,1" = {
+		icon = MacPro6;
+		name = "Mac Pro \"Quad Core\" 3.7 (Late 2013), Mac Pro \"Six Core\" 3.5 (Late 2013), Mac Pro \"Eight Core\" 3.0 (Late 2013), Mac Pro \"Twelve Core\" 2.7 (Late 2013)";
+	};
 	"NodeRackMac1,2" = {
-		icon = "Xserve";
+		icon = Xserve;
 		name = "Xserve G4/1.33 DP Cluster";
 	};
 	PowerBook3 = {
-		icon = "PowerBookG4Ti";
+		icon = PowerBookG4Ti;
 		"PowerBook3,2" = {
-			icon = "PowerBookG4Ti";
+			icon = PowerBookG4Ti;
 			name = "PowerBook G4 400 (Original - Ti), PowerBook G4 500 (Original - Ti)";
 		};
 		"PowerBook3,3" = {
-			icon = "PowerBookG4Ti";
+			icon = PowerBookG4Ti;
 			name = "PowerBook G4 550 (Gigabit - Ti), PowerBook G4 667 (Gigabit - Ti)";
 		};
 		"PowerBook3,4" = {
-			icon = "PowerBookG4Ti";
+			icon = PowerBookG4Ti;
 			name = "PowerBook G4 667 (DVI - Ti), PowerBook G4 800 (DVI - Ti)";
 		};
 		"PowerBook3,5" = {
-			icon = "PowerBookG4Ti";
+			icon = PowerBookG4Ti;
 			name = "PowerBook G4 867 (Ti), PowerBook G4 1.0 (Ti)";
 		};
 	};
 	PowerBook5 = {
-		icon = "PowerBookG4";
+		icon = PowerBookG4;
 		"PowerBook5,1" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.0 17-Inch (Al)";
 		};
 		"PowerBook5,2" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.0 15-Inch (FW800 - Al), PowerBook G4 1.25 15-Inch (FW800 - Al)";
 		};
 		"PowerBook5,3" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.33 17-Inch (Al)";
 		};
 		"PowerBook5,4" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.33 15-Inch (Al), PowerBook G4 1.5 15-Inch (Al)";
 		};
 		"PowerBook5,5" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.5 17-Inch (Al)";
 		};
 		"PowerBook5,6" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.5 15-Inch (SMS/BT2 - Al), PowerBook G4 1.67 15-Inch (Al)";
 		};
 		"PowerBook5,7" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.67 17-Inch (Al)";
 		};
 		"PowerBook5,8" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.67 15-Inch (DLSD/HR - Al)";
 		};
 		"PowerBook5,9" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.67 17-Inch (DLSD/HR - Al)";
 		};
 	};
 	PowerBook6 = {
-		icon = "PowerBookG4";
+		icon = PowerBookG4;
 		"PowerBook6,1" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 867 12-Inch (Al)";
 		};
 		"PowerBook6,2" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.0 12-Inch (DVI - Al)";
 		};
 		"PowerBook6,3" = {
-			icon = "iBook";
+			icon = iBook;
 			name = "iBook G4/800 12-Inch (Original - Op), iBook G4/933 14-Inch (Original - Op), iBook G4/1.0 14-Inch (Original - Op)";
 		};
 		"PowerBook6,4" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.33 12-Inch (Al)";
 		};
 		"PowerBook6,5" = {
-			icon = "iBook";
+			icon = iBook;
 			name = "iBook G4/1.0 12-Inch (Early 2004 - Op), iBook G4/1.0 14-Inch (Early 2004 - Op), iBook G4/1.2 14-Inch (Early 2004 - Op), iBook G4/1.2 12-Inch (Late 2004 - Op), iBook G4/1.33 14-Inch (Late 2004 - Op)";
 		};
 		"PowerBook6,7" = {
-			icon = "iBook";
+			icon = iBook;
 			name = "iBook G4/1.33 12-Inch (Mid-2005 - Op), iBook G4/1.42 14-Inch (Mid-2005 - Op)";
 		};
 		"PowerBook6,8" = {
-			icon = "PowerBookG4";
+			icon = PowerBookG4;
 			name = "PowerBook G4 1.5 12-Inch (Al)";
 		};
 	};
 	"PowerMac1,2" = {
-		icon = "PowerMacG4";
+		icon = PowerMacG4;
 		name = "Power Macintosh G4 350 (PCI), Power Macintosh G4 400 (PCI)";
 	};
 	PowerMac10 = {
-		icon = "iMacG5";
+		icon = iMacG5;
 		"PowerMac8,1" = {
-			icon = "iMacG5";
+			icon = iMacG5;
 			name = "iMac G5/1.6 17-Inch, iMac G5/1.8 17-Inch, iMac G5/1.8 20-Inch";
 		};
 		"PowerMac8,2" = {
-			icon = "iMacG5";
+			icon = iMacG5;
 			name = "iMac G5/1.8 17-Inch (ALS), iMac G5/2.0 17-Inch (ALS), iMac G5/2.0 20-Inch (ALS)";
 		};
 	};
 	"PowerMac11,2" = {
-		icon = "MacPro";
+		icon = MacPro;
 		name = "Power Macintosh G5 Dual Core (2.0), Power Macintosh G5 Dual Core (2.3), Power Macintosh G5 Quad Core (2.5)";
 	};
 	"PowerMac12,1" = {
-		icon = "iMacG5";
+		icon = iMacG5;
 		name = "iMac G5/1.9 17-Inch (iSight), iMac G5/2.1 20-Inch (iSight)";
 	};
 	PowerMac3 = {
-		icon = "PowerMacG4";
+		icon = PowerMacG4;
 		"PowerMac3,1" = {
-			icon = "PowerMacG4";
+			icon = PowerMacG4;
 			name = "Mac Server G4 350 (AGP), Mac Server G4 400 (AGP), Mac Server G4 450 (AGP), Mac Server G4 500 (AGP), Power Macintosh G4 400 (AGP), Power Macintosh G4 350 (AGP), Power Macintosh G4 450 (AGP), Power Macintosh G4 500 (AGP)";
 		};
 		"PowerMac3,3" = {
-			icon = "PowerMacG4";
+			icon = PowerMacG4;
 			name = "Mac Server G4 450 DP (Gigabit), Mac Server G4 500 DP (Gigabit), Power Macintosh G4 400 (Gigabit), Power Macintosh G4 450 DP (Gigabit), Power Macintosh G4 500 DP (Gigabit)";
 		};
 		"PowerMac3,4" = {
-			icon = "PowerMacG4";
+			icon = PowerMacG4;
 			name = "Mac Server G4 533 (Digital Audio), Mac Server G4 533 DP (Digital Audio), Power Macintosh G4 466 (Digital Audio), Power Macintosh G4 533 (Digital Audio), Power Macintosh G4 667 (Digital Audio), Power Macintosh G4 733 (Digital Audio)";
 		};
 		"PowerMac3,5" = {
-			icon = "PowerMacG4";
+			icon = PowerMacG4;
 			name = "Mac Server G4 733 (Quicksilver), Mac Server G4 800 DP (Quicksilver), Mac Server G4 933 (QS 2002), Mac Server G4 1.0 DP (QS 2002), Power Macintosh G4 733 (Quicksilver), Power Macintosh G4 867 (Quicksilver), Power Macintosh G4 800 DP (Quicksilver), Power Macintosh G4 800 (QS 2002), Power Macintosh G4 933 (QS 2002), Power Macintosh G4 1.0 DP (QS 2002)";
 		};
 		"PowerMac3,6" = {
-			icon = "PowerMacG4";
+			icon = PowerMacG4;
 			name = "Mac Server G4 1.0 DP (MDD), Mac Server G4 1.25 DP (MDD), Power Macintosh G4 867 DP (MDD), Power Macintosh G4 1.0 DP (MDD), Power Macintosh G4 1.25 DP (MDD), Power Macintosh G4 1.0 (FW 800), Power Macintosh G4 1.25 DP (FW 800), Power Macintosh G4 1.42 DP (FW 800), Power Macintosh G4 1.25 (MDD 2003)";
 		};
 	};
 	"PowerMac5,1" = {
-		icon = "GenericPC";
+		icon = GenericPC;
 		name = "Power Macintosh G4 450 Cube, Power Macintosh G4 500 Cube";
 	};
 	PowerMac6 = {
-		icon = "iMacG4";
+		icon = iMacG4;
 		"PowerMac6,1" = {
-			icon = "iMacG4";
+			icon = iMacG4;
 			name = "iMac G4/1.0 17-Inch (Flat Panel), iMac G4/1.0 15-Inch (Flat Panel) (USB 2.0), iMac G4/1.25 17-Inch (Flat Panel) (USB 2.0)";
 		};
 		"PowerMac6,3" = {
-			icon = "iMacG4";
+			icon = iMacG4;
 			name = "iMac G4/1.25 20-Inch (Flat Panel) (USB 2.0)";
 		};
 		"PowerMac6,4" = {
-			icon = "eMac";
+			icon = eMac;
 			name = "eMac G4/1.25 (USB 2.0), eMac G4/1.42 (2005)";
 		};
 	};
 	"PowerMac9,1" = {
-		icon = "MacPro";
+		icon = MacPro;
 		name = "Power Macintosh G5 1.8 (PCI)";
 	};
 	RackMac1 = {
-		icon = "Xserve";
+		icon = Xserve;
 		"RackMac1,1" = {
-			icon = "Xserve";
+			icon = Xserve;
 			name = "Xserve G4/1.0";
 		};
 		"RackMac1,2" = {
-			icon = "Xserve";
+			icon = Xserve;
 			name = "Xserve G4/1.33 (Slot Load), Xserve G4/1.33 DP (Slot Load)";
 		};
 	};
 	"RackMac3,1" = {
-		icon = "Xserve";
+		icon = Xserve;
 		name = "Xserve G5/2.0 (PCI-X), Xserve G5/2.0 DP (PCI-X), Xserve G5/2.0 DP Cluster Node (PCI-X), Xserve G5/2.3 DP (PCI-X), Xserve G5/2.3 DP Cluster Node (PCI-X)";
 	};
 	"Xserve1,1" = {
-		icon = "Xserve";
+		icon = Xserve;
 		name = "Xserve Xeon 2.0 Quad Core";
 	};
 	"Xserve2,1" = {
-		icon = "Xserve";
+		icon = Xserve;
 		name = "Xserve Xeon 2.8 Quad Core";
 	};
 	"Xserve3,1" = {
-		icon = "Xserve";
+		icon = Xserve;
 		name = "Xserve Xeon Nehalem 2.26 Quad Core";
 	};
 }

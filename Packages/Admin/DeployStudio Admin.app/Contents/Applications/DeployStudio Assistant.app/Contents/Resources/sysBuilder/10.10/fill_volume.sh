@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=10.60
+FILL_VOLUME_VERSION=10.61
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -30,7 +30,7 @@ add_files_at_path "${ROOT_BIN}" /bin
 USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp curl diff dirname dscl du egrep \
          erb expect false fgrep fs_usage grep gunzip gzip irb lsbom mkbom open printf rails rake rdoc ri rsync \
          say smbutil srm sw_vers syslog testrb xattr xattr-2.5 xattr-2.6 xattr-2.7 xxd bc \
-         certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch perl5.16 python top"
+         certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch perl5.16 perl5.18 python top"
 add_files_at_path "${USR_BIN}" /usr/bin
 
 USR_SBIN="cfprefsd distnoted gssd iostat kadmin kadmin.local kdcsetup krbservicesetup ntpdate smbd spctl systemkeychain vsdbutil"
@@ -72,7 +72,7 @@ SYS_LIB_MISC="DirectoryServices Displays Fonts KerberosPlugins OpenDirectory Per
 add_files_at_path "${SYS_LIB_MISC}" /System/Library
 
 SYS_LIB_CORE="CoreTypes.bundle ManagedClient.app PlatformSupport.plist RemoteManagement SecurityAgentPlugins \
-              SystemUIServer.app ZoomWindow.app boot.efi"
+              SystemUIServer.app SystemAppearance.bundle ZoomWindow.app boot.efi"
 add_files_at_path "${SYS_LIB_CORE}" /System/Library/CoreServices
 
 # 10.10 DP3 fix
@@ -341,6 +341,8 @@ defaults write "${TMP_MOUNT_PATH}"/.Spotlight-V100/_IndexPolicy Policy -int 3
 
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/Caches/*
 rm -r  "${TMP_MOUNT_PATH}"/System/Library/Extensions.mkext
+rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.ocspd.plist
+rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.tccd.system.plist
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/SystemProfiler/SPManagedClientReporter.spreporter
 rm -rf "${TMP_MOUNT_PATH}"/System/Library/SystemProfiler/SPConfigurationProfileReporter.spreporter
 rm -f  "${TMP_MOUNT_PATH}"/var/db/dslocal/nodes/Default/computers/localhost.plist
