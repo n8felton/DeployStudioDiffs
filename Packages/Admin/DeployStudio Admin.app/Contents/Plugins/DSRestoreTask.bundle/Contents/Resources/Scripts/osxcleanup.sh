@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`basename "${0}"`
 TOOLS_FOLDER=`dirname "${0}"`
-VERSION=1.26
+VERSION=1.27
 
 if [ ${#} -lt 1 ]
 then
@@ -27,6 +27,13 @@ rm -f  "${1}"/Library/LaunchDaemons/com.deploystudio.FinalizeApp.plist 2>/dev/nu
 rm -f  "${1}"/Library/LaunchDaemons/com.deploystudio.finalizeCleanup.plist 2>/dev/null
 rm -f  "${1}"/Library/LaunchDaemons/com.deploystudio.finalizeScript.plist 2>/dev/null
 rm -rf "${1}"/etc/deploystudio 2>/dev/null
+
+rm -f  "${1}"/Library/Keychains/apsd.keychain 2>/dev/null
+rm -f  "${1}"/var/db/ConfigurationProfiles/.cloudConfig*           2>/dev/null
+rm -f  "${1}"/var/db/ConfigurationProfiles/.*ActivationRecord      2>/dev/null
+rm -f  "${1}"/var/db/ConfigurationProfiles/.passcode*              2>/dev/null
+rm -f  "${1}"/var/db/ConfigurationProfiles/.profiles*              2>/dev/null
+rm -f  "${1}"/var/db/ConfigurationProfiles/Setup/.profileSetupDone 2>/dev/null
 
 rm -rf "${1}"/.DocumentRevisions-V100 2>&1
 rm -rf "${1}"/.MobileBackups 2>&1

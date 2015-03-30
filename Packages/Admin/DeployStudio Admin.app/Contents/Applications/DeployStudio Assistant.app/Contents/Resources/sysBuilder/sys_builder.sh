@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`basename "${0}"`
 SYSBUILDER_FOLDER=`dirname "${0}"`
-VERSION=1.53
+VERSION=1.54
 
 ########################################################
 # Functions
@@ -565,7 +565,7 @@ then
     rm -rf "${TMP_MOUNT_PATH}"/Volumes/* 2>&1
   fi
 
-  kextcache -l -m "${TMP_MOUNT_PATH}"/System/Library/Extensions.mkext "${BASE_SYSTEM_ROOT_PATH}"/System/Library/Extensions
+  kextcache -update-volume "${TMP_MOUNT_PATH}"
 
   bless --folder "${TMP_MOUNT_PATH}"/System/Library/CoreServices --label "${VOL_NAME}" --bootinfo --bootefi --verbose
 else
