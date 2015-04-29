@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "ds_partition.sh - v2.3 ("`date`")"
+echo "ds_partition.sh - v2.4 ("`date`")"
 
 ARCH=`arch`
 BOOT_DEVICE=`diskutil info / | grep "Device Node:" | sed s/Device\ Node://g | sed s/\ *//`
@@ -27,9 +27,9 @@ DISK_NB=0
 DEVICE_FOUND=0
 
 # The internal disk is usualy associated to the device /dev/disk0.
-# The following loop looks for the first PCI/SATA/SAS/ATA drive available (different from the boot drive).
-# Change "-PCI-SATA-SAS-ATA-" to "-FireWire-Thunderbolt-" when restoring in Target Mode or with external firewire drives.
-SUPPORTED_PROTOCOLS="-PCI-SATA-SAS-ATA-"
+# The following loop looks for the first PCI-Express/PCI/SATA/SAS/ATA drive available (different from the boot drive).
+# Change "-PCI-Express-SATA-SAS-ATA-" to "-FireWire-Thunderbolt-" when restoring in Target Mode or with external firewire drives.
+SUPPORTED_PROTOCOLS="-PCI-Express-SATA-SAS-ATA-"
 while [ ${DISK_NB} -le 20 ];
 do
   TARGET_DEVICE=/dev/disk${DISK_NB}

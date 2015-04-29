@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`basename "${0}"`
 
-echo "${SCRIPT_NAME} - v2.3 ("`date`")"
+echo "${SCRIPT_NAME} - v2.4 ("`date`")"
 
 BOOT_DEVICE=`diskutil info / | grep "Device Node:" | sed s/Device\ Node://g | sed s/\ *//`
 if [ "_${BOOT_DEVICE}" = "_" ]
@@ -28,11 +28,11 @@ DISK_NB=0
 SET_SIZE=0
 
 # The internal disk is usualy associated to the device /dev/disk0.
-# The following loop looks for all PCI/SATA/SAS/ATA drives available (different from the boot drive).
+# The following loop looks for all PCI-Express/PCI/SATA/SAS/ATA drives available (different from the boot drive).
 # These drives will all be added to the RAID that will be created.
 # A minimum of 2 disks is reauired.
-# Change "-PCI-SATA-SAS-ATA-" to "-FireWire-Thunderbolt-" when restoring in Target Mode or with external firewire drives.
-SUPPORTED_PROTOCOLS="-PCI-SATA-SAS-ATA-"
+# Change "-PCI-Express-SATA-SAS-ATA-" to "-FireWire-Thunderbolt-" when restoring in Target Mode or with external firewire drives.
+SUPPORTED_PROTOCOLS="-PCI-Express-SATA-SAS-ATA-"
 while [ ${DISK_NB} -le 20 ];
 do
   TARGET_DEVICE=/dev/disk${DISK_NB}
