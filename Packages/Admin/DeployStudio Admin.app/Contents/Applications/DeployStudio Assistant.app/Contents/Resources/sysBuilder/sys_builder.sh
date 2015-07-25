@@ -486,7 +486,7 @@ else
 
   chmod 777 "${NBI_FOLDER}" 2>&1
 
-  hdiutil create "${SYSTEM_IMAGE_FILE}" -volname "${VOL_NAME}" -size 5G -type SPARSE -fs HFS+ -stretch 10G -uid 0 -gid 80 -mode 1775 -layout NONE 2>&1
+  hdiutil create "${SYSTEM_IMAGE_FILE}" -volname "${VOL_NAME}" -size 5G -type SPARSE -fs HFS+ -stretch 10G -uid 0 -gid 0 -mode 755 -layout NONE 2>&1
   if [ ${?} -ne 0 ]
   then
     echo "An error occured while creating the \"${SYSTEM_IMAGE_FILE}\"."
@@ -554,7 +554,7 @@ then
   chown root:admin "${TMP_MOUNT_PATH}/etc/DeployStudioAssistantInfo.plist" 2>&1
 
   # add kernel and kext cache
-  if [ "${SYS_VERS}" == "10.10" ]
+  if [ ${SYS_MIN_VERS} -ge 10 ]
   then
     ditto --norsrc "${BASE_SYSTEM_ROOT_PATH}"/System/Library/Kernels/kernel "${TMP_MOUNT_PATH}"/System/Library/Kernels/kernel 2>&1
   else
@@ -634,7 +634,7 @@ else
     KEXTCACHE_OPTIONS="-N -L"
   fi
 
-  if [ "${SYS_VERS}" == "10.10" ]
+  if [ ${SYS_MIN_VERS} -ge 10 ]
   then
     kextcache -update-volume "${TMP_MOUNT_PATH}"
     kextcache -a x86_64 \

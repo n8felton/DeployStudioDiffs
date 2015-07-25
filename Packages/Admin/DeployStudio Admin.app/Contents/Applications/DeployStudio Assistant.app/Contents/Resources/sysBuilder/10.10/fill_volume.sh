@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=10.61
+FILL_VOLUME_VERSION=10.62
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -33,7 +33,8 @@ USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp curl dif
          certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch perl5.16 perl5.18 python top"
 add_files_at_path "${USR_BIN}" /usr/bin
 
-USR_SBIN="cfprefsd distnoted gssd iostat kadmin kadmin.local kdcsetup krbservicesetup ntpdate smbd spctl systemkeychain vsdbutil"
+USR_SBIN="cfprefsd distnoted gssd iostat kadmin kadmin.local kdcsetup krbservicesetup mDNSResponder mDNSResponderHelper ntpdate \
+          smbd spctl systemkeychain vsdbutil"
 add_files_at_path "${USR_SBIN}" /usr/sbin
 
 USR_LIB="pam python2.5 python2.6 python2.7 zsh"
@@ -117,8 +118,11 @@ GRAPHICS_EXT=`ls -d AMD* AppleIntel* ATI* GeForce* NVDA*`
 cd "${OLD_PATH}"
 add_files_at_path "${GRAPHICS_EXT}" /System/Library/Extensions
 
-SYS_LIB_EXT="IOStorageFamily"
+SYS_LIB_EXT="AppleFIVRDriver AppleHDA AppleHPM AppleStorageDrivers AppleTopCase IOAHCIFamily IONVMeFamily IOStorageFamily"
 add_files_at_path "${SYS_LIB_EXT}" /System/Library/Extensions .kext
+
+SYS_LIB_EXT_PLUG="NVMeSMARTLib"
+add_files_at_path "${SYS_LIB_EXT_PLUG}" /System/Library/Extensions .plugin
 
 SYS_LIB_FRK="ApplicationServices vecLib"
 add_files_at_path "${SYS_LIB_FRK}" /System/Library/Frameworks .framework
@@ -220,6 +224,16 @@ chmod 644 "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/* 2>&1
 
 cp -R "${SYSBUILDER_FOLDER}/${SYS_VERS}"/LaunchAgents/* "${TMP_MOUNT_PATH}"/System/Library/LaunchAgents/ 2>&1
 chmod 644 "${TMP_MOUNT_PATH}"/System/Library/LaunchAgents/* 2>&1
+
+if [ ! -e "${TMP_MOUNT_PATH}"/usr/sbin/mDNSResponder ]
+then
+  rm "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist
+fi
+
+if [ ! -e "${TMP_MOUNT_PATH}"/usr/sbin/mDNSResponderHelper ]
+then
+  rm "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.mDNSResponderHelper.plist
+fi
 
 rm "${TMP_MOUNT_PATH}"/tmp
 

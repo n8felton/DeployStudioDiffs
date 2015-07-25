@@ -1,0 +1,12 @@
+DIAG_REPORTS=`ls /Library/Logs/DiagnosticReports/DeployStudio* 2>/dev/null`
+if [ -n "${DIAG_REPORTS}" ]
+then
+  if [ -e /tmp/DSNetworkRepository/Logs/DiagnosticReports ]
+  then
+    cp /Library/Logs/DiagnosticReports/DeployStudio* /tmp/DSNetworkRepository/Logs/DiagnosticReports/
+    echo "DeployStudio Runtime has crashed!"
+    echo "A diagnostic report has been copied to the repository's Logs/DiagnosticReports/ folder."
+    echo "-"
+  fi
+  cat /Library/Logs/DiagnosticReports/DeployStudio*
+fi

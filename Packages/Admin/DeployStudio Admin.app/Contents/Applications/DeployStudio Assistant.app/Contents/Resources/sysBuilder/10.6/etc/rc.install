@@ -11,7 +11,7 @@ export DYLD_NO_FIX_PREBINDING=1
 #
 # Set default power management policy for the Install CD
 #
-(sleep 30; /usr/bin/pmset force -a sleep 0 displaysleep __DISPLAY_SLEEP__ lessbright 0 powerbutton 0 disksleep 0 ) &
+(sleep 30; /usr/bin/pmset force -a sleep 0 displaysleep __DISPLAY_SLEEP__ lessbright 0 disksleep 0 ) &
 
 ##
 ## DEPLOYSTUDIO startup
