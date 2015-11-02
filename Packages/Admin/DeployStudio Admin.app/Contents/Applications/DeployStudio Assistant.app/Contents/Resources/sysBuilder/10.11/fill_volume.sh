@@ -8,18 +8,6 @@ then
   exit 1
 fi
 
-# build BaseSystem bom
-lsbom -s "${BASE_SYSTEM_ROOT_PATH}"/var/db/receipts/com.apple.pkg.BaseSystemBinaries.bom   > /tmp/dss_bs.txt
-lsbom -s "${BASE_SYSTEM_ROOT_PATH}"/var/db/receipts/com.apple.pkg.BaseSystemResources.bom >> /tmp/dss_bs.txt
-sort -u /tmp/dss_bs.txt > /tmp/dss_bs_sorted.txt
-mkbom -s -i /tmp/dss_bs_sorted.txt /tmp/dss_bs.bom
-
-# start adding content to the volume
-ditto -bom /tmp/dss_bs.bom "${BASE_SYSTEM_ROOT_PATH}"/ "${TMP_MOUNT_PATH}" 2>&1
-
-# temp files cleanup
-rm /tmp/dss_bs.txt /tmp/dss_bs_sorted.txt /tmp/dss_bs.bom
-
 # add extra content
 ETC_CONF="ntp.conf pam.d"
 add_files_at_path "${ETC_CONF}" /etc
@@ -27,42 +15,25 @@ add_files_at_path "${ETC_CONF}" /etc
 ROOT_BIN="csh ksh tcsh zsh"
 add_files_at_path "${ROOT_BIN}" /bin
 
-USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp curl diff dirname dscl du egrep \
-         erb expect false fgrep fs_usage grep gunzip gzip irb lsbom mkbom open printf rails rake rdoc ri rsync \
-         say smbutil srm sw_vers syslog testrb xattr xattr-2.5 xattr-2.6 xattr-2.7 xxd bc \
-         certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch perl5.16 perl5.18 python top"
+USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp diff dirname du egrep \
+         erb expect false fgrep fs_usage gunzip gzip irb lsbom mkbom open printf rails rake rdoc ri rsync \
+         say smbutil srm syslog testrb xattr xattr-2.6 xattr-2.7 xxd bc \
+         certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch perl5.16 python top"
 add_files_at_path "${USR_BIN}" /usr/bin
 
-USR_SBIN="cfprefsd distnoted gssd iostat kadmin kadmin.local kdcsetup krbservicesetup mDNSResponder mDNSResponderHelper ntpdate \
-          smbd spctl systemkeychain vsdbutil"
+USR_SBIN="gssd iostat kadmin kadmin.local kdcsetup krbservicesetup smbd spctl systemkeychain vsdbutil"
 add_files_at_path "${USR_SBIN}" /usr/sbin
 
-USR_LIB="pam python2.5 python2.6 python2.7 zsh"
+USR_LIB="pam python2.6 python2.7 zsh"
 add_files_at_path "${USR_LIB}" /usr/lib
 
-USR_SHARE="sandbox terminfo zoneinfo"
+USR_SHARE="sandbox"
+#" terminfo zoneinfo"
 add_files_at_path "${USR_SHARE}" /usr/share
 
-USR_LIBEXEC="checkLocalKDC configureLocalKDC dirhelper launchdadd migrateLocalKDC security-checksystem smb-sync-preferences xpcd \
-             displaypolicyd nsurlsessiond nsurlstoraged"
+USR_LIBEXEC="checkLocalKDC configureLocalKDC migrateLocalKDC security-checksystem smb-sync-preferences \
+             nsurlsessiond nsurlstoraged"
 add_files_at_path "${USR_LIBEXEC}" /usr/libexec
-
-if [ -e "/tmp/recovery_tools/Startup Disk.app" ]
-then
-  ditto --rsrc "/tmp/recovery_tools/Startup Disk.app" "${TMP_MOUNT_PATH}/Applications/Utilities/Startup Disk.app"
-else
-  ditto --rsrc "${SYSBUILDER_FOLDER}/common/Startup Disk.app" "${TMP_MOUNT_PATH}/Applications/Utilities/Startup Disk.app"
-fi
-
-if [ -e "/tmp/recovery_tools/Firmware Password Utility.app" ]
-then
-  ditto --rsrc "/tmp/recovery_tools/Firmware Password Utility.app" "${TMP_MOUNT_PATH}/Applications/Utilities/Firmware Password Utility.app"
-fi
-
-if [ -e "/tmp/recovery_tools/Reset Password.app" ]
-then
-  ditto --rsrc "/tmp/recovery_tools/Reset Password.app" "${TMP_MOUNT_PATH}/Applications/Utilities/Reset Password.app"
-fi
 
 ditto --rsrc "${SYSBUILDER_FOLDER}"/common/DefaultDesktopViewer.app "${TMP_MOUNT_PATH}"/Applications/DefaultDesktopViewer.app
 
@@ -73,56 +44,37 @@ SYS_LIB_MISC="DirectoryServices Displays Fonts KerberosPlugins OpenDirectory Per
 add_files_at_path "${SYS_LIB_MISC}" /System/Library
 
 SYS_LIB_CORE="CoreTypes.bundle ManagedClient.app PlatformSupport.plist RemoteManagement SecurityAgentPlugins \
-              SystemUIServer.app SystemAppearance.bundle ZoomWindow.app boot.efi"
+              SystemUIServer.app SystemAppearance.bundle ZoomWindow.app"
 add_files_at_path "${SYS_LIB_CORE}" /System/Library/CoreServices
 
-# 10.10 DP3 fix
-cp -f "${BASE_SYSTEM_ROOT_PATH}"/Library/Fonts/AppleSDGothicNeo* "${TMP_MOUNT_PATH}"/System/Library/Fonts/
-#
+#cp "${BASE_SYSTEM_ROOT_PATH}"/var/db/auth.db* "${TMP_MOUNT_PATH}"/var/db/
 
-# 10.9.2 fixes
-add_file_at_path AppleGraphicsDevicePolicy.kext /System/Library/Extensions/AppleGraphicsControl.kext/Contents/PlugIns/
-add_file_at_path AppleMGPUPowerControl.kext /System/Library/Extensions/AppleGraphicsControl.kext/Contents/PlugIns/
-add_file_at_path Resources /System/Library/Extensions/IOPlatformPluginFamily.kext/Contents/PlugIns/X86PlatformPlugin.kext/Contents/
-add_file_at_path PlugIns /System/Library/Frameworks/Security.framework/Versions/A/
-#
+# if [ -e "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist ] 
+# then
+#   defaults write "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport \
+#     SupportedModelProperties \
+#     -array-add \
+#     "iMac14,1" "iMac14,2" "MacBookPro11,1" "MacBookPro11,2" "MacBookPro11,3"
+#   plutil -convert xml1 "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
+#   chmod 644 "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
+#   chown root:wheel "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
+# fi
 
-cp "${BASE_SYSTEM_ROOT_PATH}"/var/db/auth.db* "${TMP_MOUNT_PATH}"/var/db/
-
-if [ -e "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist ] 
-then
-  defaults write "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport \
-    SupportedModelProperties \
-    -array-add \
-    "iMac14,1" "iMac14,2" "MacBookPro11,1" "MacBookPro11,2" "MacBookPro11,3"
-  plutil -convert xml1 "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
-  chmod 644 "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
-  chown root:wheel "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist
-fi
-
-if [ -e "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras" ]
-then
-  rm -rf "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras"/*
-else
-  mkdir -p "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras"
-fi
-MENU_EXTRAS="TextInput.menu Battery.menu Clock.menu"
+MENU_EXTRAS="Battery.menu Clock.menu"
 add_files_at_path "${MENU_EXTRAS}" "/System/Library/CoreServices/Menu Extras"
-cp "${SYSBUILDER_FOLDER}"/common/com.apple.systemuiserver.plist "${TMP_MOUNT_PATH}"/Library/Preferences/
+cp "${SYSBUILDER_FOLDER}"/common/com.apple.menuextra.textinput.plist "${TMP_MOUNT_PATH}"/var/root/Library/Preferences/
+chmod 644        "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.menuextra.textinput.plist
+chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.menuextra.textinput.plist
+cp "${SYSBUILDER_FOLDER}"/common/com.apple.systemuiserver.plist "${TMP_MOUNT_PATH}"/var/root/Library/Preferences/
 chmod 644        "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.systemuiserver.plist
 chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.systemuiserver.plist
-
-OLD_PATH=`pwd`
-cd "${BASE_SYSTEM_ROOT_PATH}"/System/Library/Extensions
-GRAPHICS_EXT=`ls -d AMD* AppleIntel* ATI* GeForce* NVDA*`
-cd "${OLD_PATH}"
-add_files_at_path "${GRAPHICS_EXT}" /System/Library/Extensions
+rm -rf "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras/AirPort.menu"
 
 SYS_LIB_EXT="IOStorageFamily"
-add_files_at_path "${SYS_LIB_EXT}" /System/Library/Extensions .kext
+#add_files_at_path "${SYS_LIB_EXT}" /System/Library/Extensions .kext
 
 SYS_LIB_FRK="ApplicationServices vecLib"
-add_files_at_path "${SYS_LIB_FRK}" /System/Library/Frameworks .framework
+#add_files_at_path "${SYS_LIB_FRK}" /System/Library/Frameworks .framework
 
 if [ -n "${ENABLE_PYTHON}" ]
 then
@@ -138,24 +90,10 @@ then
   add_file_at_path ruby /usr/bin
 fi
 
-# Temporary OpenGL fix
-if [ -e "/tmp/recovery_tools/OpenCL.framework" ]
-then
-  ditto --rsrc "/tmp/recovery_tools/OpenCL.framework" "${TMP_MOUNT_PATH}"/System/Library/Frameworks/OpenCL.framework
-fi
-add_file_at_path libCLVMIGILPlugin.dylib /System/Library/Frameworks/OpenCL.framework/Libraries
-add_file_at_path IGIL.dylib /System/Library/Frameworks/OpenCL.framework/Libraries
-if [ -e "/tmp/recovery_tools/OpenGL.framework" ]
-then
-  ditto --rsrc "/tmp/recovery_tools/OpenGL.framework" "${TMP_MOUNT_PATH}"/System/Library/Frameworks/OpenGL.framework
-fi
-
 # Display mirroring support
 ditto --rsrc  "${SYSBUILDER_FOLDER}"/common/enableDisplayMirroring "${TMP_MOUNT_PATH}"/usr/bin/enableDisplayMirroring 2>&1
 chmod 755 "${TMP_MOUNT_PATH}"/usr/bin/enableDisplayMirroring 2>&1
 chown root:wheel "${TMP_MOUNT_PATH}"/usr/bin/enableDisplayMirroring 2>&1
-
-ditto --rsrc "${BASE_SYSTEM_ROOT_PATH}"/System/Library/Kernels "${TMP_MOUNT_PATH}"/System/Library/Kernels
 
 cp "${SYSBUILDER_FOLDER}/common/com.deploystudio.server.plist" "${TMP_MOUNT_PATH}/Library/Preferences/com.deploystudio.server.plist"
 if [ -n "${SERVER_URL}" ]
@@ -193,11 +131,6 @@ then
 fi
 chown root:admin "${TMP_MOUNT_PATH}"/Library/Preferences/com.deploystudio.server.plist 2>&1
 
-if [ ! -e "${TMP_MOUNT_PATH}/System/Installation" ]
-then
-  mkdir "${TMP_MOUNT_PATH}/System/Installation" 2>&1
-fi
-
 if [ -e "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools" ]
 then
   rm -rf "${TMP_MOUNT_PATH}/Library/PrivilegedHelperTools" 2>&1
@@ -210,11 +143,11 @@ then
   chown -R root:admin "${TMP_MOUNT_PATH}/Library/Application Support/DeployStudio" 2>&1
 fi
 
-if [ -e "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration" ]
-then
-  rm -rf "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration" 2>&1
-fi
-ditto --rsrc "${SYSBUILDER_FOLDER}/${SYS_VERS}/SystemConfiguration" "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration" 2>&1
+#if [ -e "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration" ]
+#then
+#  rm -rf "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration" 2>&1
+#fi
+#ditto --rsrc "${SYSBUILDER_FOLDER}/${SYS_VERS}/SystemConfiguration" "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration" 2>&1
 
 cp -R "${SYSBUILDER_FOLDER}/${SYS_VERS}"/LaunchDaemons/* "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/ 2>&1
 chmod 644 "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/* 2>&1
@@ -222,29 +155,21 @@ chmod 644 "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/* 2>&1
 cp -R "${SYSBUILDER_FOLDER}/${SYS_VERS}"/LaunchAgents/* "${TMP_MOUNT_PATH}"/System/Library/LaunchAgents/ 2>&1
 chmod 644 "${TMP_MOUNT_PATH}"/System/Library/LaunchAgents/* 2>&1
 
-if [ ! -e "${TMP_MOUNT_PATH}"/usr/sbin/mDNSResponder ]
-then
-  rm "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.mDNSResponder.plist
-fi
+rm -rf "${TMP_MOUNT_PATH}"/tmp
+ln -s  var/tmp "${TMP_MOUNT_PATH}"/tmp
 
-if [ ! -e "${TMP_MOUNT_PATH}"/usr/sbin/mDNSResponderHelper ]
-then
-  rm "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.mDNSResponderHelper.plist
-fi
+#ditto /var/run/resolv.conf "${TMP_MOUNT_PATH}/var/run/resolv.conf" 2>&1
+#ln -s /var/run/resolv.conf "${TMP_MOUNT_PATH}/etc/resolv.conf" 2>&1
 
-rm "${TMP_MOUNT_PATH}"/tmp
+# cp -R "${SYSBUILDER_FOLDER}/${SYS_VERS}"/etc/* "${TMP_MOUNT_PATH}/etc/" 2>&1
 
-ln -s var/tmp "${TMP_MOUNT_PATH}"/tmp
-
-ditto /var/run/resolv.conf "${TMP_MOUNT_PATH}/var/run/resolv.conf" 2>&1
-ln -s /var/run/resolv.conf "${TMP_MOUNT_PATH}/etc/resolv.conf" 2>&1
-
-cp -R "${SYSBUILDER_FOLDER}/${SYS_VERS}"/etc/* "${TMP_MOUNT_PATH}/etc/" 2>&1
 sed s/__DISPLAY_SLEEP__/${DISPLAY_SLEEP}/g "${SYSBUILDER_FOLDER}/${SYS_VERS}"/etc/rc.install > "${TMP_MOUNT_PATH}"/etc/rc.install 2>&1
+cp "${SYSBUILDER_FOLDER}/${SYS_VERS}"/etc/nsmb.conf "${TMP_MOUNT_PATH}"/etc/nsmb.conf 2>&1
+
 chmod 555 "${TMP_MOUNT_PATH}"/etc/rc.install 2>&1
-chmod 644 "${TMP_MOUNT_PATH}"/etc/hostconfig 2>&1
-chmod 644 "${TMP_MOUNT_PATH}"/etc/rc.common 2>&1
-chmod 755 "${TMP_MOUNT_PATH}"/etc/rc.cdrom 2>&1
+#chmod 644 "${TMP_MOUNT_PATH}"/etc/hostconfig 2>&1
+#chmod 644 "${TMP_MOUNT_PATH}"/etc/rc.common 2>&1
+#chmod 755 "${TMP_MOUNT_PATH}"/etc/rc.cdrom 2>&1
 chmod 644 "${TMP_MOUNT_PATH}"/etc/nsmb.conf 2>&1
 
 rm -rf "${TMP_MOUNT_PATH}/var/log/"* 2>&1
@@ -315,6 +240,11 @@ then
   enable_custom_tcp_stack_settings
 fi
 
+mkdir "${TMP_MOUNT_PATH}"/Library/LaunchDaemons 2>&1
+chmod 755 "${TMP_MOUNT_PATH}"/Library/LaunchDaemons 2>&1
+mkdir "${TMP_MOUNT_PATH}"/Library/LaunchAgents 2>&1
+chmod 755 "${TMP_MOUNT_PATH}"/Library/LaunchAgents 2>&1
+
 chmod -R 644 "${TMP_MOUNT_PATH}"/Library/Preferences/* 2>&1
 mkdir "${TMP_MOUNT_PATH}"/Library/Preferences/DirectoryService 2>&1
 chmod 755 "${TMP_MOUNT_PATH}"/Library/Preferences/DirectoryService 2>&1
@@ -350,22 +280,17 @@ mdutil -i off "${TMP_MOUNT_PATH}"
 mdutil -E "${TMP_MOUNT_PATH}"
 defaults write "${TMP_MOUNT_PATH}"/.Spotlight-V100/_IndexPolicy Policy -int 3
 
-rm -rf "${TMP_MOUNT_PATH}"/System/Library/Caches/*
-rm -r  "${TMP_MOUNT_PATH}"/System/Library/Extensions.mkext
-rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.ocspd.plist
-rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.tccd.system.plist
-rm -rf "${TMP_MOUNT_PATH}"/System/Library/SystemProfiler/SPManagedClientReporter.spreporter
-rm -rf "${TMP_MOUNT_PATH}"/System/Library/SystemProfiler/SPConfigurationProfileReporter.spreporter
-rm -f  "${TMP_MOUNT_PATH}"/var/db/dslocal/nodes/Default/computers/localhost.plist
-rm -f  "${TMP_MOUNT_PATH}"/var/db/BootCache*
+#rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.ocspd.plist
+#rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.tccd.system.plist
+#rm -rf "${TMP_MOUNT_PATH}"/System/Library/SystemProfiler/SPManagedClientReporter.spreporter
+#rm -rf "${TMP_MOUNT_PATH}"/System/Library/SystemProfiler/SPConfigurationProfileReporter.spreporter
+#rm -f  "${TMP_MOUNT_PATH}"/var/db/dslocal/nodes/Default/computers/localhost.plist
+#rm -f  "${TMP_MOUNT_PATH}"/var/db/BootCache*
 
-# # Temporary OpenGL fix
-# rm -f  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.cvmsServ.plist
-
-mkdir -p "${TMP_MOUNT_PATH}"/System/Library/Caches/com.apple.CVMS
-mkdir -p "${TMP_MOUNT_PATH}"/System/Library/Caches/com.apple.kext.caches/Directories/System/Library/Extensions
-mkdir -p "${TMP_MOUNT_PATH}"/System/Library/Caches/com.apple.kext.caches/Startup
-chown -R root:wheel "${TMP_MOUNT_PATH}"/System/Library/Caches
+#mkdir -p "${TMP_MOUNT_PATH}"/System/Library/Caches/com.apple.CVMS
+#mkdir -p "${TMP_MOUNT_PATH}"/System/Library/Caches/com.apple.kext.caches/Directories/System/Library/Extensions
+#mkdir -p "${TMP_MOUNT_PATH}"/System/Library/Caches/com.apple.kext.caches/Startup
+#chown -R root:wheel "${TMP_MOUNT_PATH}"/System/Library/Caches
 
 if [ -e "${TMP_MOUNT_PATH}"/Volumes ]
 then

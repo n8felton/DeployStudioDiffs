@@ -1,0 +1,184 @@
+#!/bin/sh
+# Copyright 2000-2011, Apple Inc.
+
+#
+# Disable prebinding-on-the-fly while we're read-only boted
+#
+export DYLD_NO_FIX_PREBINDING=1
+
+#
+# Set autopower on after power failure
+#
+/usr/bin/pmset force autorestart 1
+
+#
+# Set sysctl for FDE
+#
+/usr/sbin/graphicssession
+
+#
+# Show default desktop background image
+#
+/Applications/DefaultDesktopViewer.app/Contents/MacOS/DefaultDesktopViewer &
+
+#
+# Source a local configuration script if present
+#
+if [ -x /etc/rc.cdrom.local ]; then
+	/etc/rc.cdrom.local
+fi
+
+#
+# Source a pre-WindowServer script if present
+# (This is inaccurate, the WindowServer is now started on demand.)
+#
+if [ -x /etc/rc.cdrom.preWS ]; then
+	/etc/rc.cdrom.preWS
+fi
+
+#
+# Source a post-WindowServer script if present
+# (This is inaccurate, the WindowServer is now started on demand.)
+#
+if [ -x /etc/rc.cdrom.postWS ]; then
+	/etc/rc.cdrom.postWS
+fi
+
+#
+# log our boot time for performance stats
+#
+sysctl kern.boottime | head -1 | /usr/bin/logger -t "" -p install.debug
+
+# Mount all enclosing file systems (DMG / DMGinDMG boot)
+#/System/Installation/CDIS/mountrecursive
+
+#
+# Add and unlock a keychain for root.
+#
+/usr/bin/security create-keychain -p "" /var/root/Library/Keychains/login.keychain
+/usr/bin/security unlock-keychain -p "" /var/root/Library/Keychains/login.keychain
+
+##
+## DEPLOYSTUDIO startup
+##
+
+#
+# Set default power management policy
+#
+(sleep 30; /usr/bin/pmset force -a sleep 0 displaysleep __DISPLAY_SLEEP__ lessbright 0 disksleep 0 ) &
+
+#
+# Load custom environment variables
+#
+if [ -e /etc/deploystudio-env.conf ]
+then
+  . /etc/deploystudio-env.conf
+fi
+
+#
+# Wait for network services to be available
+#
+echo "Checking default route..."
+ATTEMPTS=0
+MAX_ATTEMPTS=12
+while ! (netstat -rn -f inet | grep -q default)
+do
+  if [ ${ATTEMPTS} -le ${MAX_ATTEMPTS} ]
+  then
+    echo "Waiting for the default route to be active..."
+    sleep 5
+	ATTEMPTS=`expr ${ATTEMPTS} + 1`
+  else
+    echo "Network not configured, skipping test..." 2>&1
+	break
+  fi
+done
+
+#
+# Set temporary hostname
+#
+TMP_COMPUTERNAME=Mac-`ioreg -rd1 -c IOPlatformExpertDevice | awk -F= '/(IOPlatformSerialNumber)/ { gsub("[ \"]", ""); print $2 }'`
+if [ -n "${TMP_COMPUTERNAME}" ]
+then
+  TMP_HOSTNAME=`echo "${TMP_COMPUTERNAME}" | tr '[A-Z]' '[a-z]'`
+  scutil --set ComputerName  "${TMP_COMPUTERNAME}"
+  scutil --set LocalHostName "${TMP_HOSTNAME}"
+fi
+
+#
+# Disable assessments checks
+#
+/usr/sbin/spctl --master-disable
+
+#
+# Enable display mirroring
+#
+/usr/bin/enableDisplayMirroring &
+
+#
+# Fix system date
+#
+if [ -e /etc/ntp.conf ]
+then
+  NTP_SERVERS=`cat /etc/ntp.conf | awk '{ print $NF }'`
+
+  for NTP_SERVER in ${NTP_SERVERS}
+  do
+    ntpdate -u "${NTP_SERVER}" 2>/dev/null
+    if [ ${?} -eq 0 ]
+    then
+      break
+    fi
+  done
+fi
+
+#
+# Launch a VNC server
+#
+if [ -e /Library/Preferences/com.apple.VNCSettings.txt ]
+then
+  launchctl load /System/Library/LaunchAgents/com.apple.screensharing.MessagesAgent.plist
+fi
+
+#
+# Update Disk Utility preferences to display every partition (EFI, recovery, ...)
+#
+defaults write com.apple.DiskUtility DUShowEveryPartition -bool YES
+
+#
+# Set Fred as default speech voice
+#
+defaults write com.apple.speech.voice.prefs SelectedVoiceCreator -int 1836346163
+defaults write com.apple.speech.voice.prefs SelectedVoiceID      -int 1
+defaults write com.apple.speech.voice.prefs SelectedVoiceName         Fred
+
+#
+# Launch DeployStudio Runtime
+#
+DS_APP="/Applications/Utilities/DeployStudio Admin.app/Contents/Applications/DeployStudio Runtime.app/Contents/MacOS/DeployStudio Runtime"
+DS_PARAMS=--netboot
+if [ -x "$DS_APP" ]
+then
+  # Disable App Nap just in case...
+  defaults write com.deploystudio.admin   NSAppSleepDisabled -bool YES
+  defaults write com.deploystudio.runtime NSAppSleepDisabled -bool YES
+  #/usr/bin/say "Welcome to DeployStudio..."
+  "$DS_APP" $DS_PARAMS
+  if [ $? != 0 ]
+  then
+    /Applications/Utilities/Terminal.app/Contents/MacOS/Terminal
+  fi
+fi
+kill `ps -axww | awk '/AdViewer/ {print $1}'` 2>/dev/null
+kill `ps -axww | awk '/DefaultDesktopViewer/ {print $1}'` 2>/dev/null
+kill `ps -axww | awk '/enableDisplayMirroring/ {print $1}'` 2>/dev/null
+
+#
+# Shutdown instead of rebooting if the flag is set
+#
+if [ -e /tmp/dss-shutdown ]
+then
+  /sbin/halt -q
+else
+  /sbin/reboot -q
+fi
