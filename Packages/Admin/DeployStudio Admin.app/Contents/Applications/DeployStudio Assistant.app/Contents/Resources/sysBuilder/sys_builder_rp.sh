@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`basename "${0}"`
 SYSBUILDER_FOLDER=`dirname "${0}"`
-VERSION=2.0
+VERSION=2.1
 
 ########################################################
 # Functions
@@ -573,6 +573,10 @@ source "${SYSBUILDER_FOLDER}/${SYS_VERS}"/fill_Volume.sh
 
 # fix language preference
 update_language_preference
+
+# fix timezone
+rm -f "${TMP_MOUNT_PATH}"/etc/localtime
+cp -a /etc/localtime "${TMP_MOUNT_PATH}"/etc/
 
 # disable Wireless support
 if [ -n "${DISABLE_WIRELESS_SUPPORT}" ]

@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=11.62
+FILL_VOLUME_VERSION=11.63
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -27,8 +27,7 @@ add_files_at_path "${USR_SBIN}" /usr/sbin
 USR_LIB="pam python2.6 python2.7 zsh"
 add_files_at_path "${USR_LIB}" /usr/lib
 
-USR_SHARE="sandbox"
-#" terminfo zoneinfo"
+USR_SHARE="sandbox terminfo zoneinfo"
 add_files_at_path "${USR_SHARE}" /usr/share
 
 USR_LIBEXEC="checkLocalKDC configureLocalKDC migrateLocalKDC security-checksystem smb-sync-preferences \
@@ -75,6 +74,12 @@ SYS_LIB_EXT="IOStorageFamily"
 
 SYS_LIB_FRK="ApplicationServices vecLib"
 #add_files_at_path "${SYS_LIB_FRK}" /System/Library/Frameworks .framework
+
+SYS_LIB_FRK="Accounts"
+add_files_at_path "${SYS_LIB_FRK}" /System/Library/Frameworks .framework
+
+SYS_LIB_PRIV_FRK="AccountsDaemon AuthKit"
+add_files_at_path "${SYS_LIB_PRIV_FRK}" /System/Library/PrivateFrameworks .framework
 
 if [ -n "${ENABLE_PYTHON}" ]
 then
