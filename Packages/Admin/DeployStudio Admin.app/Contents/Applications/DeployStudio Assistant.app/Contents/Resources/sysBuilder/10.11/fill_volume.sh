@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=11.63
+FILL_VOLUME_VERSION=11.64
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -39,7 +39,7 @@ ditto --rsrc "${SYSBUILDER_FOLDER}"/common/DefaultDesktopViewer.app "${TMP_MOUNT
 LIB_MISC="ColorSync Perl"
 add_files_at_path "${LIB_MISC}" /Library
 
-SYS_LIB_MISC="DirectoryServices Displays Fonts KerberosPlugins OpenDirectory Perl Sandbox Sounds SystemProfiler Tcl"
+SYS_LIB_MISC="Colors DirectoryServices Displays Fonts KerberosPlugins OpenDirectory Perl Sandbox Sounds SystemProfiler Tcl"
 add_files_at_path "${SYS_LIB_MISC}" /System/Library
 
 SYS_LIB_CORE="CoreTypes.bundle ManagedClient.app PlatformSupport.plist RemoteManagement SecurityAgentPlugins \
@@ -152,12 +152,12 @@ fi
 #then
 #  rm -rf "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration" 2>&1
 #fi
-#ditto --rsrc "${SYSBUILDER_FOLDER}/${SYS_VERS}/SystemConfiguration" "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration" 2>&1
+#ditto --rsrc "${SYS_VERS_FOLDER}/SystemConfiguration" "${TMP_MOUNT_PATH}/Library/Preferences/SystemConfiguration" 2>&1
 
-cp -R "${SYSBUILDER_FOLDER}/${SYS_VERS}"/LaunchDaemons/* "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/ 2>&1
+cp -R "${SYS_VERS_FOLDER}"/LaunchDaemons/* "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/ 2>&1
 chmod 644 "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/* 2>&1
 
-cp -R "${SYSBUILDER_FOLDER}/${SYS_VERS}"/LaunchAgents/* "${TMP_MOUNT_PATH}"/System/Library/LaunchAgents/ 2>&1
+cp -R "${SYS_VERS_FOLDER}"/LaunchAgents/* "${TMP_MOUNT_PATH}"/System/Library/LaunchAgents/ 2>&1
 chmod 644 "${TMP_MOUNT_PATH}"/System/Library/LaunchAgents/* 2>&1
 
 rm -rf "${TMP_MOUNT_PATH}"/tmp
@@ -166,15 +166,16 @@ ln -s  var/tmp "${TMP_MOUNT_PATH}"/tmp
 #ditto /var/run/resolv.conf "${TMP_MOUNT_PATH}/var/run/resolv.conf" 2>&1
 #ln -s /var/run/resolv.conf "${TMP_MOUNT_PATH}/etc/resolv.conf" 2>&1
 
-# cp -R "${SYSBUILDER_FOLDER}/${SYS_VERS}"/etc/* "${TMP_MOUNT_PATH}/etc/" 2>&1
+# cp -R "${SYS_VERS_FOLDER}"/etc/* "${TMP_MOUNT_PATH}/etc/" 2>&1
 
-sed s/__DISPLAY_SLEEP__/${DISPLAY_SLEEP}/g "${SYSBUILDER_FOLDER}/${SYS_VERS}"/etc/rc.install > "${TMP_MOUNT_PATH}"/etc/rc.install 2>&1
-cp "${SYSBUILDER_FOLDER}/${SYS_VERS}"/etc/nsmb.conf "${TMP_MOUNT_PATH}"/etc/nsmb.conf 2>&1
+sed s/__DISPLAY_SLEEP__/${DISPLAY_SLEEP}/g "${SYS_VERS_FOLDER}"/etc/rc.install > "${TMP_MOUNT_PATH}"/etc/rc.install 2>&1
+cp "${SYS_VERS_FOLDER}"/etc/rc.cdrom "${TMP_MOUNT_PATH}"/etc/rc.cdrom 2>&1
+cp "${SYS_VERS_FOLDER}"/etc/nsmb.conf "${TMP_MOUNT_PATH}"/etc/nsmb.conf 2>&1
 
 chmod 555 "${TMP_MOUNT_PATH}"/etc/rc.install 2>&1
 #chmod 644 "${TMP_MOUNT_PATH}"/etc/hostconfig 2>&1
 #chmod 644 "${TMP_MOUNT_PATH}"/etc/rc.common 2>&1
-#chmod 755 "${TMP_MOUNT_PATH}"/etc/rc.cdrom 2>&1
+chmod 755 "${TMP_MOUNT_PATH}"/etc/rc.cdrom 2>&1
 chmod 644 "${TMP_MOUNT_PATH}"/etc/nsmb.conf 2>&1
 
 rm -rf "${TMP_MOUNT_PATH}/var/log/"* 2>&1
@@ -191,8 +192,8 @@ fi
 
 if [ -n "${ARD_PASSWORD}" ]
 then
-  ditto --rsrc "${SYSBUILDER_FOLDER}"/${SYS_VERS}/com.apple.RemoteDesktop.plist "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.RemoteDesktop.plist 2>&1
-  ditto --rsrc "${SYSBUILDER_FOLDER}"/${SYS_VERS}/com.apple.RemoteManagement.plist "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.RemoteManagement.plist 2>&1
+  ditto --rsrc "${SYS_VERS_FOLDER}"/com.apple.RemoteDesktop.plist "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.RemoteDesktop.plist 2>&1
+  ditto --rsrc "${SYS_VERS_FOLDER}"/com.apple.RemoteManagement.plist "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.RemoteManagement.plist 2>&1
   echo "${ARD_PASSWORD}" | perl -wne 'BEGIN { @k = unpack "C*", pack "H*", "1734516E8BA8C5E2FF1C39567390ADCA"}; chomp; s/^(.{8}).*/$1/; @p = unpack "C*", $_; foreach (@k) { printf "%02X", $_ ^ (shift @p || 0) }; print "\n"' > "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.VNCSettings.txt
   chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.VNCSettings.txt 2>&1
   chmod 400 "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.VNCSettings.txt 2>&1
@@ -212,7 +213,7 @@ then
     ARD_USER_SHORTNAME="arduser"
   fi
 
-  ditto "${SYSBUILDER_FOLDER}/${SYS_VERS}/arduser.plist" "${TMP_MOUNT_PATH}/var/db/dslocal/nodes/Default/users/${ARD_USER_SHORTNAME}.plist" 2>&1
+  ditto "${SYS_VERS_FOLDER}/arduser.plist" "${TMP_MOUNT_PATH}/var/db/dslocal/nodes/Default/users/${ARD_USER_SHORTNAME}.plist" 2>&1
   "${SYSBUILDER_FOLDER}"/common/setShadowHashData "${TMP_MOUNT_PATH}/var/db/dslocal/nodes/Default/users/${ARD_USER_SHORTNAME}.plist" "${ARD_PASSWORD}"
   if [ "${ARD_LOGIN}" != "arduser" ]
   then
@@ -284,6 +285,9 @@ fi
 mdutil -i off "${TMP_MOUNT_PATH}"
 mdutil -E "${TMP_MOUNT_PATH}"
 defaults write "${TMP_MOUNT_PATH}"/.Spotlight-V100/_IndexPolicy Policy -int 3
+
+rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.locationd.plist
+rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/org.ntp.sntp.plist
 
 #rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.ocspd.plist
 #rm -r  "${TMP_MOUNT_PATH}"/System/Library/LaunchDaemons/com.apple.tccd.system.plist

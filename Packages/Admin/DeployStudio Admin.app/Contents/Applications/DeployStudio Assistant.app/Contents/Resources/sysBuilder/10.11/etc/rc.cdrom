@@ -56,41 +56,37 @@ RAMDisk /var/log 32768
 if [ -f "/etc/rc.cdm.cdrom" ]; then
 	. /etc/rc.cdm.cdrom
 else
-	RAMDisk /Volumes 2048
+	RAMDisk /Volumes 1024
 	RAMDisk /var/tmp 32768
-	RAMDisk /var/run 4096
+	RAMDisk /var/run 1024
 
 	RAMDisk /System/Installation 1024
 
 	RAMDisk /var/db 4096
 	RAMDisk /var/folders 12288 
-	RAMDisk /var/root/Library 32768
+	RAMDisk /var/root/Library 4096
 	RAMDisk /Library/ColorSync/Profiles/Displays 2048
 
 	mkdir /var/root/Library/Keychains
 	mkdir /var/tmp/RecoveryTemp
 	mkdir -m 1777 /var/db/mds
 
-	RAMDisk	/Library/Preferences 4096
-	RAMDisk	/Library/Preferences/SystemConfiguration 4096
+	RAMDisk	/Library/Preferences 1024
+	RAMDisk	/Library/Preferences/SystemConfiguration 1024
 	RAMDisk /Library/Keychains 2048
 	RAMDisk /var/tmp/RecoveryTemp 12288
 	
-	RAMDisk /System/Library/Caches 32768
-	RAMDisk /System/Library/Caches/com.apple.CVMS 32768
+#	RAMDisk /System/Library/Caches 32768
+#	RAMDisk /System/Library/Caches/com.apple.CVMS 32768
 
-	RAMDisk /var/db/launchd.db 2048
-	RAMDisk /var/db/launchd.db/com.apple.launchd 2048
+#	RAMDisk /var/db/launchd.db 2048
+#	RAMDisk /var/db/launchd.db/com.apple.launchd 2048
 	RAMDisk /var/db/dslocal/nodes/Default/users 2048
-	RAMDisk /var/folders 12288
-	RAMDisk /var/root 32768
-	
-	RAMDisk /Library/ColorSync/Profiles/Displays 4096
-	
+
 	RAMDisk /Library/Logs 16384
 	RAMDisk /Library/Logs/DiagnosticReports 4096
 
-	RAMDisk /Library/Caches 65536
+	RAMDisk /Library/Caches 16384
 fi
 
 # use or create the boot cache playlist, and allow B&I to force 32-bit playlist generation

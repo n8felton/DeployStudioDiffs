@@ -2,9 +2,30 @@
 # Copyright 2000-2011, Apple Inc.
 
 #
+# Disable prebinding-on-the-fly while we're read-only boted
+#
+export DYLD_NO_FIX_PREBINDING=1
+
+#
+# Set sysctl for FDE
+#
+/usr/sbin/graphicssession
+
+#
 # Show default desktop background image
 #
 /Applications/DefaultDesktopViewer.app/Contents/MacOS/DefaultDesktopViewer &
+
+#
+# log our boot time for performance stats
+#
+sysctl kern.boottime | head -1 | /usr/bin/logger -t "" -p install.debug
+
+#
+# Add and unlock a keychain for root.
+#
+/usr/bin/security create-keychain -p "" /var/root/Library/Keychains/login.keychain
+/usr/bin/security unlock-keychain -p "" /var/root/Library/Keychains/login.keychain
 
 ##
 ## DEPLOYSTUDIO startup
@@ -110,8 +131,6 @@ then
     /Applications/Utilities/Terminal.app/Contents/MacOS/Terminal
   fi
 fi
-kill `ps -axww | awk '/AdViewer/ {print $1}'` 2>/dev/null
-# kill `ps -axww | awk '/DefaultDesktopViewer/ {print $1}'` 2>/dev/null
 kill `ps -axww | awk '/enableDisplayMirroring/ {print $1}'` 2>/dev/null
 kill `ps -axwww | awk '/Window[S]erver/ {print $1}'`
 

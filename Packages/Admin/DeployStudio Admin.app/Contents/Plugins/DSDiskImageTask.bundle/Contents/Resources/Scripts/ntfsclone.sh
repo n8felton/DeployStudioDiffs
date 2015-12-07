@@ -2,6 +2,12 @@
 
 SCRIPT_NAME=`basename "${0}"`
 VERSION=2.8
+SYS_VERS=`sw_vers -productVersion | awk -F. '{ print $2 }'`
+
+if [ ${SYS_VERS} -le 7 ]
+then
+  NTFSPROGS_VERS=7
+fi
 
 remove_existing_image() {
   if [ -e "${1}.ntfs" ]
@@ -131,7 +137,7 @@ fi
 
 # cloning NTFS partition
 echo "Cloning the NTFS partition ${NTFS_DEVICE} to ${IMAGE_FILE_PATH}.ntfs..."
-"${TOOLS_FOLDER}"/ntfsclone --save-image --force --rescue --overwrite "${IMAGE_FILE_PATH}.ntfs" "${NTFS_DEVICE}" 2>&1 
+"${TOOLS_FOLDER}"/ntfsclone${NTFSPROGS_VERS} --save-image --force --rescue --overwrite "${IMAGE_FILE_PATH}.ntfs" "${NTFS_DEVICE}" 2>&1
 if [ ${?} -ne 0 ]
 then
   # trying to remount device
@@ -154,7 +160,7 @@ SHRUNK_FLAG=/tmp/ds_shrunk_`basename ${NTFS_DEVICE}`
 if [ -e "${SHRUNK_FLAG}" ]
 then
   echo "Restoring NTFS partition size..."
-  "${TOOLS_FOLDER}"/ntfsresize -f "${NTFS_DEVICE}" >/dev/null
+  "${TOOLS_FOLDER}"/ntfsresize${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" >/dev/null
   rm "${SHRUNK_FLAG}"
 fi
 

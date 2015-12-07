@@ -427,8 +427,9 @@ HOST_UUID=`ioreg -rd1 -c IOPlatformExpertDevice | awk -F= '/(UUID)/ { gsub("[ \"
 HOST_MACADDR=`/sbin/ifconfig en0 | grep -w ether | awk '{ gsub(":", ""); print $2 }'`
 SYS_MIN_VERS=`defaults read "${BASE_SYSTEM_ROOT_PATH}"/System/Library/CoreServices/SystemVersion ProductVersion | awk -F. '{ print $2 }'`
 SYS_VERS=10.${SYS_MIN_VERS}
+SYS_VERS_FOLDER=${SYSBUILDER_FOLDER}/${SYS_VERS}
 
-if [ -e "${SYSBUILDER_FOLDER}/${SYS_VERS}" ]
+if [ -e "${SYS_VERS_FOLDER}" ]
 then
   ARCH=i386
 else
@@ -569,7 +570,7 @@ mdutil -E "${TMP_MOUNT_PATH}"
 defaults write "${TMP_MOUNT_PATH}"/.Spotlight-V100/_IndexPolicy Policy -int 3
 
 # fill media
-source "${SYSBUILDER_FOLDER}/${SYS_VERS}"/fill_Volume.sh
+source "${SYS_VERS_FOLDER}"/fill_Volume.sh
 
 # fix language preference
 update_language_preference
@@ -627,20 +628,9 @@ then
 
   bless --folder "${TMP_MOUNT_PATH}"/System/Library/CoreServices --label "${VOL_NAME}" --verbose
 else
-  ditto --rsrc "${SYSBUILDER_FOLDER}/${SYS_VERS}/NBImageInfo.plist" "${NBI_FOLDER}/NBImageInfo.plist"
+  ditto --rsrc "${SYS_VERS_FOLDER}/NBImageInfo.plist" "${NBI_FOLDER}/NBImageInfo.plist"
   defaults write "${NBI_FOLDER}/NBImageInfo" Architectures -array ${ARCH}
-  if [ -e "${TMP_MOUNT_PATH}/System/Library/CoreServices/PlatformSupport.plist" ]
-  then
-    PLATFORM_SUPPORT=`/usr/libexec/PlistBuddy -c "Print :SupportedModelProperties" "${TMP_MOUNT_PATH}"/System/Library/CoreServices/PlatformSupport.plist | sed -e /^Array\ {/d -e /^}/d`
-    if [ -n "${PLATFORM_SUPPORT}" ]
-    then
-      defaults write "${NBI_FOLDER}/NBImageInfo" DisabledSystemIdentifiers -array ${PLATFORM_SUPPORT}
-    else
-      defaults write "${NBI_FOLDER}/NBImageInfo" DisabledSystemIdentifiers -array
-    fi
-  else
-    defaults write "${NBI_FOLDER}/NBImageInfo" DisabledSystemIdentifiers -array
-  fi
+  defaults write "${NBI_FOLDER}/NBImageInfo" DisabledSystemIdentifiers -array
   defaults write "${NBI_FOLDER}/NBImageInfo" EnabledSystemIdentifiers -array
   defaults write "${NBI_FOLDER}/NBImageInfo" Index -int ${NBI_ID}
   defaults write "${NBI_FOLDER}/NBImageInfo" Name "${NBI_NAME}"

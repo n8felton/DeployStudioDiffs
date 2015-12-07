@@ -393,8 +393,9 @@ HOST_UUID=`ioreg -rd1 -c IOPlatformExpertDevice | awk -F= '/(UUID)/ { gsub("[ \"
 HOST_MACADDR=`/sbin/ifconfig en0 | grep -w ether | awk '{ gsub(":", ""); print $2 }'`
 SYS_MIN_VERS=`defaults read "${BASE_SYSTEM_ROOT_PATH}"/System/Library/CoreServices/SystemVersion ProductVersion | awk -F. '{ print $2 }'`
 SYS_VERS=10.${SYS_MIN_VERS}
+SYS_VERS_FOLDER=${SYSBUILDER_FOLDER}/${SYS_VERS}
 
-if [ -e "${SYSBUILDER_FOLDER}/${SYS_VERS}" ]
+if [ -e "${SYS_VERS_FOLDER}" ]
 then
   ARCH=i386
 else
@@ -517,7 +518,7 @@ if [ ${SYS_MIN_VERS} -ge 7 ]
 then
     get_recovery_utilities
 fi
-source "${SYSBUILDER_FOLDER}/${SYS_VERS}"/fill_Volume.sh
+source "${SYS_VERS_FOLDER}"/fill_Volume.sh
 
 # fix language preference
 update_language_preference
@@ -569,7 +570,7 @@ then
 
   bless --folder "${TMP_MOUNT_PATH}"/System/Library/CoreServices --label "${VOL_NAME}" --bootinfo --bootefi --verbose
 else
-  ditto --rsrc "${SYSBUILDER_FOLDER}/${SYS_VERS}/NBImageInfo.plist" "${NBI_FOLDER}/NBImageInfo.plist"
+  ditto --rsrc "${SYS_VERS_FOLDER}/NBImageInfo.plist" "${NBI_FOLDER}/NBImageInfo.plist"
   defaults write "${NBI_FOLDER}/NBImageInfo" Architectures -array ${ARCH}
   if [ -e "${TMP_MOUNT_PATH}/System/Library/CoreServices/PlatformSupport.plist" ]
   then
@@ -602,7 +603,7 @@ else
   plutil -convert xml1 "${NBI_FOLDER}/DeployStudioAssistantInfo.plist"
 
   # add kernel and kext cache
-  if [ "${SYS_VERS}" == "10.6" ] || [ "${SYS_VERS}" == "10.7" ]
+  if [ "${SYS_VERS}" == "10.7" ]
   then
     mkdir -p "${NBI_FOLDER}/i386/x86_64" 2>&1
     chmod -R 777 "${NBI_FOLDER}/i386" 2>&1
@@ -622,7 +623,7 @@ else
   fi
 
   ditto --norsrc "${BASE_SYSTEM_ROOT_PATH}"/usr/standalone/i386/boot.efi "${NBI_FOLDER}/${ARCH}/booter" 2>&1
-  if [ "${SYS_VERS}" == "10.6" ] || [ "${SYS_VERS}" == "10.7" ]
+  if [ "${SYS_VERS}" == "10.7" ]
   then
     ditto --norsrc "${BASE_SYSTEM_ROOT_PATH}"/usr/standalone/i386/boot.efi "${NBI_FOLDER}/${ARCH}/x86_64/booter" 2>&1
   fi
@@ -664,19 +665,6 @@ else
 	          ${KEXTCACHE_OPTIONS} -z \
               -K "${TMP_MOUNT_PATH}/mach_kernel" \
               -c "${NBI_FOLDER}/i386/x86_64/kernelcache" \
-              "${TMP_MOUNT_PATH}/System/Library/Extensions"
-  elif [ "${SYS_VERS}" == "10.6" ]
-  then
-    kextcache -a i386 \
-	          ${KEXTCACHE_OPTIONS} \
-              -m "${NBI_FOLDER}/i386/mach.macosx.mkext" \
-              -K "${NBI_FOLDER}/i386/booter" \
-              "${TMP_MOUNT_PATH}/System/Library/Extensions"
-
-    kextcache -a x86_64 \
-	          ${KEXTCACHE_OPTIONS} \
-              -m "${NBI_FOLDER}/i386/x86_64/mach.macosx.mkext" \
-              -K "${NBI_FOLDER}/i386/x86_64/booter" \
               "${TMP_MOUNT_PATH}/System/Library/Extensions"
   fi
 

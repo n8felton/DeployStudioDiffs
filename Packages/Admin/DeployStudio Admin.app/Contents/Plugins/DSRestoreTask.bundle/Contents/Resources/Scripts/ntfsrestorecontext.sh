@@ -2,6 +2,7 @@
 
 SCRIPT_NAME=`basename "${0}"`
 VERSION=2.21
+SYS_VERS=`sw_vers -productVersion | awk -F. '{ print $2 }'`
 
 if [ ${#} -lt 2 ]
 then
@@ -9,6 +10,11 @@ then
   echo "Example: ${SCRIPT_NAME} image.ntfs[.gz|.dmg] disk0s3"
   echo "RuntimeAbortScript"
   exit 1
+fi
+
+if [ ${SYS_VERS} -le 7 ]
+then
+  NTFSPROGS_VERS=7
 fi
 
 echo "Running ${SCRIPT_NAME} v${VERSION}"
@@ -106,10 +112,10 @@ then
       # > bcdedit /set {default} device boot
       # > bcdedit /set {default} osdevice boot
       echo "-> restoring generic BCD boot config (${TOOLS_FOLDER}/ms.deviceboot.bcd)..."
-      "${TOOLS_FOLDER}"/ntfscp -f "${NTFS_DEVICE}" "${TOOLS_FOLDER}/ms.deviceboot.bcd" /Boot/BCD
+      "${TOOLS_FOLDER}"/ntfscp${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" "${TOOLS_FOLDER}/ms.deviceboot.bcd" /Boot/BCD
     else
       echo "-> restoring BCD boot config (${BOOT_CONFIG_FILE})..."
-      "${TOOLS_FOLDER}"/ntfscp -f "${NTFS_DEVICE}" "${BOOT_CONFIG_FILE}" /Boot/BCD
+      "${TOOLS_FOLDER}"/ntfscp${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" "${BOOT_CONFIG_FILE}" /Boot/BCD
     fi
   fi
 else
@@ -124,7 +130,7 @@ else
 	  if [ -n "${NEEDS_UPDATE}" ]
 	  then
         echo "-> updating boot.ini file (/tmp/boot.ini)..."
-        "${TOOLS_FOLDER}"/ntfscp -f "${NTFS_DEVICE}" "/tmp/boot.ini" boot.ini
+        "${TOOLS_FOLDER}"/ntfscp${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" "/tmp/boot.ini" boot.ini
       else
         echo "-> boot.ini file is correct, no fix needed."
 	  fi
@@ -143,7 +149,7 @@ fi
 
 #echo "-> emptying pagefile.sys config file..."
 #touch "/tmp/pagefile.sys"
-#"${TOOLS_FOLDER}"/ntfscp -f "${NTFS_DEVICE}" "/tmp/pagefile.sys" pagefile.sys
+#"${TOOLS_FOLDER}"/ntfscp${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" "/tmp/pagefile.sys" pagefile.sys
 #if [ ${?} -ne 0 ]
 #then
 #  echo "RuntimeAbortScript"
@@ -153,17 +159,17 @@ fi
 # sysprep file lookup
 echo "-> looking for sysprep configuration files..."
 SYSPREP_FILE=""
-"${TOOLS_FOLDER}"/ntfscat -f "${NTFS_DEVICE}" /SysPrep/SYSPREP.INF > /tmp/SYSPREP.INF
+"${TOOLS_FOLDER}"/ntfscat${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" /SysPrep/SYSPREP.INF > /tmp/SYSPREP.INF
 if [ ${?} -eq 0 ]
 then
   SYSPREP_FILE=/SysPrep/SYSPREP.INF
 else
-  "${TOOLS_FOLDER}"/ntfscat -f "${NTFS_DEVICE}" /windows/panther/unattend.XML > /tmp/unattend.xml
+  "${TOOLS_FOLDER}"/ntfscat${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" /windows/panther/unattend.XML > /tmp/unattend.xml
   if [ ${?} -eq 0 ]
   then
     SYSPREP_FILE=/windows/panther/unattend.XML
   else
-    "${TOOLS_FOLDER}"/ntfscat -f "${NTFS_DEVICE}" /windows/system32/sysprep/unattend.xml > /tmp/unattend.xml
+    "${TOOLS_FOLDER}"/ntfscat${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" /windows/system32/sysprep/unattend.xml > /tmp/unattend.xml
     if [ ${?} -eq 0 ]
     then
       SYSPREP_FILE=/windows/system32/sysprep/unattend.xml
@@ -181,7 +187,7 @@ then
     then
       sed s%"${INF_SYSPREP_COMPUTERNAME}"%"ComputerName=${DS_BOOTCAMP_WINDOWS_COMPUTER_NAME}"% /tmp/SYSPREP.INF > /tmp/SYSPREP.INF.NEW
       echo "-> updating computer name in ${SYSPREP_FILE} to ${DS_BOOTCAMP_WINDOWS_COMPUTER_NAME}..."
-      "${TOOLS_FOLDER}"/ntfscp -f "${NTFS_DEVICE}" /tmp/SYSPREP.INF.NEW "${SYSPREP_FILE}"
+      "${TOOLS_FOLDER}"/ntfscp${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" /tmp/SYSPREP.INF.NEW "${SYSPREP_FILE}"
       if [ ${?} -ne 0 ]
       then
         echo "RuntimeAbortScript"
@@ -194,7 +200,7 @@ then
     then
       sed s%"${XML_SYSPREP_COMPUTERNAME}"%">${DS_BOOTCAMP_WINDOWS_COMPUTER_NAME}</"% /tmp/unattend.xml > /tmp/unattend.xml.NEW
       echo "-> updating computer name in ${SYSPREP_FILE} to ${DS_BOOTCAMP_WINDOWS_COMPUTER_NAME}..."
-      "${TOOLS_FOLDER}"/ntfscp -f "${NTFS_DEVICE}" /tmp/unattend.xml.NEW "${SYSPREP_FILE}"
+      "${TOOLS_FOLDER}"/ntfscp${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" /tmp/unattend.xml.NEW "${SYSPREP_FILE}"
       if [ ${?} -ne 0 ]
       then
         echo "RuntimeAbortScript"
@@ -209,13 +215,13 @@ if [ -n "${SYSPREP_FILE}" ] && [ -n "${DS_BOOTCAMP_WINDOWS_PRODUCT_KEY}" ]
 then
   if [ `basename "${SYSPREP_FILE}"` = "SYSPREP.INF" ]
   then
-    "${TOOLS_FOLDER}"/ntfscat -f "${NTFS_DEVICE}" "${SYSPREP_FILE}" > /tmp/SYSPREP.INF
+    "${TOOLS_FOLDER}"/ntfscat${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" "${SYSPREP_FILE}" > /tmp/SYSPREP.INF
     INF_SYSPREP_PRODUCT_KEY=`grep -m 1 "ProductKey=" /tmp/SYSPREP.INF | tr -d " \n\r" | sed s/'*'/'\\\*'/`
     if [ -n "${INF_SYSPREP_PRODUCT_KEY}" ]
     then
       sed s%"${INF_SYSPREP_PRODUCT_KEY}"%"ProductKey=${DS_BOOTCAMP_WINDOWS_PRODUCT_KEY}"% /tmp/SYSPREP.INF > /tmp/SYSPREP.INF.NEW
       echo "-> updating product key in ${SYSPREP_FILE} to ${DS_BOOTCAMP_WINDOWS_PRODUCT_KEY}..."
-      "${TOOLS_FOLDER}"/ntfscp -f "${NTFS_DEVICE}" /tmp/SYSPREP.INF.NEW "${SYSPREP_FILE}"
+      "${TOOLS_FOLDER}"/ntfscp${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" /tmp/SYSPREP.INF.NEW "${SYSPREP_FILE}"
       if [ ${?} -ne 0 ]
       then
         echo "RuntimeAbortScript"
@@ -223,13 +229,13 @@ then
       fi
     fi
   else
-    "${TOOLS_FOLDER}"/ntfscat -f "${NTFS_DEVICE}" "${SYSPREP_FILE}" > /tmp/unattend.xml
+    "${TOOLS_FOLDER}"/ntfscat${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" "${SYSPREP_FILE}" > /tmp/unattend.xml
     XML_SYSPREP_PRODUCT_KEY=`grep -m 1 "<ProductKey>.*</ProductKey>" /tmp/unattend.xml | tr -d " \n\r" | sed s/'*'/'\\\*'/ | awk -F"ProductKey" '{ print $2 }'`
     if [ -n "${XML_SYSPREP_PRODUCT_KEY}" ]
     then
       sed s%"${XML_SYSPREP_PRODUCT_KEY}"%">${DS_BOOTCAMP_WINDOWS_PRODUCT_KEY}</"% /tmp/unattend.xml > /tmp/unattend.xml.NEW
       echo "-> updating product key in ${SYSPREP_FILE} to ${DS_BOOTCAMP_WINDOWS_PRODUCT_KEY}..."
-      "${TOOLS_FOLDER}"/ntfscp -f "${NTFS_DEVICE}" /tmp/unattend.xml.NEW "${SYSPREP_FILE}"
+      "${TOOLS_FOLDER}"/ntfscp${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" /tmp/unattend.xml.NEW "${SYSPREP_FILE}"
       if [ ${?} -ne 0 ]
       then
         echo "RuntimeAbortScript"
