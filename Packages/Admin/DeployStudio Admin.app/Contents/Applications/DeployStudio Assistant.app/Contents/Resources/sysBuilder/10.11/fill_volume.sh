@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=11.64
+FILL_VOLUME_VERSION=11.65
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -72,14 +72,14 @@ rm -rf "${TMP_MOUNT_PATH}/System/Library/CoreServices/Menu Extras/AirPort.menu"
 SYS_LIB_EXT="IOStorageFamily"
 #add_files_at_path "${SYS_LIB_EXT}" /System/Library/Extensions .kext
 
-SYS_LIB_FRK="ApplicationServices vecLib"
-#add_files_at_path "${SYS_LIB_FRK}" /System/Library/Frameworks .framework
-
-SYS_LIB_FRK="Accounts"
+SYS_LIB_FRK="Accounts ApplicationServices"
 add_files_at_path "${SYS_LIB_FRK}" /System/Library/Frameworks .framework
 
 SYS_LIB_PRIV_FRK="AccountsDaemon AuthKit"
 add_files_at_path "${SYS_LIB_PRIV_FRK}" /System/Library/PrivateFrameworks .framework
+
+# Add new fonts
+cp "${BASE_SYSTEM_ROOT_PATH}/Library/Application Support/Apple/Fonts/Language Support"/* "${TMP_MOUNT_PATH}"/System/Library/Fonts/
 
 if [ -n "${ENABLE_PYTHON}" ]
 then
@@ -198,13 +198,19 @@ then
   chown root:wheel "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.VNCSettings.txt 2>&1
   chmod 400 "${TMP_MOUNT_PATH}"/Library/Preferences/com.apple.VNCSettings.txt 2>&1
 
-  echo enabled > "${TMP_MOUNT_PATH}"/etc/RemoteManagement.launchd
-  chown root:wheel "${TMP_MOUNT_PATH}"/etc/RemoteManagement.launchd 2>&1
-  chmod 644 "${TMP_MOUNT_PATH}"/etc/RemoteManagement.launchd 2>&1
-
   echo enabled > "${TMP_MOUNT_PATH}"/etc/com.apple.screensharing.agent.launchd
   chown root:wheel "${TMP_MOUNT_PATH}"/etc/com.apple.screensharing.agent.launchd 2>&1
   chmod 644 "${TMP_MOUNT_PATH}"/etc/com.apple.screensharing.agent.launchd 2>&1
+
+#echo enabled > "${TMP_MOUNT_PATH}"/etc/RemoteManagement.launchd
+#chown root:wheel "${TMP_MOUNT_PATH}"/etc/RemoteManagement.launchd 2>&1
+#chmod 644 "${TMP_MOUNT_PATH}"/etc/RemoteManagement.launchd 2>&1
+
+  mkdir "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop" 2>&1
+  chmod 755 "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop" 2>&1
+  echo enabled > "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd"
+  chmod 644 "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd"
+  chown -R root:wheel "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop" 2>&1
 
   if [ -n "${ARD_LOGIN}" ]
   then
