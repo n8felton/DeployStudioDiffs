@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-echo "${SCRIPT_NAME} - v1.9 ("`date`")"
+echo "${SCRIPT_NAME} - v1.10 ("`date`")"
 
 if [ ${#} -lt 2 ]
 then
@@ -28,10 +28,21 @@ then
   exit 1
 fi
 
-sed -e s:__TIMEZONE__:${2}:g \
-    -e s:__NTP_SERVER__:${3}:g \
-	"${SCRIPT_PATH}"/ds_time_setup/ds_time_setup.sh > "${VOLUME_PATH}"/etc/deploystudio/bin/ds_time_setup.sh	
-	
+if [ ${#} -lt 4 ]
+then
+  sed -e s:__TIMEZONE__:${2}:g \
+      -e s:__NTP_SERVER__:${3}:g \
+	  "${SCRIPT_PATH}"/ds_time_setup/ds_time_setup.sh > "${VOLUME_PATH}"/etc/deploystudio/bin/ds_time_setup.sh
+else
+  sed -e s:__TIMEZONE__:${2}:g \
+      -e s:__COUNTRY_CODE__:${3}:g \
+      -e s:"__CITY_NAME__":${4}:g \
+      -e s:__LATITUDE__:${5}:g \
+      -e s:__LONGITUDE__:${6}:g \
+      -e s:__NTP_SERVER__:${7}:g \
+      "${SCRIPT_PATH}"/ds_time_setup/ds_time_setup.sh > "${VOLUME_PATH}"/etc/deploystudio/bin/ds_time_setup.sh
+fi
+
 chmod 700 "${VOLUME_PATH}"/etc/deploystudio/bin/ds_time_setup.sh
 chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/bin/ds_time_setup.sh
 

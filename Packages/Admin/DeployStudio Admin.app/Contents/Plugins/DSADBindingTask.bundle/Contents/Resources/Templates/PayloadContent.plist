@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadType</key>
+	<string>com.apple.DirectoryService.managed</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+	<key>PayloadEnabled</key>
+	<true/>
+	<key>PayloadDisplayName</key>
+	<string>Active Directory Binding</string>
+	<key>ADCreateMobileAccountAtLoginFlag</key>
+	<true/>
+	<key>ADCreateMobileAccountAtLogin</key>
+	<true/>
+	<key>ADWarnUserBeforeCreatingMAFlag</key>
+	<true/>
+	<key>ADWarnUserBeforeCreatingMA</key>
+	<true/>
+	<key>ADForceHomeLocalFlag</key>
+	<true/>
+	<key>ADForceHomeLocal</key>
+	<true/>
+	<key>ADUseWindowsUNCPathFlag</key>
+	<true/>
+	<key>ADUseWindowsUNCPath</key>
+	<true/>
+	<key>ADMountStyle</key>
+	<string>smb</string>
+	<key>ADDefaultUserShellFlag</key>
+	<true/>
+	<key>ADDefaultUserShell</key>
+	<string>/bin/bash</string>
+	<key>ADMapUIDAttributeFlag</key>
+	<false/>
+	<key>ADMapGIDAttributeFlag</key>
+	<false/>
+	<key>ADMapGGIDAttributeFlag</key>
+	<false/>
+	<key>ADPreferredDCServerFlag</key>
+	<false/>
+	<key>ADDomainAdminGroupListFlag</key>
+	<false/>
+	<key>ADAllowMultiDomainAuthFlag</key>
+	<true/>
+	<key>ADAllowMultiDomainAuth</key>
+	<true/>
+	<key>ADNamespaceFlag</key>
+	<true/>
+	<key>ADNamespace</key>
+	<string>domain</string>
+	<key>ADPacketSignFlag</key>
+	<true/>
+	<key>ADPacketSign</key>
+	<string>allow</string>
+	<key>ADPacketEncryptFlag</key>
+	<true/>
+	<key>ADPacketEncrypt</key>
+	<string>allow</string>
+	<key>ADRestrictDDNSFlag</key>
+	<false/>
+	<key>ADTrustChangePassIntervalDaysFlag</key>
+	<true/>
+	<key>ADTrustChangePassIntervalDays</key>
+	<integer>14</integer>
+</dict>
+</plist>
