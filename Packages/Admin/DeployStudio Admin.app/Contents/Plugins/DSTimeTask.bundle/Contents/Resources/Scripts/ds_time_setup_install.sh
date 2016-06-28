@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-echo "${SCRIPT_NAME} - v1.10 ("`date`")"
+echo "${SCRIPT_NAME} - v1.11 ("`date`")"
 
 if [ ${#} -lt 2 ]
 then
@@ -36,7 +36,7 @@ then
 else
   sed -e s:__TIMEZONE__:${2}:g \
       -e s:__COUNTRY_CODE__:${3}:g \
-      -e s:"__CITY_NAME__":${4}:g \
+      -e s:"__CITY_NAME__":"${4}":g \
       -e s:__LATITUDE__:${5}:g \
       -e s:__LONGITUDE__:${6}:g \
       -e s:__NTP_SERVER__:${7}:g \

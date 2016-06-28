@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`/usr/bin/basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.3 ("`date`")"
+echo "${SCRIPT_NAME} - v1.4 ("`date`")"
 
 #
 # Set system timezone
@@ -70,6 +70,6 @@ fi
 #
 # Self removal
 #
-/usr/bin/srm -mf "${0}"
+rm -Pf "${0}"
 
 exit 0

@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`/usr/bin/basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.3 ("`date`")"
+echo "${SCRIPT_NAME} - v1.4 ("`date`")"
 
 #
 # Enable the ARD agent
@@ -45,7 +45,7 @@ then
   #
   # Self removal
   #
-  /usr/bin/srm -mf "${0}"
+  rm -Pf "${0}"
 else
   echo "ARD agent configuration failed, will retry on next boot!"
 fi

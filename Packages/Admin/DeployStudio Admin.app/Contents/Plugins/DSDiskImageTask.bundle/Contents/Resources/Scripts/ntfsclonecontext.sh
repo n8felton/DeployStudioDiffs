@@ -1,9 +1,14 @@
 #!/bin/sh
 
 SCRIPT_NAME=`basename "${0}"`
-VERSION=1.0
+VERSION=1.1
 
 remove_existing_context() {
+  if [ -e "${1}.efi" ]
+  then
+    echo "Removing existing file \"${1}.efi\"..."
+    rm -f "${1}.efi"
+  fi
   if [ -e "${1}.bootstrap" ]
   then
     echo "Removing existing file \"${1}.bootstrap\"..."
@@ -73,30 +78,58 @@ remove_existing_context "${TARGET_FILE_PATH}"
 
 IMAGE_FILE_PATH="${TARGET_FILE_PATH}"
 
-# saving windows boot config files
-NTFS_MOUNT_POINT=/Volumes/`diskutil info ${NTFS_DEVICE} | grep "Mount Point:" | awk -F"/Volumes/" '{ print $2 }'`
-if [ -e "${NTFS_MOUNT_POINT}/boot.ini" ]
+echo "Checking if EFI partition contains Windows booter files..."
+EFI_PARTITION=/dev/disk${DISK_ID}s1
+diskutil mount ${EFI_PARTITION}
+if [ ${?} -eq 0 ]
 then
-  echo "Saving boot.ini file from mount point ${NTFS_MOUNT_POINT} to ${IMAGE_FILE_PATH}.ini..."
-  cp -X "${NTFS_MOUNT_POINT}/boot.ini" "${IMAGE_FILE_PATH}.ini"
-fi
-if [ -e "${NTFS_MOUNT_POINT}/Boot/BCD" ]
-then
-  echo "Saving Boot/BCD file from mount point ${NTFS_MOUNT_POINT} to ${IMAGE_FILE_PATH}.bcd..."
-  cp -X "${NTFS_MOUNT_POINT}/Boot/BCD" "${IMAGE_FILE_PATH}.bcd"
+  if [ -e /Volumes/EFI/EFI/Microsoft ]
+  then
+    echo "Creating EFI BCD template file..."
+    "${TOOLS_FOLDER}"/ds_efibcd_helper --prepare-for-imaging "${NTFS_DEVICE}"
+    echo "Saving EFI Windows boot files from device ${DEVICE} to ${IMAGE_FILE_PATH}.efi..."
+    tar cPzf "${IMAGE_FILE_PATH}.efi" /Volumes/EFI/EFI/Boot /Volumes/EFI/EFI/Microsoft
+    echo "Removing EFI BCD template file..."
+    rm /Volumes/EFI/EFI/Microsoft/Boot/BCD.DSSTPL
+  fi
+  diskutil umount /Volumes/EFI
 fi
 
-# saving the MBR bootstrap code
-echo "Saving MBR bootstrap code from device ${DEVICE} to ${IMAGE_FILE_PATH}.bootstrap..."
-dd if="${DEVICE}" of="${IMAGE_FILE_PATH}.bootstrap" bs=446 count=1
-
-# saving the partition filesystem identifier
-echo "Saving filesystem identifier for partition ${NTFS_DEVICE} to ${IMAGE_FILE_PATH}.id..."
-FS_ID=`fdisk ${DEVICE} | grep "^.${PARTITION_ID}:" | awk '{ print $2 }'`
-let FS_ID_INT=0x${FS_ID}
-if [ ${FS_ID_INT} -gt 0 ] && [ ${FS_ID_INT} -le 255 ]
+if [ ! -e "${IMAGE_FILE_PATH}.efi" ]
 then
-  echo ${FS_ID} > "${IMAGE_FILE_PATH}.id"
+  # saving windows boot config files
+  NTFS_MOUNT_POINT=/Volumes/`diskutil info ${NTFS_DEVICE} | grep "Mount Point:" | awk -F"/Volumes/" '{ print $2 }'`
+  if [ -e "${NTFS_MOUNT_POINT}/boot.ini" ]
+  then
+    echo "Saving boot.ini file from mount point ${NTFS_MOUNT_POINT} to ${IMAGE_FILE_PATH}.ini..."
+    cp -X "${NTFS_MOUNT_POINT}/boot.ini" "${IMAGE_FILE_PATH}.ini"
+  fi
+  if [ -e "${NTFS_MOUNT_POINT}/Boot/BCD" ]
+  then
+    echo "Saving Boot/BCD file from mount point ${NTFS_MOUNT_POINT} to ${IMAGE_FILE_PATH}.bcd..."
+    cp -X "${NTFS_MOUNT_POINT}/Boot/BCD" "${IMAGE_FILE_PATH}.bcd"
+  fi
+
+  # unmount device
+  echo "Unmounting device ${NTFS_DEVICE}..."
+  diskutil unmount force "${NTFS_DEVICE}"
+
+  # saving the MBR bootstrap code
+  echo "Saving MBR bootstrap code from device ${DEVICE} to ${IMAGE_FILE_PATH}.bootstrap..."
+  dd if="${DEVICE}" of="${IMAGE_FILE_PATH}.bootstrap" bs=446 count=1
+
+  # saving the partition filesystem identifier
+  echo "Saving filesystem identifier for partition ${NTFS_DEVICE} to ${IMAGE_FILE_PATH}.id..."
+  FS_ID=`fdisk ${DEVICE} | grep "^.${PARTITION_ID}:" | awk '{ print $2 }'`
+  let FS_ID_INT=0x${FS_ID}
+  if [ ${FS_ID_INT} -gt 0 ] && [ ${FS_ID_INT} -le 255 ]
+  then
+    echo ${FS_ID} > "${IMAGE_FILE_PATH}.id"
+  fi
+
+  # trying to remount device
+  echo "Remounting device ${NTFS_DEVICE}..."
+  diskutil mount "${NTFS_DEVICE}"
 fi
 
 exit 0

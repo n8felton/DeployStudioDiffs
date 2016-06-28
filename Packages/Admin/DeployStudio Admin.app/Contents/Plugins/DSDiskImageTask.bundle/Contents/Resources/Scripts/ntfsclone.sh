@@ -1,7 +1,7 @@
 #!/bin/sh
 
 SCRIPT_NAME=`basename "${0}"`
-VERSION=2.8
+VERSION=2.9
 SYS_VERS=`sw_vers -productVersion | awk -F. '{ print $2 }'`
 
 if [ ${SYS_VERS} -le 7 ]
@@ -19,6 +19,11 @@ remove_existing_image() {
   then
     echo "Removing existing file \"${1}.ntfs.gz\"..."
     rm -f "${1}.ntfs.gz"
+  fi
+  if [ -e "${1}.efi" ]
+  then
+    echo "Removing existing file \"${1}.efi\"..."
+    rm -f "${1}.efi"
   fi
   if [ -e "${1}.bootstrap" ]
   then
@@ -105,34 +110,58 @@ else
   IMAGE_FILE_PATH="${TARGET_FILE_PATH}"
 fi
 
-# saving windows boot config files
-NTFS_MOUNT_POINT=/Volumes/`diskutil info ${NTFS_DEVICE} | grep "Mount Point:" | awk -F"/Volumes/" '{ print $2 }'`
-if [ -e "${NTFS_MOUNT_POINT}/boot.ini" ]
+echo "Checking if EFI partition contains Windows booter files..."
+EFI_PARTITION=/dev/disk${DISK_ID}s1
+diskutil mount ${EFI_PARTITION}
+if [ ${?} -eq 0 ]
 then
-  echo "Saving boot.ini file from mount point ${NTFS_MOUNT_POINT} to ${IMAGE_FILE_PATH}.ini..."
-  cp -X "${NTFS_MOUNT_POINT}/boot.ini" "${IMAGE_FILE_PATH}.ini"
+  if [ -e /Volumes/EFI/EFI/Microsoft ]
+  then
+    echo "Creating EFI BCD template file..."
+    "${TOOLS_FOLDER}"/ds_efibcd_helper --prepare-for-imaging "${NTFS_DEVICE}"
+    echo "Saving EFI Windows boot files from device ${DEVICE} to ${IMAGE_FILE_PATH}.efi..."
+    tar cPzf "${IMAGE_FILE_PATH}.efi" /Volumes/EFI/EFI/Boot /Volumes/EFI/EFI/Microsoft
+    echo "Removing EFI BCD template file..."
+    rm /Volumes/EFI/EFI/Microsoft/Boot/BCD.DSSTPL
+  fi
+  diskutil umount /Volumes/EFI
 fi
-if [ -e "${NTFS_MOUNT_POINT}/Boot/BCD" ]
+
+if [ ! -e "${IMAGE_FILE_PATH}.efi" ]
 then
-  echo "Saving Boot/BCD file from mount point ${NTFS_MOUNT_POINT} to ${IMAGE_FILE_PATH}.bcd..."
-  cp -X "${NTFS_MOUNT_POINT}/Boot/BCD" "${IMAGE_FILE_PATH}.bcd"
-fi
+  # saving windows boot config files
+  NTFS_MOUNT_POINT=/Volumes/`diskutil info ${NTFS_DEVICE} | grep "Mount Point:" | awk -F"/Volumes/" '{ print $2 }'`
+  if [ -e "${NTFS_MOUNT_POINT}/boot.ini" ]
+  then
+    echo "Saving boot.ini file from mount point ${NTFS_MOUNT_POINT} to ${IMAGE_FILE_PATH}.ini..."
+    cp -X "${NTFS_MOUNT_POINT}/boot.ini" "${IMAGE_FILE_PATH}.ini"
+  fi
+  if [ -e "${NTFS_MOUNT_POINT}/Boot/BCD" ]
+  then
+    echo "Saving Boot/BCD file from mount point ${NTFS_MOUNT_POINT} to ${IMAGE_FILE_PATH}.bcd..."
+    cp -X "${NTFS_MOUNT_POINT}/Boot/BCD" "${IMAGE_FILE_PATH}.bcd"
+  fi
 
-# unmount device
-echo "Unmounting device ${NTFS_DEVICE}..."
-diskutil unmount force "${NTFS_DEVICE}"
+  # unmount device
+  echo "Unmounting device ${NTFS_DEVICE}..."
+  diskutil unmount force "${NTFS_DEVICE}"
 
-# saving the MBR bootstrap code
-echo "Saving MBR bootstrap code from device ${DEVICE} to ${IMAGE_FILE_PATH}.bootstrap..."
-dd if="${DEVICE}" of="${IMAGE_FILE_PATH}.bootstrap" bs=446 count=1
+  # saving the MBR bootstrap code
+  echo "Saving MBR bootstrap code from device ${DEVICE} to ${IMAGE_FILE_PATH}.bootstrap..."
+  dd if="${DEVICE}" of="${IMAGE_FILE_PATH}.bootstrap" bs=446 count=1
 
-# saving the partition filesystem identifier
-echo "Saving filesystem identifier for partition ${NTFS_DEVICE} to ${IMAGE_FILE_PATH}.id..."
-FS_ID=`fdisk ${DEVICE} | grep "^.${PARTITION_ID}:" | awk '{ print $2 }'`
-let FS_ID_INT=0x${FS_ID}
-if [ ${FS_ID_INT} -gt 0 ] && [ ${FS_ID_INT} -le 255 ]
-then
-  echo ${FS_ID} > "${IMAGE_FILE_PATH}.id"
+  # saving the partition filesystem identifier
+  echo "Saving filesystem identifier for partition ${NTFS_DEVICE} to ${IMAGE_FILE_PATH}.id..."
+  FS_ID=`fdisk ${DEVICE} | grep "^.${PARTITION_ID}:" | awk '{ print $2 }'`
+  let FS_ID_INT=0x${FS_ID}
+  if [ ${FS_ID_INT} -gt 0 ] && [ ${FS_ID_INT} -le 255 ]
+  then
+    echo ${FS_ID} > "${IMAGE_FILE_PATH}.id"
+  fi
+else
+  # unmount device
+  echo "Unmounting device ${NTFS_DEVICE}..."
+  diskutil unmount force "${NTFS_DEVICE}"
 fi
 
 # cloning NTFS partition
@@ -171,49 +200,66 @@ diskutil mount "${NTFS_DEVICE}"
 # moving files from the scratch disk to the target path
 if [ -n "${SCRATCH_DISK}" ]
 then
-  echo "Uploading file \"${IMAGE_FILE_PATH}.bootstrap\"..."
-  cp "${IMAGE_FILE_PATH}.bootstrap" "${TARGET_FILE_PATH}.bootstrap"
-  if [ ${?} -ne 0 ]
+  if [ -e "${IMAGE_FILE_PATH}.efi" ]
   then
-    echo "An error occurred while moving the bootstrap file to ${TARGET_FOLDER}, script aborted."
+    echo "Uploading file \"${IMAGE_FILE_PATH}.efi\"..."
+    cp "${IMAGE_FILE_PATH}.efi" "${TARGET_FILE_PATH}.efi"
+    if [ ${?} -ne 0 ]
+    then
+      echo "An error occurred while moving the efi partition to ${TARGET_FOLDER}, script aborted."
+      echo "RuntimeAbortScript"
+      exit 1
+    fi
+  elif [ -e "${IMAGE_FILE_PATH}.bootstrap" ]
+  then
+    echo "Uploading file \"${IMAGE_FILE_PATH}.bootstrap\"..."
+    cp "${IMAGE_FILE_PATH}.bootstrap" "${TARGET_FILE_PATH}.bootstrap"
+    if [ ${?} -ne 0 ]
+    then
+      echo "An error occurred while moving the bootstrap file to ${TARGET_FOLDER}, script aborted."
+      echo "RuntimeAbortScript"
+      exit 1
+    fi
+
+    if [ -e "${IMAGE_FILE_PATH}.ini" ]
+    then
+      echo "Uploading file \"${IMAGE_FILE_PATH}.ini\"..."
+      cp "${IMAGE_FILE_PATH}.ini" "${TARGET_FILE_PATH}.ini"
+      if [ ${?} -ne 0 ]
+      then
+        echo "An error occurred while moving the boot.ini file to ${TARGET_FOLDER}, script aborted."
+        echo "RuntimeAbortScript"
+        exit 1
+      fi
+    fi
+
+    if [ -e "${IMAGE_FILE_PATH}.bcd" ]
+    then
+      echo "Uploading file \"${IMAGE_FILE_PATH}.bcd\"..."
+      cp "${IMAGE_FILE_PATH}.bcd" "${TARGET_FILE_PATH}.bcd"
+      if [ ${?} -ne 0 ]
+      then
+        echo "An error occurred while moving the BCD file to ${TARGET_FOLDER}, script aborted."
+        echo "RuntimeAbortScript"
+        exit 1
+      fi
+    fi
+
+    if [ -e "${IMAGE_FILE_PATH}.id" ]
+    then
+      echo "Uploading file \"${IMAGE_FILE_PATH}.id\"..."
+      cp "${IMAGE_FILE_PATH}.id" "${TARGET_FILE_PATH}.id"
+      if [ ${?} -ne 0 ]
+      then
+        echo "An error occurred while moving the filesytem id to ${TARGET_FOLDER}, script aborted."
+        echo "RuntimeAbortScript"
+        exit 1
+      fi
+    fi
+  else
+    echo "Missing boostrap file or EFI partition image, script aborted."
     echo "RuntimeAbortScript"
     exit 1
-  fi
-  
-  if [ -e "${IMAGE_FILE_PATH}.ini" ]
-  then
-    echo "Uploading file \"${IMAGE_FILE_PATH}.ini\"..."
-    cp "${IMAGE_FILE_PATH}.ini" "${TARGET_FILE_PATH}.ini"
-    if [ ${?} -ne 0 ]
-    then
-      echo "An error occurred while moving the boot.ini file to ${TARGET_FOLDER}, script aborted."
-      echo "RuntimeAbortScript"
-      exit 1
-    fi
-  fi
-
-  if [ -e "${IMAGE_FILE_PATH}.bcd" ]
-  then
-    echo "Uploading file \"${IMAGE_FILE_PATH}.bcd\"..."
-    cp "${IMAGE_FILE_PATH}.bcd" "${TARGET_FILE_PATH}.bcd"
-    if [ ${?} -ne 0 ]
-    then
-      echo "An error occurred while moving the BCD file to ${TARGET_FOLDER}, script aborted."
-      echo "RuntimeAbortScript"
-      exit 1
-    fi
-  fi
-
-  if [ -e "${IMAGE_FILE_PATH}.id" ]
-  then
-    echo "Uploading file \"${IMAGE_FILE_PATH}.id\"..."
-    cp "${IMAGE_FILE_PATH}.id" "${TARGET_FILE_PATH}.id"
-    if [ ${?} -ne 0 ]
-    then
-      echo "An error occurred while moving the filesytem id to ${TARGET_FOLDER}, script aborted."
-      echo "RuntimeAbortScript"
-      exit 1
-    fi
   fi
   
   if [ -n "${4}" ] && [ "${4}" == "--compress" ]

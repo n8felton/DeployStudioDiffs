@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-/bin/echo "${SCRIPT_NAME} - v1.35 ("`date`")"
+/bin/echo "${SCRIPT_NAME} - v1.36 ("`date`")"
 
 custom_logger() {
   /bin/echo "${SCRIPT_NAME} - $1"
@@ -174,7 +174,7 @@ then
       if [ -e "/etc/deploystudio/bin/.ds_software_update.calls" ] && [ `/usr/bin/wc -l "/etc/deploystudio/bin/.ds_software_update.calls" | /usr/bin/awk '{ print $1 }'` -gt 3 ]
       then
         custom_logger "this computer has already rebooted 3 times because of Apple software update, ignoring script."
-        /usr/bin/srm -mf "/etc/deploystudio/bin/ds_software_update.pl"
+        rm -Pf "/etc/deploystudio/bin/ds_software_update.pl"
       else
         "${DS_SCRIPT_PATH}"
         SUS_RESULT=${?}

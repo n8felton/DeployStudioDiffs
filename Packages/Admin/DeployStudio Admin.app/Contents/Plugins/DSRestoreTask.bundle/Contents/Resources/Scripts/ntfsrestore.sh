@@ -49,20 +49,24 @@ then
   exit 1
 fi
 
-# get the starting block value from the MBR
-if [ -e "${TOOLS_FOLDER}"/fdisk ] && [ `sw_vers -productVersion | awk -F. '{ print $2 }'` -gt 5 ]
+EFI_FILE=`echo "${1}" | sed s/"\\.ntfs"/"\\.efi"/ | sed s/"\\.gz$"//`
+if [ ! -e "${EFI_FILE}" ]
 then
-  FDISK="${TOOLS_FOLDER}"/fdisk
-else
-  FDISK=fdisk
-fi
-STARTING_BLOCK=`"${FDISK}" -d "${RAW_DEVICE}" | head -n${PARTITION_ID} | tail -n1 | awk -F, '{ print $1 }'`
-if [ -z "${STARTING_BLOCK}" ] || [ "${STARTING_BLOCK}" -le 0 ]
-then
-  echo "-> invalid starting block value (${STARTING_BLOCK}) defined in MBR for partition ${NTFS_DEVICE}."
-  echo "   Check your partition map. You need to define at least one DOS/FAT partition in order to get the MBR automatically in sync with GPT."
-  echo "RuntimeAbortScript"
-  exit 1
+  # get the starting block value from the MBR
+  if [ -e "${TOOLS_FOLDER}"/fdisk ] && [ `sw_vers -productVersion | awk -F. '{ print $2 }'` -gt 5 ]
+  then
+    FDISK="${TOOLS_FOLDER}"/fdisk
+  else
+    FDISK=fdisk
+  fi
+  STARTING_BLOCK=`"${FDISK}" -d "${RAW_DEVICE}" | head -n${PARTITION_ID} | tail -n1 | awk -F, '{ print $1 }'`
+  if [ -z "${STARTING_BLOCK}" ] || [ "${STARTING_BLOCK}" -le 0 ]
+  then
+    echo "-> invalid starting block value (${STARTING_BLOCK}) defined in MBR for partition ${NTFS_DEVICE}."
+    echo "   Check your partition map. You need to define at least one DOS/FAT partition in order to get the MBR automatically in sync with GPT."
+    echo "RuntimeAbortScript"
+    exit 1
+  fi
 fi
 
 # unmount device
@@ -93,25 +97,53 @@ fi
 # compressed files
 COMPRESSED=`echo ${1} | grep -i "\.gz$"`
 
-# restore the MBR bootstrap code
-BOOTSTRAP_FILE=`echo "${1}" | sed s/"\\.ntfs"/"\\.bootstrap"/ | sed s/"\\.gz$"//`
-if [ -e "${BOOTSTRAP_FILE}.gz" ]
+# restore the EFI partition or MBR bootstrap code
+if [ -e "${EFI_FILE}" ]
 then
-  echo "-> uncompressing MBR bootstrap code (${BOOTSTRAP_FILE}.gz)..."
-  gunzip "${BOOTSTRAP_FILE}.gz"
-fi
-if [ -e "${BOOTSTRAP_FILE}" ]
-then
-  echo "-> restoring MBR bootstrap code (${BOOTSTRAP_FILE})..."
-  dd if="${BOOTSTRAP_FILE}" of="${DEVICE}" bs=446 count=1
+  echo "-> checking EFI partition..."
+  if [ -d /Volumes/EFI/EFI ]
+  then
+    diskutil umount /Volumes/EFI 2>&1
+  fi
+  EFI_PARTITION="${DEVICE}s1"
+  diskutil mount ${EFI_PARTITION}
+  if [ ${?} -eq 0 ] || [ -d /Volumes/EFI/EFI ]
+  then
+    echo "-> restoring EFI Windows boot files (${EFI_FILE})..."
+    rm -rf /Volumes/EFI/EFI/Boot /Volumes/EFI/EFI/Microsoft 2>&1 >/dev/null
+    tar xPzf "${EFI_FILE}"
+    echo "-> restoring EFI BCD file from template..."
+    "${TOOLS_FOLDER}"/ds_efibcd_helper --update-generic-bcd "${NTFS_DEVICE}"
+    diskutil umount /Volumes/EFI 2>&1
+
+    "${TOOLS_FOLDER}"/safeunmountdisk.sh "${DEVICE}"
+    echo "-> enable protective MBR mode..."
+    "${TOOLS_FOLDER}"/ds_efibcd_helper --enable-protective-mbr "${DEVICE}"
+  else
+    echo "-> EFI partition not found, aborting..."
+    echo "RuntimeAbortScript"
+    exit 1
+  fi
 else
-  echo "-> MBR bootstrap code not found, aborting..."
-  echo "RuntimeAbortScript"
-  exit 1
+  BOOTSTRAP_FILE=`echo "${1}" | sed s/"\\.ntfs"/"\\.bootstrap"/ | sed s/"\\.gz$"//`
+  if [ -e "${BOOTSTRAP_FILE}.gz" ]
+  then
+    echo "-> uncompressing MBR bootstrap code (${BOOTSTRAP_FILE}.gz)..."
+    gunzip "${BOOTSTRAP_FILE}.gz"
+  fi
+  if [ -e "${BOOTSTRAP_FILE}" ]
+  then
+    echo "-> restoring MBR bootstrap code (${BOOTSTRAP_FILE})..."
+    dd if="${BOOTSTRAP_FILE}" of="${DEVICE}" bs=446 count=1
+  else
+    echo "-> MBR bootstrap code not found, aborting..."
+    echo "RuntimeAbortScript"
+    exit 1
+  fi
 fi 
 
-# ensure device is still unmounted after MBR restoration
-"${TOOLS_FOLDER}"/safeunmountdisk.sh "${DEVICE}"
+# ensure NTFS partition is still unmounted after MBR restoration/update
+diskutil umount "${NTFS_DEVICE}"
 
 # restore NTFS partition
 echo "-> restoring NTFS partition (${IMAGE_FILE})..."
@@ -179,15 +211,6 @@ then
   echo "RuntimeAbortScript"
   exit 1
 fi
-
-#echo "-> emptying pagefile.sys config file..."
-#touch "/tmp/pagefile.sys"
-#"${TOOLS_FOLDER}"/ntfscp${NTFSPROGS_VERS} -f "${NTFS_DEVICE}" "/tmp/pagefile.sys" pagefile.sys
-#if [ ${?} -ne 0 ]
-#then
-#  echo "RuntimeAbortScript"
-#  exit 1
-#fi
 
 # sysprep file lookup
 SYSPREP_FILE=""
@@ -277,30 +300,33 @@ then
   fi
 fi 
 
-# update MBR partition table
-echo "-> updating MBR partition table (partition ${PARTITION_ID})"
-FS_ID_FILE=`echo "${1}" | sed s/"\\.ntfs"/"\\.id"/ | sed s/"\\.gz$"//`
-if [ -e "${FS_ID_FILE}" ]
+if [ ! -e "${EFI_FILE}" ]
 then
-  FS_ID=`cat "${FS_ID_FILE}" | head -n 1`
-  let FS_ID_INT=0x${FS_ID}
-  if [ ${FS_ID_INT} -gt 0 ] && [ ${FS_ID_INT} -le 255 ]
+  # update MBR partition table
+  echo "-> updating MBR partition table (partition ${PARTITION_ID})"
+  FS_ID_FILE=`echo "${1}" | sed s/"\\.ntfs"/"\\.id"/ | sed s/"\\.gz$"//`
+  if [ -e "${FS_ID_FILE}" ]
   then
-    echo "   with saved file system id 0x${FS_ID}"
+    FS_ID=`cat "${FS_ID_FILE}" | head -n 1`
+    let FS_ID_INT=0x${FS_ID}
+    if [ ${FS_ID_INT} -gt 0 ] && [ ${FS_ID_INT} -le 255 ]
+    then
+      echo "   with saved file system id 0x${FS_ID}"
+    else
+      FS_ID=7
+    fi
   else
     FS_ID=7
   fi
-else
-  FS_ID=7
-fi
-printf "setpid ${PARTITION_ID}\n${FS_ID}\nflag ${PARTITION_ID}\nwrite\nquit\n" | fdisk -y -e "${RAW_DEVICE}"
-echo
+  printf "setpid ${PARTITION_ID}\n${FS_ID}\nflag ${PARTITION_ID}\nwrite\nquit\n" | fdisk -y -e "${RAW_DEVICE}"
+  echo
 
-# update partition geometry
-HEX_INDEX=`printf "%08x" ${STARTING_BLOCK}`
-RHEX_INDEX=${HEX_INDEX:6:2}${HEX_INDEX:4:2}${HEX_INDEX:2:2}${HEX_INDEX:0:2}
-echo "-> updating NTFS partition geometry (starting block=${STARTING_BLOCK}/${HEX_INDEX}/${RHEX_INDEX})..."
-echo ${RHEX_INDEX} | xxd -r -p | dd conv=notrunc of="${NTFS_DEVICE}" bs=1 seek=28
+  # update partition geometry
+  HEX_INDEX=`printf "%08x" ${STARTING_BLOCK}`
+  RHEX_INDEX=${HEX_INDEX:6:2}${HEX_INDEX:4:2}${HEX_INDEX:2:2}${HEX_INDEX:0:2}
+  echo "-> updating NTFS partition geometry (starting block=${STARTING_BLOCK}/${HEX_INDEX}/${RHEX_INDEX})..."
+  echo ${RHEX_INDEX} | xxd -r -p | dd conv=notrunc of="${NTFS_DEVICE}" bs=1 seek=28
+fi
 
 # expand restored filesystem to partition size
 if [ "${EXPAND}" = "YES" ]

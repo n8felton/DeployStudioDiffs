@@ -5,7 +5,7 @@ histchars=
 
 SCRIPT_NAME=`/usr/bin/basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.7 ("`date`")"
+echo "${SCRIPT_NAME} - v1.8 ("`date`")"
 
 #
 # Rename computer
@@ -47,7 +47,7 @@ then
   #
   # Self removal
   #
-  /usr/bin/srm -mf "${0}"
+  rm -Pf "${0}"
 else
   echo "Computer renaming failed, will retry on next boot!"
 fi

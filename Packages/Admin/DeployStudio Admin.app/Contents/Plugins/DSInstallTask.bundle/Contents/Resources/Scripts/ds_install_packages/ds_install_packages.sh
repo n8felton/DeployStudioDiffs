@@ -8,7 +8,7 @@ then
   SYS_MIN_VERS=0
 fi
 
-echo "${SCRIPT_NAME} - v1.15 ("`date`")"
+echo "${SCRIPT_NAME} - v1.17 ("`date`")"
 
 #
 # Export command line installer environment variables
@@ -54,7 +54,7 @@ then
     rm -rf "${PACKAGE}"
 
     # Self-removal
-    /usr/bin/srm -mf "${0}"
+    rm -Pf "${0}"
   elif [ "__IGNORE_INSTALL_STATUS__" = "YES" ]
   then
     if [ -n "${ASSESSMENTS_CHECKS_ENABLED}" ]
@@ -66,7 +66,7 @@ then
     rm -rf "${PACKAGE}"
 
     # Self-removal
-    /usr/bin/srm -mf "${0}"
+    rm -Pf "${0}"
   else
     if [ -n "${ASSESSMENTS_CHECKS_ENABLED}" ]
     then

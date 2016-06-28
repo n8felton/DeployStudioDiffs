@@ -31,14 +31,14 @@ then
   exit 1
 fi
 
-if [ -e "${VOLUME_PATH}"/etc/deploystudio/Applications/Finalize.app ]
-then
-  echo "Finalize resources already installed, skipping..."
-  # make a 2s pause to warrant post-install tasks execution order
-  sleep 2
-  echo "${SCRIPT_NAME} - end"
-  exit 0
-fi
+#if [ -e "${VOLUME_PATH}"/etc/deploystudio/Applications/Finalize.app ]
+#then
+#  echo "Finalize resources already installed, skipping..."
+#  # make a 2s pause to warrant post-install tasks execution order
+#  sleep 2
+#  echo "${SCRIPT_NAME} - end"
+#  exit 0
+#fi
 
 VOLUME_SYS=`defaults read "${VOLUME_PATH}"/System/Library/CoreServices/SystemVersion ProductVersion | awk -F. '{ print $2 }'`
 if [ -z "${VOLUME_SYS}" ]
@@ -62,41 +62,38 @@ rm -f "${VOLUME_PATH}"/var/db/dyld/dyld* 2>/dev/null
 if [ ! -e "${VOLUME_PATH}/Library/LaunchDaemons" ]
 then
   mkdir -p "${VOLUME_PATH}"/Library/LaunchDaemons
-  chmod 775 "${VOLUME_PATH}"/Library
-  chown root:admin "${VOLUME_PATH}"/Library
-  chmod 755 "${VOLUME_PATH}"/Library/LaunchDaemons
-  chown root:wheel "${VOLUME_PATH}"/Library/LaunchDaemons
 fi
+chmod 775 "${VOLUME_PATH}"/Library
+chown root:admin "${VOLUME_PATH}"/Library
+chmod 755 "${VOLUME_PATH}"/Library/LaunchDaemons
+chown root:wheel "${VOLUME_PATH}"/Library/LaunchDaemons
 
 if [ ! -e "${VOLUME_PATH}/Library/LaunchAgents" ]
 then
   mkdir -p "${VOLUME_PATH}"/Library/LaunchAgents
-  chmod 775 "${VOLUME_PATH}"/Library
-  chown root:admin "${VOLUME_PATH}"/Library
-  chmod 755 "${VOLUME_PATH}"/Library/LaunchAgents
-  chown root:wheel "${VOLUME_PATH}"/Library/LaunchAgents
 fi
+chmod 775 "${VOLUME_PATH}"/Library
+chown root:admin "${VOLUME_PATH}"/Library
+chmod 755 "${VOLUME_PATH}"/Library/LaunchAgents
+chown root:wheel "${VOLUME_PATH}"/Library/LaunchAgents
 
 if [ ! -e "${VOLUME_PATH}/etc/deploystudio/bin" ]
 then
   mkdir -p "${VOLUME_PATH}"/etc/deploystudio/bin
-  chmod 755 "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/bin
-  chown root:wheel "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/bin
 fi
+chmod 755 "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/bin
+chown root:wheel "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/bin
 
 if [ ! -e "${VOLUME_PATH}/etc/deploystudio/sbin" ]
 then
   mkdir -p "${VOLUME_PATH}"/etc/deploystudio/sbin
-  chmod 755 "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/sbin
-  chown root:wheel "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/sbin
 fi
+chmod 755 "${VOLUME_PATH}"/etc/deploystudio/sbin
+chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/sbin
 
 if [ ! -e "${VOLUME_PATH}/etc/deploystudio/etc" ]
 then
   mkdir -p "${VOLUME_PATH}"/etc/deploystudio/etc
-  chmod 755 "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/etc
-  chown root:wheel "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/etc
-
   if [ -e /System/Library/CoreServices/DefaultDesktop.jpg ]
   then
     cp /System/Library/CoreServices/DefaultDesktop.jpg "${VOLUME_PATH}"/etc/deploystudio/etc/
@@ -104,58 +101,60 @@ then
     chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/etc/DefaultDesktop.jpg
   fi
 fi
+chmod 755 "${VOLUME_PATH}"/etc/deploystudio/etc
+chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/etc
 
 if [ ${VOLUME_SYS} -gt 4 ]
 then
   if [ ! -e "${VOLUME_PATH}/etc/deploystudio/Applications" ]
   then
     mkdir -p "${VOLUME_PATH}"/etc/deploystudio/Applications
-    chmod 755 "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/Applications
-    chown root:wheel "${VOLUME_PATH}"/etc/deploystudio "${VOLUME_PATH}"/etc/deploystudio/Applications
   fi
+  chmod 755 "${VOLUME_PATH}"/etc/deploystudio/Applications
+  chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/Applications
 
   if [ ! -e "${VOLUME_PATH}"/etc/deploystudio/Applications/Finalize.app ]
   then
     cp -R "${SCRIPT_PATH}"/Finalize.app "${VOLUME_PATH}"/etc/deploystudio/Applications/
-    chmod 700 "${VOLUME_PATH}"/etc/deploystudio/Applications/Finalize.app/Contents/MacOS/Finalize
-    chown -R root:wheel "${VOLUME_PATH}"/etc/deploystudio/Applications/Finalize.app
   fi
+  chmod 700 "${VOLUME_PATH}"/etc/deploystudio/Applications/Finalize.app/Contents/MacOS/Finalize
+  chown -R root:wheel "${VOLUME_PATH}"/etc/deploystudio/Applications/Finalize.app
 
   if [ ! -e "${VOLUME_PATH}"/Library/LaunchAgents/com.deploystudio.FinalizeApp.plist ]
   then
     cp "${SCRIPT_PATH}"/com.deploystudio.FinalizeApp.plist "${VOLUME_PATH}"/Library/LaunchAgents/
-    chmod 644 "${VOLUME_PATH}"/Library/LaunchAgents/com.deploystudio.FinalizeApp.plist
-    chown root:wheel "${VOLUME_PATH}"/Library/LaunchAgents/com.deploystudio.FinalizeApp.plist
   fi
+  chmod 644 "${VOLUME_PATH}"/Library/LaunchAgents/com.deploystudio.FinalizeApp.plist
+  chown root:wheel "${VOLUME_PATH}"/Library/LaunchAgents/com.deploystudio.FinalizeApp.plist
 
   if [ ! -e "${VOLUME_PATH}"/Library/LaunchAgents/com.deploystudio.finalizeScript.plist ]
   then
     cp "${SCRIPT_PATH}"/com.deploystudio.finalizeScript.plist "${VOLUME_PATH}"/Library/LaunchAgents/
-    chmod 644 "${VOLUME_PATH}"/Library/LaunchAgents/com.deploystudio.finalizeScript.plist
-    chown root:wheel "${VOLUME_PATH}"/Library/LaunchAgents/com.deploystudio.finalizeScript.plist
   fi
+  chmod 644 "${VOLUME_PATH}"/Library/LaunchAgents/com.deploystudio.finalizeScript.plist
+  chown root:wheel "${VOLUME_PATH}"/Library/LaunchAgents/com.deploystudio.finalizeScript.plist
 fi
 
 if [ ! -e "${VOLUME_PATH}"/Library/LaunchDaemons/com.deploystudio.finalizeCleanup.plist ]
 then
   cp "${SCRIPT_PATH}"/com.deploystudio.finalizeCleanup.plist "${VOLUME_PATH}"/Library/LaunchDaemons/
-  chmod 644 "${VOLUME_PATH}"/Library/LaunchDaemons/com.deploystudio.finalizeCleanup.plist
-  chown root:wheel "${VOLUME_PATH}"/Library/LaunchDaemons/com.deploystudio.finalizeCleanup.plist
 fi
+chmod 644 "${VOLUME_PATH}"/Library/LaunchDaemons/com.deploystudio.finalizeCleanup.plist
+chown root:wheel "${VOLUME_PATH}"/Library/LaunchDaemons/com.deploystudio.finalizeCleanup.plist
 
 if [ ! -e "${VOLUME_PATH}"/etc/deploystudio/bin/ds_finalize.sh ]
 then
   cp "${SCRIPT_PATH}"/ds_finalize.sh "${VOLUME_PATH}"/etc/deploystudio/bin
-  chmod 700 "${VOLUME_PATH}"/etc/deploystudio/bin/ds_finalize.sh
-  chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/bin/ds_finalize.sh
 fi
+chmod 700 "${VOLUME_PATH}"/etc/deploystudio/bin/ds_finalize.sh
+chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/bin/ds_finalize.sh
 
 if [ ! -e "${VOLUME_PATH}"/etc/deploystudio/sbin/ds_finalize_cleanup.sh ]
 then
   cp "${SCRIPT_PATH}"/ds_finalize_cleanup.sh "${VOLUME_PATH}"/etc/deploystudio/sbin/
-  chmod 700 "${VOLUME_PATH}"/etc/deploystudio/sbin/ds_finalize_cleanup.sh
-  chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/sbin/ds_finalize_cleanup.sh
 fi
+chmod 700 "${VOLUME_PATH}"/etc/deploystudio/sbin/ds_finalize_cleanup.sh
+chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/sbin/ds_finalize_cleanup.sh
 
 AUTO_LOGIN_USER=`defaults read "${VOLUME_PATH}"/Library/Preferences/com.apple.loginwindow autoLoginUser 2>/dev/null`
 if [ -n "${AUTO_LOGIN_USER}" ]

@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-echo "${SCRIPT_NAME} - v1.14 ("`date`")"
+echo "${SCRIPT_NAME} - v1.15 ("`date`")"
 
 if [ ${#} -lt 2 ]
 then
@@ -39,9 +39,9 @@ fi
 if [ ! -e "${VOLUME_PATH}/etc/deploystudio/ds_packages" ]
 then
   mkdir -p "${VOLUME_PATH}"/etc/deploystudio/ds_packages
-  chmod 755 "${VOLUME_PATH}"/etc/deploystudio/ds_packages
-  chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/ds_packages
 fi
+chmod 755 "${VOLUME_PATH}"/etc/deploystudio/ds_packages
+chown root:wheel "${VOLUME_PATH}"/etc/deploystudio/ds_packages
 
 IDX=`basename "${2}" | awk -F. '{ print $1 }'`
 if [ -n "${3}" ]

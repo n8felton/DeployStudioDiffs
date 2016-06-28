@@ -33,11 +33,11 @@ if (length($SUS_HOST_NAME) > 0) {
    
         # Reset local SUS url if required
         if (length($RESET_WHEN_DONE) > 0) {
-            system("/usr/bin/srm -mf /Library/Preferences/com.apple.SoftwareUpdate.plist");
+            system("/bin/rm -Pf /Library/Preferences/com.apple.SoftwareUpdate.plist");
         }
         
         # Self removal
-        system("/usr/bin/srm -mf \"$0\"");
+        system("/bin/rm -Pf \"$0\"");
 
         exit 200;
     }
@@ -84,12 +84,12 @@ if (@AVAILABLE_UPDATES > 0) {
 
     # Reset local SUS url if required
     if (length($RESET_WHEN_DONE) > 0) {
-        system("/usr/bin/srm -mf /Library/Preferences/com.apple.SoftwareUpdate.plist");
-        system("/usr/bin/srm -mf /Library/Preferences/com.apple.SoftwareUpdate.plist.lockfile");
+        system("/bin/rm -Pf /Library/Preferences/com.apple.SoftwareUpdate.plist");
+        system("/bin/rm -Pf /Library/Preferences/com.apple.SoftwareUpdate.plist.lockfile");
     }
 
     # Self removal
-    system("/usr/bin/srm -mf \"$0\"");
+    system("/bin/rm -Pf \"$0\"");
     
     exit 200;
 }

@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`basename "${0}"`
 TOOLS_FOLDER=`dirname "${0}"`
-VERSION=1.28
+VERSION=1.29
 
 if [ ${#} -lt 1 ]
 then
@@ -29,11 +29,11 @@ rm -f  "${1}"/Library/LaunchDaemons/com.deploystudio.finalizeScript.plist 2>/dev
 rm -rf "${1}"/etc/deploystudio 2>/dev/null
 
 rm -f  "${1}"/Library/Keychains/apsd.keychain 2>/dev/null
-rm -f  "${1}"/var/db/ConfigurationProfiles/.cloudConfig*           2>/dev/null
-rm -f  "${1}"/var/db/ConfigurationProfiles/.*ActivationRecord      2>/dev/null
-rm -f  "${1}"/var/db/ConfigurationProfiles/.passcode*              2>/dev/null
-rm -f  "${1}"/var/db/ConfigurationProfiles/.profiles*              2>/dev/null
-rm -f  "${1}"/var/db/ConfigurationProfiles/Setup/.profileSetupDone 2>/dev/null
+rm -f  "${1}"/private/var/db/ConfigurationProfiles/.cloudConfig*           2>/dev/null
+rm -f  "${1}"/private/var/db/ConfigurationProfiles/.*ActivationRecord      2>/dev/null
+rm -f  "${1}"/private/var/db/ConfigurationProfiles/.passcode*              2>/dev/null
+rm -f  "${1}"/private/var/db/ConfigurationProfiles/.profiles*              2>/dev/null
+rm -f  "${1}"/private/var/db/ConfigurationProfiles/Setup/.profileSetupDone 2>/dev/null
 
 rm -rf "${1}"/.DocumentRevisions-V100 2>/dev/null
 rm -rf "${1}"/.MobileBackups 2>/dev/null
@@ -58,13 +58,19 @@ rm -f  "${1}"/System/Library/Extensions.mkext 2>/dev/null
 rm -f  "${1}"/private/var/db/BootCache.playlist 2>/dev/null
 rm -f  "${1}"/private/var/db/NetworkInterfaces.xml 2>/dev/null
 rm -f  "${1}"/private/var/db/volinfo.database 2>/dev/null
-rm -f  "${1}"/var/db/dhcpclient/* 2>/dev/null
-rm -f  "${1}"/var/db/dhcpclient/leases/* 2>/dev/null
-rm -f  "${1}"/var/db/dyld/dyld* 2>/dev/null
-rm -f  "${1}"/var/pcast/server/krb_cc 2>/dev/null
-rm -f  "${1}"/var/vm/sleepimage 2>/dev/null
-rm -f  "${1}"/var/log/ds_finalize.log 2>/dev/null
-  
+rm -f  "${1}"/private/var/db/dhcpclient/* 2>/dev/null
+rm -f  "${1}"/private/var/db/dhcpclient/leases/* 2>/dev/null
+rm -f  "${1}"/private/var/db/dyld/dyld* 2>/dev/null
+rm -f  "${1}"/private/var/pcast/server/krb_cc 2>/dev/null
+rm -f  "${1}"/private/var/vm/sleepimage 2>/dev/null
+rm -f  "${1}"/private/var/log/ds_finalize.log 2>/dev/null
+
+if [ ! -e "${1}"/private/var/db/.AppleSetupDone ]
+then
+  rm -f "${1}"/private/var/db/.AppleSetup*
+  touch "${1}"/private/var/db/.RunLanguageChooserToo
+fi
+
 if [ -e "${1}"/Library/Filesystems/Xsan/config/uuid ]
 then
   uuidgen > "${1}"/Library/Filesystems/Xsan/config/uuid
@@ -89,11 +95,11 @@ then
   rm -rf "${1}/Library/Preferences/OpenDirectory/Configurations/Active Directory" 2>/dev/null
   rm -rf "${1}/Library/Preferences/OpenDirectory/DynamicData/Active Directory" 2>/dev/null
   rm -rf "${1}"/Library/Preferences/DirectoryService/ActiveDirectory.plist 2>/dev/null
-  rm -f  "${1}"/var/db/dslocal/nodes/Default/config/KerberosKDC.plist 2>/dev/null
+  rm -f  "${1}"/private/var/db/dslocal/nodes/Default/config/KerberosKDC.plist 2>/dev/null
   "${TOOLS_FOLDER}"/deleteKeychainCert "${1}"/Library/Keychains/System.keychain com.apple.kerberos.kdc
   "${TOOLS_FOLDER}"/deleteKeychainCert "${1}"/Library/Keychains/System.keychain com.apple.systemdefault
   rm -f  "${1}"/etc/krb5.keytab 2>/dev/null
-  rm -rf "${1}"/var/db/krb5kdc 2>/dev/null
+  rm -rf "${1}"/private/var/db/krb5kdc 2>/dev/null
 fi
 
 echo "Exiting ${SCRIPT_NAME} v${VERSION}"

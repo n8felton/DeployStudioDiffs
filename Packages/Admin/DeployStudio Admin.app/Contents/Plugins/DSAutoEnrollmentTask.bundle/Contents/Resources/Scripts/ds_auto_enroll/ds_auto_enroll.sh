@@ -5,7 +5,7 @@ histchars=
 
 SCRIPT_NAME=`/usr/bin/basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.1 ("`date`")"
+echo "${SCRIPT_NAME} - v1.2 ("`date`")"
 
 SSL_FILE=`echo "${0}" | sed s/\.sh$/_ssl\.mobileconfig/`
 BOOTSTRAP_FILE=`echo "${0}" | sed s/\.sh$/_bootstrap\.mobileconfig/`
@@ -41,6 +41,6 @@ fi
 #
 # Self removal
 #
-/usr/bin/srm -mf "${0}"
+rm -Pf "${0}"
 
 exit 0

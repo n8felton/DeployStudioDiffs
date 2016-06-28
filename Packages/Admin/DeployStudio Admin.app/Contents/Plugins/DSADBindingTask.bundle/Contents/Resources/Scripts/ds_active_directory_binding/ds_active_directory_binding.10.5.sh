@@ -5,7 +5,7 @@ histchars=
 
 SCRIPT_NAME=`basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.21 ("`date`")"
+echo "${SCRIPT_NAME} - v1.22 ("`date`")"
 
 #
 # functions
@@ -358,9 +358,9 @@ then
 	fi
 	if [ -e "${CONFIG_FILE}" ]
 	then
-	  /usr/bin/srm -mf "${CONFIG_FILE}"
+	  rm -Pf "${CONFIG_FILE}"
 	fi
-    /usr/bin/srm -mf "${0}"
+    rm -Pf "${0}"
 	exit 0
   fi
 fi
