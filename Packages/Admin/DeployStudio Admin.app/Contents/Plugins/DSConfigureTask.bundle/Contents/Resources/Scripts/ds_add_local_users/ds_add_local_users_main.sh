@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "ds_add_local_users_main.sh - v1.4 ("`date`")"
+echo "ds_add_local_users_main.sh - v1.5 ("`date`")"
 
 #
 # Create users
@@ -15,4 +15,5 @@ fi
 #
 rm -Pf /etc/deploystudio/bin/ds_add_local_user.sh
 rm -Pf /etc/deploystudio/bin/ds_add_local_users.sh
-rm -Pf "${0}"
+rm -f "${0}"
+exit 0

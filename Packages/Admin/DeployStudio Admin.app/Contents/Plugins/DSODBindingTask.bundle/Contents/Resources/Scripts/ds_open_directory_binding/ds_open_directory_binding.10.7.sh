@@ -7,7 +7,7 @@ SCRIPT_NAME=`basename "${0}"`
 
 SYS_VERS=`sw_vers -productVersion | awk -F. '{ print $2 }'`
 
-echo "${SCRIPT_NAME} - v1.36 ("`date`")"
+echo "${SCRIPT_NAME} - v1.37 ("`date`")"
 
 #
 # functions
@@ -329,7 +329,7 @@ then
     then
       rm -Pf "${CONFIG_FILE}"
     fi
-    rm -Pf "${0}"
+    rm -f "${0}"
     exit 0
   fi
 fi

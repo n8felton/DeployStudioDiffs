@@ -6,7 +6,7 @@ use File::Basename;
 
 $ENV{COMMAND_LINE_INSTALL} = 1;
 
-print basename($0) . " - v1.8 (" . localtime(time) . ")\n";
+print basename($0) . " - v1.9 (" . localtime(time) . ")\n";
 
 # Wait for network services to be initialized
 print "Checking for the default route to be active...\n";
@@ -33,11 +33,11 @@ if (length($SUS_HOST_NAME) > 0) {
    
         # Reset local SUS url if required
         if (length($RESET_WHEN_DONE) > 0) {
-            system("/bin/rm -Pf /Library/Preferences/com.apple.SoftwareUpdate.plist");
+            system("/bin/rm -f /Library/Preferences/com.apple.SoftwareUpdate.plist");
         }
         
         # Self removal
-        system("/bin/rm -Pf \"$0\"");
+        system("/bin/rm -f \"$0\"");
 
         exit 200;
     }
@@ -84,12 +84,12 @@ if (@AVAILABLE_UPDATES > 0) {
 
     # Reset local SUS url if required
     if (length($RESET_WHEN_DONE) > 0) {
-        system("/bin/rm -Pf /Library/Preferences/com.apple.SoftwareUpdate.plist");
-        system("/bin/rm -Pf /Library/Preferences/com.apple.SoftwareUpdate.plist.lockfile");
+        system("/bin/rm -f /Library/Preferences/com.apple.SoftwareUpdate.plist");
+        system("/bin/rm -f /Library/Preferences/com.apple.SoftwareUpdate.plist.lockfile");
     }
 
     # Self removal
-    system("/bin/rm -Pf \"$0\"");
+    system("/bin/rm -f \"$0\"");
     
     exit 200;
 }

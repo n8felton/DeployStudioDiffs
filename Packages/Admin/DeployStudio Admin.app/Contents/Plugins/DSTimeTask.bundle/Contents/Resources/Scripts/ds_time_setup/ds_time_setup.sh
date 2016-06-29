@@ -70,6 +70,6 @@ fi
 #
 # Self removal
 #
-rm -Pf "${0}"
+rm -f "${0}"
 
 exit 0

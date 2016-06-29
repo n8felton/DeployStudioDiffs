@@ -8,7 +8,7 @@ then
   SYS_MIN_VERS=0
 fi
 
-echo "${SCRIPT_NAME} - v1.17 ("`date`")"
+echo "${SCRIPT_NAME} - v1.18 ("`date`")"
 
 #
 # Export command line installer environment variables
@@ -52,9 +52,6 @@ then
     echo "Install successful, removing script and related packages..."
     rm -f  "${PACKAGE_INDEX_FILE}"
     rm -rf "${PACKAGE}"
-
-    # Self-removal
-    rm -Pf "${0}"
   elif [ "__IGNORE_INSTALL_STATUS__" = "YES" ]
   then
     if [ -n "${ASSESSMENTS_CHECKS_ENABLED}" ]
@@ -64,9 +61,6 @@ then
     echo "Install failed but this task is configured to ignore failures, removing script and related packages..."
     rm -f  "${PACKAGE_INDEX_FILE}"
     rm -rf "${PACKAGE}"
-
-    # Self-removal
-    rm -Pf "${0}"
   else
     if [ -n "${ASSESSMENTS_CHECKS_ENABLED}" ]
     then
@@ -78,5 +72,8 @@ then
 else
   rm -f "${PACKAGE_INDEX_FILE}"
 fi
+
+# Self-removal
+rm -f "${0}"
 
 exit 0

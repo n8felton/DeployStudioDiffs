@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=`basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.28 ("`date`")"
+echo "${SCRIPT_NAME} - v1.29 ("`date`")"
 
 #
 # Wait for network services to be initialized
@@ -45,6 +45,6 @@ if [ -e "${CONFIGURATION_PROFILE}" ]
 then
   rm -Pf "${CONFIGURATION_PROFILE}"
 fi
-rm -Pf "${0}"
+rm -f "${0}"
 
 exit 0

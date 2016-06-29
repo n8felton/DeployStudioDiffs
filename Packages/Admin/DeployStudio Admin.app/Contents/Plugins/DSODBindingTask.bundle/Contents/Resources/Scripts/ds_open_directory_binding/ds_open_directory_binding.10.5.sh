@@ -5,7 +5,7 @@ histchars=
 
 SCRIPT_NAME=`basename "${0}"`
 
-echo "${SCRIPT_NAME} - v1.33 ("`date`")"
+echo "${SCRIPT_NAME} - v1.34 ("`date`")"
 
 #
 # functions
@@ -435,7 +435,7 @@ then
     then
       rm -Pf "${CONFIG_FILE}"
     fi
-    rm -Pf "${0}"
+    rm -f "${0}"
     exit 0
   fi
 fi
