@@ -1,7 +1,7 @@
 #!/bin/sh
 
 SCRIPT_NAME=`basename "${0}"`
-VERSION=2.21
+VERSION=2.23
 SYS_VERS=`sw_vers -productVersion | awk -F. '{ print $2 }'`
 
 if [ ${#} -lt 2 ]
@@ -101,12 +101,9 @@ COMPRESSED=`echo ${1} | grep -i "\.gz$"`
 if [ -e "${EFI_FILE}" ]
 then
   echo "-> checking EFI partition..."
-  if [ -d /Volumes/EFI/EFI ]
-  then
-    diskutil umount /Volumes/EFI 2>&1
-  fi
   EFI_PARTITION="${DEVICE}s1"
-  diskutil mount ${EFI_PARTITION}
+  diskutil umount ${EFI_PARTITION} 2>/dev/null
+  diskutil mount  ${EFI_PARTITION}
   if [ ${?} -eq 0 ] || [ -d /Volumes/EFI/EFI ]
   then
     echo "-> restoring EFI Windows boot files (${EFI_FILE})..."
@@ -114,13 +111,25 @@ then
     tar xPzf "${EFI_FILE}"
     echo "-> restoring EFI BCD file from template..."
     "${TOOLS_FOLDER}"/ds_efibcd_helper --update-generic-bcd "${NTFS_DEVICE}"
-    diskutil umount /Volumes/EFI 2>&1
+    diskutil umount ${EFI_PARTITION} 2>/dev/null
 
     "${TOOLS_FOLDER}"/safeunmountdisk.sh "${DEVICE}"
-    echo "-> enable protective MBR mode..."
-    "${TOOLS_FOLDER}"/ds_efibcd_helper --enable-protective-mbr "${DEVICE}"
+    echo "-> resetting protective MBR configuration..."
+    "${TOOLS_FOLDER}"/ds_efibcd_helper --reset-pmbr "${DEVICE}"
+    if [ ${?} -ne 0 ]
+    then
+      # might be part of a fusion drive (just for testing, better code to come)
+      diskutil umountDisk disk2
+      diskutil umountDisk disk1
+      diskutil umountDisk disk0
+      "${TOOLS_FOLDER}"/ds_efibcd_helper --reset-pmbr "${DEVICE}"
+      diskutil mountDisk disk0
+      diskutil mountDisk disk1
+      diskutil mountDisk disk2
+    fi
   else
     echo "-> EFI partition not found, aborting..."
+    diskutil umount ${EFI_PARTITION} 2>/dev/null
     echo "RuntimeAbortScript"
     exit 1
   fi
@@ -142,18 +151,32 @@ else
   fi
 fi 
 
-# ensure NTFS partition is still unmounted after MBR restoration/update
-diskutil umount "${NTFS_DEVICE}"
+ATTEMPTS=0
+MAX_ATTEMPTS=15
+NTFSCLONE_RC=-1
+while [ ${ATTEMPTS} -le ${MAX_ATTEMPTS} ] && [ ${NTFSCLONE_RC} -ne 0 ]
+do
+  # ensure NTFS partition is still unmounted after MBR restoration/update
+  "${TOOLS_FOLDER}"/safeunmountdisk.sh "${DEVICE}"
+  diskutil umount "${NTFS_DEVICE}"
 
-# restore NTFS partition
-echo "-> restoring NTFS partition (${IMAGE_FILE})..."
-if [ -n "${COMPRESSED}" ]
-then
-  gunzip -c "${IMAGE_FILE}" | "${TOOLS_FOLDER}"/ntfsclone${NTFSPROGS_VERS} --restore-image --overwrite "${NTFS_DEVICE}" -
-else
-  "${TOOLS_FOLDER}"/ntfsclone${NTFSPROGS_VERS} --restore-image --overwrite "${NTFS_DEVICE}" "${IMAGE_FILE}"
-fi
-NTFSCLONE_RC=${?}
+  # restore NTFS partition
+  echo "-> restoring NTFS partition (${IMAGE_FILE})..."
+  if [ -n "${COMPRESSED}" ]
+  then
+    gunzip -c "${IMAGE_FILE}" | "${TOOLS_FOLDER}"/ntfsclone${NTFSPROGS_VERS} --restore-image --overwrite "${NTFS_DEVICE}" -
+  else
+    "${TOOLS_FOLDER}"/ntfsclone${NTFSPROGS_VERS} --restore-image --overwrite "${NTFS_DEVICE}" "${IMAGE_FILE}"
+  fi
+  NTFSCLONE_RC=${?}
+  if [ ${NTFSCLONE_RC} -ne 0 ]
+  then
+    echo "-> ntfsclone failed with error ${NTFSCLONE_RC}, new attempt in 5 seconds..."
+    sleep 5
+  fi
+  ATTEMPTS=`expr ${ATTEMPTS} + 1`
+done
+
 if [ ${NTFSCLONE_RC} -ne 0 ]
 then
   echo "-> ntfsclone failed with error ${NTFSCLONE_RC}, aborting..."
@@ -339,10 +362,6 @@ then
     echo "-> partition resize failed!"
   fi
 fi
-
-# MBR partition table sync
-#echo "-> syncing MBR partition table on device ${DEVICE}..."
-#"${TOOLS_FOLDER}"/gptrefresh -vwf "${DEVICE}"
 
 # remount device
 echo "-> mounting device ${DEVICE}..."

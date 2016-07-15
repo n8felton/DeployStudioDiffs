@@ -3,7 +3,7 @@
 SCRIPT_NAME=`basename "${0}"`
 SCRIPT_PATH=`dirname "${0}"`
 
-/bin/echo "${SCRIPT_NAME} - v1.36 ("`date`")"
+/bin/echo "${SCRIPT_NAME} - v1.37 ("`date`")"
 
 custom_logger() {
   /bin/echo "${SCRIPT_NAME} - $1"
@@ -211,6 +211,7 @@ then
   for USER_TEMPLATE in "/System/Library/User Template"/*
   do
     defaults write "${USER_TEMPLATE}"/Library/Preferences/com.apple.SetupAssistant DidSeeCloudSetup -bool TRUE
+    defaults write "${USER_TEMPLATE}"/Library/Preferences/com.apple.SetupAssistant DidSeeSiriSetup -bool TRUE
     defaults write "${USER_TEMPLATE}"/Library/Preferences/com.apple.SetupAssistant GestureMovieSeen none
     defaults write "${USER_TEMPLATE}"/Library/Preferences/com.apple.SetupAssistant LastSeenCloudProductVersion "${SYS_VERS}"
   done
@@ -229,6 +230,7 @@ then
       if [ -d "${USER_HOME}"/Library/Preferences ]
       then
         defaults write "${USER_HOME}"/Library/Preferences/com.apple.SetupAssistant DidSeeCloudSetup -bool TRUE
+        defaults write "${USER_HOME}"/Library/Preferences/com.apple.SetupAssistant DidSeeSiriSetup -bool TRUE
         defaults write "${USER_HOME}"/Library/Preferences/com.apple.SetupAssistant GestureMovieSeen none
         defaults write "${USER_HOME}"/Library/Preferences/com.apple.SetupAssistant LastSeenCloudProductVersion "${SYS_VERS}"
         chown "${USER_UID}" "${USER_HOME}"/Library/Preferences/com.apple.SetupAssistant.plist

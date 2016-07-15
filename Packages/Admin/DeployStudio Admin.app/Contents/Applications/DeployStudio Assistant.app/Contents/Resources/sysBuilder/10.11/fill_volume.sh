@@ -1,4 +1,4 @@
-FILL_VOLUME_VERSION=11.65
+FILL_VOLUME_VERSION=11.66
 
 if [ -z "${TMP_MOUNT_PATH}" ] || [ "${TMP_MOUNT_PATH}" = "/" ]
 then
@@ -17,7 +17,7 @@ add_files_at_path "${ROOT_BIN}" /bin
 
 USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp diff dirname du egrep \
          erb expect false fgrep fs_usage gunzip gzip irb lsbom mkbom open printf rails rake rdoc ri rsync \
-         say smbutil srm syslog testrb xattr xattr-2.6 xattr-2.7 xxd bc \
+         say smbutil srm syslog testrb xattr xattr-2.6 xattr-2.7 xxd bc locale \
          certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch perl5.16 python top"
 add_files_at_path "${USR_BIN}" /usr/bin
 
@@ -27,7 +27,7 @@ add_files_at_path "${USR_SBIN}" /usr/sbin
 USR_LIB="pam python2.6 python2.7 zsh"
 add_files_at_path "${USR_LIB}" /usr/lib
 
-USR_SHARE="sandbox terminfo zoneinfo"
+USR_SHARE="locale sandbox terminfo zoneinfo"
 add_files_at_path "${USR_SHARE}" /usr/share
 
 USR_LIBEXEC="checkLocalKDC configureLocalKDC migrateLocalKDC security-checksystem smb-sync-preferences \

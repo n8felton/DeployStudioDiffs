@@ -112,7 +112,8 @@ fi
 
 echo "Checking if EFI partition contains Windows booter files..."
 EFI_PARTITION=/dev/disk${DISK_ID}s1
-diskutil mount ${EFI_PARTITION}
+diskutil umount ${EFI_PARTITION} 2>/dev/null
+diskutil mount  ${EFI_PARTITION}
 if [ ${?} -eq 0 ]
 then
   if [ -e /Volumes/EFI/EFI/Microsoft ]
@@ -124,7 +125,7 @@ then
     echo "Removing EFI BCD template file..."
     rm /Volumes/EFI/EFI/Microsoft/Boot/BCD.DSSTPL
   fi
-  diskutil umount /Volumes/EFI
+  diskutil umount ${EFI_PARTITION}
 fi
 
 if [ ! -e "${IMAGE_FILE_PATH}.efi" ]
