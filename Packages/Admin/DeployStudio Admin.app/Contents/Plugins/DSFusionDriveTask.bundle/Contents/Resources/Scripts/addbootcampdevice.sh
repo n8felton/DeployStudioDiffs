@@ -1,7 +1,7 @@
 #!/bin/sh
 
 SCRIPT_NAME=`basename "${0}"`
-VERSION=1.1
+VERSION=1.2
 SYS_VERS=`sw_vers -productVersion | awk -F. '{ print $2 }'`
 
 if [ ${SYS_VERS} -lt 7 ]
@@ -51,15 +51,27 @@ BOOTCAMP_DEVICE_ID=
 LV_UUID=`diskutil cs info "${VOL}" 2>/dev/null | grep "^ *UUID:" | sed -e "s/^.* //"`
 if [ -n "${LV_UUID}" ]
 then
+  RECOVERY_SIZE_B=650002432
   LV_SIZE_B=`diskutil cs info "$LV_UUID" | grep "LV Size:"  | sed -e "s/[^0-9]*//g"`
-  NEW_LV_SIZE_B=`expr ${LV_SIZE_B} - ${BOOTCAMP_SIZE_B}`
-  diskutil cs resizeStack "$LV_UUID" ${NEW_LV_SIZE_B}B "MS-DOS FAT32" "${BOOTCAMP_NAME}" ${BOOTCAMP_SIZE_B}B >>/dev/stderr
+  NEW_LV_SIZE_B=`expr ${LV_SIZE_B} - ${RECOVERY_SIZE_B} - ${BOOTCAMP_SIZE_B}`
+  diskutil cs resizeStack "$LV_UUID" ${NEW_LV_SIZE_B}B "HFS+" "Recovery HD" ${RECOVERY_SIZE_B}B "MS-DOS FAT32" "${BOOTCAMP_NAME}" ${BOOTCAMP_SIZE_B}B >>/dev/stderr
   if [ ${?} -ne 0 ]
   then
     echo "RuntimeAbortScript"
     exit 1
   fi
+
   sleep 5
+
+  RECOVERY_DEVICE_ID=`diskutil info "Recovery HD" | grep "Device Identifier:" | sed s/.*disk/disk/`
+  diskutil umount force /dev/${RECOVERY_DEVICE_ID}
+  asr adjust --target /dev/${RECOVERY_DEVICE_ID} --settype Apple_Boot
+  if [ ${?} -ne 0 ]
+  then
+    echo "RuntimeAbortScript"
+    exit 1
+  fi
+
   BOOTCAMP_DEVICE_ID=`diskutil info "${BOOTCAMP_NAME}" | grep "Device Identifier:" | sed s/.*disk/disk/`
 fi
 
