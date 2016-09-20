@@ -10,19 +10,19 @@
 		</data>
 		<key>Resources/Background.tiff</key>
 		<data>
-		lG7VJJdrvfORSfmCfA+DBpVhbrw=
+		hIqv01aU/bpTTe0pNNU2gycr7eA=
 		</data>
 		<key>Resources/DotBlue.tiff</key>
 		<data>
-		AendUAgj0UDpcJtZPuUrpua99M4=
+		2lonSuEPbfqxWbmSoTtWLBlVYto=
 		</data>
 		<key>Resources/DotGray.tiff</key>
 		<data>
-		lns0xRNWvl/35EBCUId+mH/GABU=
+		WHk4Ppn7veOh3zPNZGl9XdLNuqc=
 		</data>
 		<key>Resources/DotGrayDisabled.tiff</key>
 		<data>
-		w8zvvCDVLqGx/BPzvsjV0ivvG0I=
+		X92fIcgkgJ7e0Vq1a5XKRYHdZAA=
 		</data>
 		<key>Resources/English.lproj/Credits.rtf</key>
 		<dict>
@@ -46,7 +46,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			MaBUtjECZYS4B7hJ3MTgvn1JgdY=
+			6ETDTyYo9xnkmVAOzpfiL/JnqOY=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -55,7 +55,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			nKKMO6IPx0z0FgMerusYxvwVezI=
+			flMmZ03icWvUzGpcJZvPHgv/HtQ=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -334,7 +334,7 @@
 		</data>
 		<key>Resources/sysBuilder/10.11/fill_volume.sh</key>
 		<data>
-		gzdaRFQwrM2lqG68OrNFj2e1v00=
+		/M+EDOvil1GMVC2QeGLu2ik3/oI=
 		</data>
 		<key>Resources/sysBuilder/10.11/preferences.plist</key>
 		<data>
@@ -438,7 +438,7 @@
 		</data>
 		<key>Resources/sysBuilder/10.12/fill_volume.sh</key>
 		<data>
-		nPgisv2W9Lfcm3isbZe2fJZ19Dc=
+		D70mt6ZIA4oG3Ek3xXlVhs4ZEbg=
 		</data>
 		<key>Resources/sysBuilder/10.12/preferences.plist</key>
 		<data>
@@ -3138,44 +3138,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			lG7VJJdrvfORSfmCfA+DBpVhbrw=
+			hIqv01aU/bpTTe0pNNU2gycr7eA=
 			</data>
 			<key>hash2</key>
 			<data>
-			63bB10bt4Uqq4PDjspOZRprjhfs1E/NKHOnEt7HCJ8o=
+			nKL0XVhLNkVNmn3rZi+3tlAivUJkMw8asgWL+GqNr/s=
 			</data>
 		</dict>
 		<key>Resources/DotBlue.tiff</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			AendUAgj0UDpcJtZPuUrpua99M4=
+			2lonSuEPbfqxWbmSoTtWLBlVYto=
 			</data>
 			<key>hash2</key>
 			<data>
-			PtEkLnSrs5GhSO7ZFH0lkqjLti3CEiAtlJxwAKpccAY=
+			VA5E0+9tJ6b40jNKTYckyKXyXhWiawz2cROCLkUyw0U=
 			</data>
 		</dict>
 		<key>Resources/DotGray.tiff</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			lns0xRNWvl/35EBCUId+mH/GABU=
+			WHk4Ppn7veOh3zPNZGl9XdLNuqc=
 			</data>
 			<key>hash2</key>
 			<data>
-			z2LUGSE93qDDw9151eOGJJZPgXlc55JctzCKQO79EnI=
+			vW4PBReYCWoJFpx4qaP0QeQREw83+zxuKJuYnnyosqQ=
 			</data>
 		</dict>
 		<key>Resources/DotGrayDisabled.tiff</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			w8zvvCDVLqGx/BPzvsjV0ivvG0I=
+			X92fIcgkgJ7e0Vq1a5XKRYHdZAA=
 			</data>
 			<key>hash2</key>
 			<data>
-			AioziG1CNsjPy6ddkDQBht+1sOfQ/raupkqfJ/FqXrM=
+			lQ1JRMY7J+fMnJqJ5gTGplOn6eeShR4GISFzsDfLaSA=
 			</data>
 		</dict>
 		<key>Resources/English.lproj/Credits.rtf</key>
@@ -3208,11 +3208,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			MaBUtjECZYS4B7hJ3MTgvn1JgdY=
+			6ETDTyYo9xnkmVAOzpfiL/JnqOY=
 			</data>
 			<key>hash2</key>
 			<data>
-			O7bbWBm0DGqqSbMPoRl4F35fEE43hLB9RHBVtlMWXDg=
+			hwhBjEX+fe45Z1p3Yi6dpCPE8Yw1mhkA+OLntiEFwig=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -3221,11 +3221,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			nKKMO6IPx0z0FgMerusYxvwVezI=
+			flMmZ03icWvUzGpcJZvPHgv/HtQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			lKK874e+MEdA1hiq88IgUTXx2Y3xUNky8Pa06JXNb9M=
+			cNyZ+vnsohlDLK0lO1szbbLjOlM9nYN33oXH6dNWDYc=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -3982,11 +3982,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			gzdaRFQwrM2lqG68OrNFj2e1v00=
+			/M+EDOvil1GMVC2QeGLu2ik3/oI=
 			</data>
 			<key>hash2</key>
 			<data>
-			JaX1I/v40uP7LhsWdR/n+PUxh+ydYpXv76SElHqtniU=
+			Tqk7FXEkktDpVPBEKltfJkKpCtLNOaLTHHkOHVWAhIk=
 			</data>
 		</dict>
 		<key>Resources/sysBuilder/10.11/preferences.plist</key>
@@ -4268,11 +4268,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			nPgisv2W9Lfcm3isbZe2fJZ19Dc=
+			D70mt6ZIA4oG3Ek3xXlVhs4ZEbg=
 			</data>
 			<key>hash2</key>
 			<data>
-			ztDrqEaHBMqit8PzwOT//fa64GJEQKquPWtpIlJl4WI=
+			yu2la8EtI/J+LRwLuZa5AiIwUKtemLDBTKOC5cYRwXM=
 			</data>
 		</dict>
 		<key>Resources/sysBuilder/10.12/preferences.plist</key>
@@ -11739,6 +11739,11 @@
 			<key>weight</key>
 			<real>1100</real>
 		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
+		</dict>
 		<key>^version.plist$</key>
 		<true/>
 	</dict>
@@ -11797,6 +11802,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^[^/]+$</key>
 		<dict>

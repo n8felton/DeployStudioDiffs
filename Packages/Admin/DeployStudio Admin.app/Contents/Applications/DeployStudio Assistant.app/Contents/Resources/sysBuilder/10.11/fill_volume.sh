@@ -206,10 +206,11 @@ then
 #chown root:wheel "${TMP_MOUNT_PATH}"/etc/RemoteManagement.launchd 2>&1
 #chmod 644 "${TMP_MOUNT_PATH}"/etc/RemoteManagement.launchd 2>&1
 
-  mkdir "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop" 2>&1
+  mkdir -p "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop" 2>&1
   chmod 755 "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop" 2>&1
   echo enabled > "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd"
   chmod 644 "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd"
+  chown root:wheel "${TMP_MOUNT_PATH}/Library/Application Support/Apple" 2>&1
   chown -R root:wheel "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop" 2>&1
 
   if [ -n "${ARD_LOGIN}" ]

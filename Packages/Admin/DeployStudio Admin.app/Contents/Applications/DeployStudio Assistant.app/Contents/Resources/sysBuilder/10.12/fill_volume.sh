@@ -15,13 +15,13 @@ add_files_at_path "${ETC_CONF}" /etc
 ROOT_BIN="csh ksh tcsh zsh"
 add_files_at_path "${ROOT_BIN}" /bin
 
-USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp diff dirname du egrep \
-         erb expect false fgrep fs_usage gunzip gzip irb lsbom mkbom open printf rails rake rdoc ri rsync \
-         say smbutil srm syslog testrb xattr xattr-2.6 xattr-2.7 xxd bc locale \
+USR_BIN="afconvert afinfo afplay atos auval auvaltool basename cd chgrp diff dirname du \
+         erb expect false fs_usage gunzip gzip irb lsbom mkbom open printf rails rake rdoc ri rsync \
+         say smbutil syslog testrb xattr xattr-2.6 xattr-2.7 xxd bc locale \
          certtool kdestroy keytool kgetcred killall kinit klist kpasswd krb5-config kswitch perl5.16 python top"
 add_files_at_path "${USR_BIN}" /usr/bin
 
-USR_SBIN="gssd iostat kadmin kadmin.local kdcsetup krbservicesetup smbd spctl systemkeychain vsdbutil"
+USR_SBIN="iostat kadmin kadmin.local kdcsetup krbservicesetup smbd spctl systemkeychain vsdbutil"
 add_files_at_path "${USR_SBIN}" /usr/sbin
 
 USR_LIB="pam python2.6 python2.7 zsh"
@@ -206,10 +206,11 @@ then
 #chown root:wheel "${TMP_MOUNT_PATH}"/etc/RemoteManagement.launchd 2>&1
 #chmod 644 "${TMP_MOUNT_PATH}"/etc/RemoteManagement.launchd 2>&1
 
-  mkdir "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop" 2>&1
+  mkdir -p "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop" 2>&1
   chmod 755 "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop" 2>&1
   echo enabled > "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd"
   chmod 644 "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd"
+  chown root:wheel "${TMP_MOUNT_PATH}/Library/Application Support/Apple" 2>&1
   chown -R root:wheel "${TMP_MOUNT_PATH}/Library/Application Support/Apple/Remote Desktop" 2>&1
 
   if [ -n "${ARD_LOGIN}" ]

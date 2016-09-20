@@ -6,7 +6,7 @@ SYS_VERS=`sw_vers -productVersion | awk -F. '{ print $2 }'`
 
 if [ ${SYS_VERS} -lt 7 ]
 then
-  echo "This script requires OS X 10.7 or later!" >>/dev/stderr
+  echo "This script requires macOS 10.7 or later!" >>/dev/stderr
   exit 1
 fi
 

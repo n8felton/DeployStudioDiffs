@@ -35,7 +35,7 @@ then
 
     if [ -z "${SELECTED_CITY_DEFINED}" ]
     then
-      echo "Selected city not set, OS X setup assistant might display the wrong timezone..." 2>&1
+      echo "Selected city not set, macOS setup assistant might display the wrong timezone..." 2>&1
     fi
 
 #    if [ -z "${SELECTED_CITY_DEFINED}" ]
